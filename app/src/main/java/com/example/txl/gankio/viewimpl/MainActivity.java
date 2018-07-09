@@ -85,7 +85,8 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         mainPresenter.prepareMainData( this );
     }
 
-    private void initData(){
+    @Override
+    public void initData(){
         fragmentList.clear();
         idelReadFragment = new IdelReadFragment();
         videoFragment = new VideoFragment();
@@ -95,7 +96,8 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         fragmentList.add( allDataFragment );
     }
 
-    private void initView(){
+    @Override
+    public void initView(){
         setSupportActionBar( toolbar );
         toolbar.setBackgroundColor( ThemeUtils.getToolBarColor());
         // 设置DrawerLayout开关指示器，即Toolbar最左边的那个icon

@@ -30,4 +30,8 @@ public abstract class BaseActivity extends BaseFragmentActivity implements IBase
         startActivity(pIntent);
         overridePendingTransition(R.anim.trans_next_in, R.anim.trans_next_out);
     }
+
+    protected void initView(){}
+
+    protected void initData(){}
 }

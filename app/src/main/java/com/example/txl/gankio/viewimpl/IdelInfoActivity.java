@@ -51,7 +51,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
         initData();
     }
 
-    private void initView(){
+    protected void initView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
         DividerItemDecoration decoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
@@ -88,7 +88,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
         } );
     }
 
-    private void initData(){
+    protected void initData(){
         Intent intent = getIntent();
         if(intent == null){
             return;
