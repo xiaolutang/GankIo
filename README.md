@@ -5,7 +5,7 @@
 
 ScreenShot： https://github.com/ 你的用户名 / 你的项目名 / raw / 分支名 / 存放图片的文件夹 / 该文件夹下的图片
 
-![]（ https://github.com/xiaolutang/GankIo/raw/master/app/image/splash.jpg ）
+![应用启动页面](https://github.com/xiaolutang/GankIo/raw/master/app/image/splash.jpg)
 
 ![主页闲读资讯]（https://github.com/xiaolutang/GankIo/master/app/image/main_idel.png）
 
