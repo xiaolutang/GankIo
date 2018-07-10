@@ -3,9 +3,9 @@
 首页分成闲读资讯、福利图片和休息视频3个部分
 首页界面风格采用Material Design设计规范，使用了CoordinatorLayout和viewpager配合，使用behavior属性对toolbar的显示和隐藏进行了控制，tablayout和viewpager配合，viewpager切换fragment，整体界面模仿了网易云音乐
 
-ScreenShot：
+ScreenShot： https://github.com/ 你的用户名 / 你的项目名 / raw / 分支名 / 存放图片的文件夹 / 该文件夹下的图片
 
-![应用启动页面]（ https://github.com/xiaolutang/GankIo/blob/master/app/image/splash.jpg ）
+![应用启动页面]（ https://github.com/xiaolutang/GankIo/raw/master/image/splash.jpg ）
 
 ![主页闲读资讯]（https://github.com/xiaolutang/GankIo/master/app/image/main_idel.png）
 
