@@ -10,12 +10,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.View;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.adapter.IdelInfoAdapter;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.IdelInfo;
 import com.example.txl.gankio.presenter.IdelInfoPersenter;
+import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.viewinterface.IGetIdelInfo;
 
 import java.util.List;
@@ -51,7 +54,32 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
         initData();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation_menu_search, menu);
+        return super.onCreateOptionsMenu( menu );
+    }
+
     protected void initView(){
+        Intent intent = getIntent();
+        if(intent == null){
+            return;
+        }
+        id = intent.getStringExtra( "id" );
+        iconUrl = intent.getStringExtra( "icon" );
+        title = intent.getStringExtra( "title" );
+
+        toolbar.setBackgroundColor( ThemeUtils.getToolBarColor());
+        toolbar.setTitle( title );
+        setSupportActionBar( toolbar );
+        toolbar.setNavigationIcon( R.drawable.icons8_go_back_24);
+        toolbar.setNavigationOnClickListener( new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } );
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
         DividerItemDecoration decoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
@@ -59,7 +87,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
         decoration.setDrawable( drawable );
         recyclerview.addItemDecoration( new DividerItemDecoration(this,DividerItemDecoration.VERTICAL) );
         recyclerview.setLayoutManager(layoutManager);
-        idelInfoAdapter = new IdelInfoAdapter();
+        idelInfoAdapter = new IdelInfoAdapter(this);
         idelInfoPersenter = new IdelInfoPersenter( this );
         recyclerview.setAdapter(idelInfoAdapter  );
         swiperefreshlayout.setOnRefreshListener( this );
@@ -89,13 +117,6 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
     }
 
     protected void initData(){
-        Intent intent = getIntent();
-        if(intent == null){
-            return;
-        }
-        id = intent.getStringExtra( "id" );
-        iconUrl = intent.getStringExtra( "icon" );
-        title = intent.getStringExtra( "title" );
         idelInfoPersenter.getIdelReaderSubCategory( id, defaultCount,currentPage,this,true);
     }
 

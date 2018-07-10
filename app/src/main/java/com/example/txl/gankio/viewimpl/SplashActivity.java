@@ -63,7 +63,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
         viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.e( TAG,"onPageScrolled position = "+position +"  positionOffset = "+positionOffset+"  positionOffsetPixels "+positionOffsetPixels);
+
             }
 
             @Override

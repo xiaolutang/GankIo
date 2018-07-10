@@ -1,5 +1,7 @@
 package com.example.txl.gankio.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.bean.IdelInfo;
+import com.example.txl.gankio.viewimpl.WebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +26,14 @@ import java.util.List;
 public class IdelInfoAdapter extends RecyclerView.Adapter {
 
     String TAG = IdelInfoAdapter.class.getSimpleName();
+    private Context mContext;
 
     List<IdelInfo.InfoContent> results = new ArrayList<>(  );
 
     IdelInfo.InfoContent contentFooter;
 
-    public IdelInfoAdapter() {
+    public IdelInfoAdapter(Context context) {
+        mContext = context;
         initFooterItem();
     }
 
@@ -44,6 +49,15 @@ public class IdelInfoAdapter extends RecyclerView.Adapter {
         ViewHolder viewHolder = (ViewHolder) holder;
         TextView tvTitle = viewHolder.mRelativeLayout.findViewById( R.id.tv_idel_info_title );
         tvTitle.setText( results.get( position ).getTitle() );
+        viewHolder.mRelativeLayout.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( mContext, WebActivity.class );
+                intent.putExtra( "url",results.get( position ).getUrl() );
+                intent.putExtra( "title",results.get( position ).getTitle() );
+                mContext.startActivity( intent );
+            }
+        } );
     }
 
     @Override
