@@ -4,3 +4,4 @@
 首页界面风格采用Material Design设计规范，使用了CoordinatorLayout和viewpager配合，使用behavior属性对toolbar的显示和隐藏进行了控制，tablayout和viewpager配合，viewpager切换fragment，整体界面模仿了网易云音乐
 
 ScreenShot：
+https://github.com/xiaolutang/GankIo/app/image/idel_info.png
