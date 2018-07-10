@@ -18,6 +18,6 @@ ScreenShot：
 
 ![闲读资讯分类浏览](https://github.com/xiaolutang/GankIo/raw/master/app/image/idel_info.png)
 
-![阅读资讯页面](https://github.com/xiaolutang/GankIo/raw/master/app/image/reader.jpg)
+![阅读资讯页面](https://github.com/xiaolutang/GankIo/raw/master/app/image/reader.png)
 
 ![视频播放界面](https://github.com/xiaolutang/GankIo/raw/master/app/image/play_video.png)
