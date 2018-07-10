@@ -3,9 +3,14 @@ package com.example.txl.gankio.viewimpl;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
@@ -21,6 +26,8 @@ public class WebActivity extends BaseActivity {
     WebView webView;
     @BindView( R.id.web_activity_toolbar )
     Toolbar toolbar;
+    @BindView( R.id.web_activity_progressBar )
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,31 @@ public class WebActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(webView.canGoBack()){
+                    webView.goBack();
+                    return;
+                }
                 finish();
+            }
+        } );
+        webView.setWebViewClient( new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
+                toolbar.setTitle(request.getUrl().getPath() );
+                return super.shouldOverrideUrlLoading( view, request );
+            }
+        } );
+        webView.setWebChromeClient( new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if(newProgress==100){
+                    progressBar.setVisibility(View.GONE);//加载完网页进度条消失
+                }
+                else{
+                    progressBar.setVisibility(View.VISIBLE);//开始加载网页时显示进度条
+                    progressBar.setProgress(newProgress);//设置进度值
+                }
             }
         } );
     }
