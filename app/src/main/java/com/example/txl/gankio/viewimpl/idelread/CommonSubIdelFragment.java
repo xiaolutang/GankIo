@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.adapter.CommonSubIdelReaderAdapter;
+import com.example.txl.gankio.adapter.HeaderAndFooterWrapper;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.CommonIdelReaderSubclassification;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;

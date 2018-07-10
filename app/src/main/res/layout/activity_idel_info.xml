@@ -16,7 +16,12 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
-        <include layout="@layout/model_swiperefreshlayout" />
+        <!--<include layout="@layout/model_swiperefreshlayout" />-->
+        <com.example.txl.gankio.widget.PullRefreshRecyclerView
+            android:id="@+id/pullrefrefh_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_light_gray"/>
     </android.support.design.widget.AppBarLayout>
 
 </android.support.constraint.ConstraintLayout>
