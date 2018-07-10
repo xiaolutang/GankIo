@@ -5,7 +5,7 @@
 
 ScreenShot：
 
-![应用启动页面]（ https://github.com/xiaolutang/GankIo/blob/master/app/image/splash.jpg "github"）
+![应用启动页面]（ https://github.com/xiaolutang/GankIo/blob/master/app/image/splash.jpg ）
 
 ![主页闲读资讯]（https://github.com/xiaolutang/GankIo/master/app/image/main_idel.png）
 
