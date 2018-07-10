@@ -50,7 +50,6 @@ public class RecyclerViewFooter extends LinearLayout {
         contentView = moreView.findViewById( R.id.pullrefrefh_footer_content);
         progressBar = moreView.findViewById(R.id.pullrefrefh_footer_ProgressBar);
         hintView = (TextView) moreView.findViewById(R.id.pullrefrefh_footer_hint_TextView);
-        setState(STATE_NORMAL);
     }
 
     /**

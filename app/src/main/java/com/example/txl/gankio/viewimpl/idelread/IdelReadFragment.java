@@ -18,6 +18,7 @@ import com.example.txl.gankio.adapter.CommonSubIdelReaderAdapter;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.presenter.IdelReaderPresenter;
+import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.viewinterface.IGetIdelReadView;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class IdelReadFragment extends BaseFragment implements SwipeRefreshLayout
         myViewPagerAdapter = new MyViewPagerAdapter( getFragmentManager() );
         viewPager.setAdapter(myViewPagerAdapter) ;
         tableLayout.setupWithViewPager(viewPager,true);
-
+        tableLayout.setTabTextColors(R.color.main_black ,ThemeUtils.getThemeColor() );
     }
 
     private void initData(){

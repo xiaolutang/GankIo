@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -89,5 +90,14 @@ public class WebActivity extends BaseActivity {
         super.initData();
 
         webView.loadUrl( url );
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(webView.canGoBack() && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            webView.goBack();
+            return true;
+        }
+        return super.dispatchKeyEvent( event );
     }
 }
