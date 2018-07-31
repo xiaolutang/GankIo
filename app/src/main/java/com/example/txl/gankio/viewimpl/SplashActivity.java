@@ -21,8 +21,11 @@ import com.bumptech.glide.Glide;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.BeautyGirls;
+import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
+import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.VideoPresenter;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
+import com.example.txl.gankio.viewinterface.IGetMainDataView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity implements IGetFuLiData{
+
+    public static boolean canGotoMain = false;
+    public static IdelReaderCategoryRoot root;
 
     @BindView( R.id.splash_vp )
     ViewPager viewPager;
@@ -50,6 +56,10 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_splash );
         ButterKnife.bind( this );
+        if(canGotoMain){
+            startActivity(MainActivity.class);
+            finish();
+        }
         initView();
         initData();
     }
@@ -98,6 +108,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
 //首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
                         if(prevPosition ==(mList.size()-1)&&startX-endX>=(width/4)){
                             Log.i(TAG,"进入了触摸");
+                            canGotoMain = true;
                             startActivity(MainActivity.class);
                             finish();
                             return true;
@@ -112,6 +123,37 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     protected void initData() {
         super.initData();
         videoPresenter.getFuLiData( 5,1,this,true );
+        new MainPresenter(this).prepareMainData( new IGetMainDataView(){
+            @Override
+            public void getIdelReaderSuccess(IdelReaderCategoryRoot root) {
+                SplashActivity.root = root;
+            }
+
+            @Override
+            public void getIdelReaderFailed(Object o) {
+
+            }
+
+            @Override
+            public void getVideoSuccess(Object o) {
+
+            }
+
+            @Override
+            public void getVideoFailed(Object o) {
+
+            }
+
+            @Override
+            public void getAllDataSuccess(Object o) {
+
+            }
+
+            @Override
+            public void getAllDataFailed(Object o) {
+
+            }
+        } );
     }
 
     @Override

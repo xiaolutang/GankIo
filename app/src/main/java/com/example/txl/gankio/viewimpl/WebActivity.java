@@ -89,7 +89,7 @@ public class WebActivity extends BaseActivity {
     protected void initData() {
         super.initData();
 
-        webView.loadUrl( url );
+        webView.loadUrl( "https://v.douyin.com/JuqroL/" );
     }
 
     @Override

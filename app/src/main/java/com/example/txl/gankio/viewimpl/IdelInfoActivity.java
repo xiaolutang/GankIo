@@ -150,6 +150,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
     public void updateIdelInfoSuccess(List<IdelInfo.InfoContent> results) {
         Log.e( TAG,"updateIdelInfoSuccess" );
         idelInfoAdapter.updateData(results );
+        recyclerview.stopRefresh();
     }
 
     @Override

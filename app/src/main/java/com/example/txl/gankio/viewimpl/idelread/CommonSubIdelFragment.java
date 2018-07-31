@@ -73,6 +73,7 @@ public class CommonSubIdelFragment extends BaseFragment implements IGetIdelReadV
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated( view, savedInstanceState );
         initView();
+        fragmentName = getArguments() != null ? getArguments().getString("fragmentName") : "aaa";
     }
 
     @Override
