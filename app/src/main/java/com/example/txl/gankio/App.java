@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.example.txl.gankio.change.mvp.data.User;
+import com.example.txl.gankio.change.mvp.data.source.local.GankIoDatabase;
 import com.example.txl.gankio.utils.ThemeUtils;
 import java.util.logging.LogRecord;
 
@@ -15,6 +17,8 @@ import java.util.logging.LogRecord;
  * description：
  */
 public class App extends Application {
+    private static User loginUser;
+
     private  static Context mContext;
 
     private static App _appInst;
@@ -44,13 +48,18 @@ public class App extends Application {
         _appMainHandler.post(runnable);
     }
 
-    public void postDelayToMainLooper(Runnable runnable, long ms) {
-        _appMainHandler.postDelayed(runnable, ms);
+    public static void setLoginUser(User user){
+        loginUser = user;
     }
 
-    public void removeMainLooperCallBack(Runnable runnable) {
-        _appMainHandler.removeCallbacks(runnable);
+    /**
+     * 注销登录，销毁user对象
+     * */
+    public static void destoryLoginUser(){
+        loginUser = null;
     }
 
-
+    public static User getLoginUser(){
+        return loginUser;
+    }
 }

@@ -19,6 +19,7 @@ import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
+import com.example.txl.gankio.change.mvp.login.LoginActivity;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.viewimpl.alldata.AllDataFragment;
@@ -174,20 +175,15 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_menu_home:
-
                         break;
                     case R.id.nav_menu_categories:
-
                         break;
-
                     case R.id.nav_menu_recommend:
                         break;
                     case R.id.nav_menu_feedback:
-
                         break;
                     case R.id.nav_menu_setting:
                         break;
-
                     case R.id.nav_menu_theme:
 
 //                        View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_theme_color, null, false);
@@ -213,6 +209,9 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
 //                                })
 //                                .show();
 
+                        break;
+                    case R.id.nav_menu_login:
+                        startActivity( LoginActivity.class );
                         break;
                 }
 
