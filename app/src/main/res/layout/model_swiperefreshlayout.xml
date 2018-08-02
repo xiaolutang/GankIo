@@ -17,7 +17,7 @@
                 使用RecyclerView需要在build.gradle中添加
                compile 'com.android.support:recyclerview-v7:23.3.0'
         -->
-        <android.support.v7.widget.RecyclerView
+        <com.example.txl.gankio.widget.PullRefreshRecyclerView
             android:id="@+id/recyclerview"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"

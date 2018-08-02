@@ -157,17 +157,17 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     }
 
     @Override
-    public void onAddIdelInfoSuccess(List<BeautyGirls.Girl> results) {
+    public void onAddFuLiDataSuccess(List<BeautyGirls.Girl> results) {
 
     }
 
     @Override
-    public void onAddIdelInfoFailed() {
+    public void onAddFuLiDataFailed() {
 
     }
 
     @Override
-    public void updateIdelInfoSuccess(List<BeautyGirls.Girl> results) {
+    public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
         mList.clear();
         for(BeautyGirls.Girl girl : results){
             ImageView imageView = new ImageView( this );
@@ -194,7 +194,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     }
 
     @Override
-    public void updateIdelInfoFailed() {
+    public void updateFuLiDataFailed() {
 
     }
 

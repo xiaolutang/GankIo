@@ -7,10 +7,8 @@ import com.example.txl.gankio.App;
 import com.example.txl.gankio.api.GankIoApi;
 import com.example.txl.gankio.base.BasePresenter;
 import com.example.txl.gankio.bean.BeautyGirls;
-import com.example.txl.gankio.bean.IdelInfo;
 import com.example.txl.gankio.utils.StringUtils;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
-import com.example.txl.gankio.viewinterface.IGetIdelInfo;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -33,7 +31,7 @@ public class VideoPresenter extends BasePresenter {
         super( mContext );
     }
 
-    public void getFuLiData(int count, int page, IGetFuLiData iGetIdelReadView, boolean refresh){
+    public void getFuLiData(int count, int page, IGetFuLiData iGetFuLiData, boolean refresh){
         String url = GankIoApi.URL_GET_FULI_DATA +""+count+"/"+page;
         Log.d(TAG, "getFuLiData url : "+url);
         OkHttpClient okHttpClient = GankIoApi.getClient();
@@ -48,9 +46,9 @@ public class VideoPresenter extends BasePresenter {
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "getFuLiData onFailure: ");
                 if(refresh){
-                    iGetIdelReadView.updateIdelInfoFailed();
+                    iGetFuLiData.updateFuLiDataFailed();
                 }else {
-                    iGetIdelReadView.onAddIdelInfoFailed();
+                    iGetFuLiData.onAddFuLiDataFailed();
                 }
 
             }
@@ -68,16 +66,16 @@ public class VideoPresenter extends BasePresenter {
                         if(root.isError() || root.getResults() == null){
                             Log.e( TAG, "getFuLiData onResponse "+root.isError()+" root.getCategories() "+ root.getResults());
                             if(refresh){
-                                iGetIdelReadView.updateIdelInfoFailed();
+                                iGetFuLiData.updateFuLiDataFailed();
                             }else {
-                                iGetIdelReadView.onAddIdelInfoFailed();
+                                iGetFuLiData.onAddFuLiDataFailed();
                             }
                             return;
                         }
                         if(refresh){
-                            iGetIdelReadView.updateIdelInfoSuccess(root.getResults());
+                            iGetFuLiData.updateFuLiDataSuccess(root.getResults());
                         }else {
-                            iGetIdelReadView.onAddIdelInfoSuccess(root.getResults());
+                            iGetFuLiData.onAddFuLiDataSuccess(root.getResults());
                         }
                     }
                 } );

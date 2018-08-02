@@ -26,7 +26,7 @@ import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.viewimpl.alldata.AllDataFragment;
 import com.example.txl.gankio.viewimpl.idelread.IdelReadFragment;
-import com.example.txl.gankio.viewimpl.video.VideoFragment;
+import com.example.txl.gankio.viewimpl.video.FuLiFragment;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
 
     List<BaseFragment> fragmentList = new ArrayList<>(  );
     IdelReadFragment idelReadFragment;
-    VideoFragment videoFragment;
+    FuLiFragment fuLiFragment;
     AllDataFragment allDataFragment;
 
     private int currentFragmentIndex = 0;
@@ -92,10 +92,10 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
     public void initData(){
         fragmentList.clear();
         idelReadFragment = new IdelReadFragment();
-        videoFragment = new VideoFragment();
+        fuLiFragment = new FuLiFragment();
         allDataFragment = new AllDataFragment();
         fragmentList.add( idelReadFragment );
-        fragmentList.add( videoFragment );
+        fragmentList.add( fuLiFragment );
         fragmentList.add( allDataFragment );
     }
 

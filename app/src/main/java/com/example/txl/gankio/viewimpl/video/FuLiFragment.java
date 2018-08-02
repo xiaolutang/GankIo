@@ -1,28 +1,21 @@
 package com.example.txl.gankio.viewimpl.video;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.adapter.IdelInfoAdapter;
 import com.example.txl.gankio.adapter.VideoAdapter;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.BeautyGirls;
-import com.example.txl.gankio.presenter.IdelInfoPersenter;
 import com.example.txl.gankio.presenter.VideoPresenter;
-import com.example.txl.gankio.viewimpl.IdelInfoActivity;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
+import com.example.txl.gankio.widget.PullRefreshRecyclerView;
 
 import java.util.List;
 
@@ -35,10 +28,10 @@ import butterknife.ButterKnife;
  * date：2018/7/6
  * description：福利图片
  */
-public class VideoFragment extends BaseFragment implements IGetFuLiData,SwipeRefreshLayout.OnRefreshListener{
+public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
+    PullRefreshRecyclerView recyclerview;
     @BindView(R.id.swiperefreshlayout)
     SwipeRefreshLayout swiperefreshlayout;
 
@@ -62,37 +55,28 @@ public class VideoFragment extends BaseFragment implements IGetFuLiData,SwipeRef
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
         StaggeredGridLayoutManager recyclerViewLayoutManager =
-                new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerViewLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerview.setLayoutManager(recyclerViewLayoutManager);
         videoAdapter = new VideoAdapter();
         videoPresenter = new VideoPresenter( getContext() );
         recyclerview.setAdapter(videoAdapter  );
-        swiperefreshlayout.setOnRefreshListener( this );
-        recyclerview.addOnScrollListener( new RecyclerView.OnScrollListener(){
-            int lastVisibleItem ;
-
+        recyclerview.setOnRefreshListener( new PullRefreshRecyclerView.OnRefreshListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1 == videoAdapter.getItemCount()){
-                    videoPresenter.getFuLiData( defaultCount,++currentPage,VideoFragment.this,false );
-                }
-
+            public void onRefresh() {
+                currentPage = 1;
+                videoPresenter.getFuLiData( defaultCount, currentPage, FuLiFragment.this,true);
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
-                //最后一个可见的ITEM
-//                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-//                layoutManager.f
+            public void onLoadMore() {
+                videoPresenter.getFuLiData( defaultCount,++currentPage,FuLiFragment.this,false );
             }
         } );
+        recyclerview.setmEnablePullLoad( true );
+        recyclerview.setmEnablePullRefresh( true );
+        swiperefreshlayout.setOnRefreshListener( this );
+        swiperefreshlayout.setEnabled( false );
     }
 
     private void initData(){
@@ -116,22 +100,25 @@ public class VideoFragment extends BaseFragment implements IGetFuLiData,SwipeRef
     }
 
     @Override
-    public void onAddIdelInfoSuccess(List<BeautyGirls.Girl> results) {
+    public void onAddFuLiDataSuccess(List<BeautyGirls.Girl> results) {
         videoAdapter.addData( results );
+        //fixme 这是一个不好的做法，应该是view自己能够判断什么时候数据刷新成功
+        recyclerview.stopLoadMore();
     }
 
     @Override
-    public void onAddIdelInfoFailed() {
+    public void onAddFuLiDataFailed() {
 
     }
 
     @Override
-    public void updateIdelInfoSuccess(List<BeautyGirls.Girl> results) {
+    public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
         videoAdapter.updateData( results );
+        recyclerview.stopRefresh();
     }
 
     @Override
-    public void updateIdelInfoFailed() {
+    public void updateFuLiDataFailed() {
 
     }
 }

@@ -8,9 +8,13 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,11 +44,11 @@ public class RecyclerViewHeader extends LinearLayout {
     private LinearLayout mContainer;
     //获取到控件
     private ImageView mArrowImageView;
-    //    private ProgressBar mProgressBar;
+//    private ProgressBar mProgressBar;
     private TextView mHintTextView;
     //初始化动画
-//    private RotateAnimation mRotateUpAnim;
-//    private Animation mRotateDownAnim;
+    private RotateAnimation mRotateUpAnim;
+    private Animation mRotateDownAnim;
     private TextView mTitleTextView;
     private RelativeLayout mRealityContent;
 
@@ -79,17 +83,17 @@ public class RecyclerViewHeader extends LinearLayout {
 //        mProgressBar = (ProgressBar) findViewById(R.id.pullRefresh_progressbar);
         mTitleTextView = (TextView) mContainer.findViewById(R.id.pullRefresh_title);
 
-        //初始化动画
-//        mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
-//                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-//                0.5f);
-//        mRotateUpAnim.setDuration(ROTATE_ANIM_DURATION);
-//        mRotateUpAnim.setFillAfter(true);
-//        mRotateDownAnim = new RotateAnimation(-180.0f, 0.0f,
-//                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-//                0.5f);
-//        mRotateDownAnim.setDuration(ROTATE_ANIM_DURATION);
-//        mRotateDownAnim.setFillAfter(true);
+//        初始化动画
+        mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        mRotateUpAnim.setDuration(ROTATE_ANIM_DURATION);
+        mRotateUpAnim.setFillAfter(true);
+        mRotateDownAnim = new RotateAnimation(-180.0f, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        mRotateDownAnim.setDuration(ROTATE_ANIM_DURATION);
+        mRotateDownAnim.setFillAfter(true);
     }
 
     public void setState(int state) {
@@ -98,28 +102,28 @@ public class RecyclerViewHeader extends LinearLayout {
 
         //如果传进来的是刷新状态
         if (state == STATE_REFRESHING) {    // 正在加载显示圆圈进度
-//            mArrowImageView.clearAnimation();
-//            mArrowImageView.setVisibility(View.INVISIBLE);
+            mArrowImageView.clearAnimation();
+            mArrowImageView.setVisibility( View.INVISIBLE);
 //            mProgressBar.setVisibility(View.VISIBLE);
         } else {    // 显示箭头图片
-//            mArrowImageView.setVisibility(View.VISIBLE);
+            mArrowImageView.setVisibility(View.VISIBLE);
 //            mProgressBar.setVisibility(View.INVISIBLE);
         }
 
         switch (state) {
             case STATE_NORMAL://正常状态
                 if (mState == STATE_READY) {
-//                    mArrowImageView.startAnimation(mRotateDownAnim);
+                    mArrowImageView.startAnimation(mRotateDownAnim);
                 }
                 if (mState == STATE_REFRESHING) {
-//                    mArrowImageView.clearAnimation();
+                    mArrowImageView.clearAnimation();
                 }
                 mHintTextView.setText("下拉刷新");
                 break;
             case STATE_READY://可以刷新状态
                 if (mState != STATE_READY) {
-//                    mArrowImageView.clearAnimation();
-//                    mArrowImageView.startAnimation(mRotateUpAnim);
+                    mArrowImageView.clearAnimation();
+                    mArrowImageView.startAnimation(mRotateUpAnim);
                     mHintTextView.setText("松开刷新数据");
                 }
                 break;
@@ -175,6 +179,7 @@ public class RecyclerViewHeader extends LinearLayout {
 
         LayoutParams lp = (LayoutParams) mContainer.getLayoutParams();
         lp.height = height;
+        lp.weight = ViewGroup.LayoutParams.MATCH_PARENT;
         mContainer.setLayoutParams(lp);
     }
 

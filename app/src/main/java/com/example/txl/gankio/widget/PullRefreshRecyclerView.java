@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,8 +14,6 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
-
-import com.example.txl.gankio.adapter.HeaderAndFooterWrapper;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -46,14 +45,31 @@ public class PullRefreshRecyclerView extends RecyclerView {
      * 是否设置为自动加载更多,目前没实现
      */
     private boolean mEnableAutoLoading = false;
+
+    public boolean ismEnablePullLoad() {
+        return mEnablePullLoad;
+    }
+
+    public void setmEnablePullLoad(boolean mEnablePullLoad) {
+        this.mEnablePullLoad = mEnablePullLoad;
+    }
+
+    public boolean ismEnablePullRefresh() {
+        return mEnablePullRefresh;
+    }
+
+    public void setmEnablePullRefresh(boolean mEnablePullRefresh) {
+        this.mEnablePullRefresh = mEnablePullRefresh;
+    }
+
     /**
      * 是否可以上拉  默认可以
      */
-    private boolean mEnablePullLoad = true;
+    private boolean mEnablePullLoad = false;
     /**
      * 是否可以下拉   默认可以
      */
-    private boolean mEnablePullRefresh = true;
+    private boolean mEnablePullRefresh = false;
     /**
      * 是否正在加载
      */
@@ -130,6 +146,7 @@ public class PullRefreshRecyclerView extends RecyclerView {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         Log.d( "IdelInfoActivity","onTouchEvent" );
+        LayoutManager layoutManager = getLayoutManager();
         if (mLastY == -1) {
             mLastY = e.getRawY();
         }
@@ -145,48 +162,96 @@ public class PullRefreshRecyclerView extends RecyclerView {
                 //手指滑动的差值
                 float distanceY = moveY - mLastY;
                 mLastY = moveY;
-
-                //第一个条目完全显示   //头部高度大于0   deltaY大于0  向下移动
-                if ((((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 0 || ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 1) && (mHeaderView.getVisibleHeight() > 0 || distanceY > 0)) {
-                    // 更新头部高度
-                    updateHeaderHeight(distanceY / OFFSET_RADIO);
-                } else if (isSlideToBottom() && (mFooterView.getBottomMargin() > 0 || distanceY < 0)) {
-                    Log.e("PullRefreshRecyclerView","-------111------"+distanceY);
-                    //已经到达底部,改变状态或者自动加载
-                    updateFooterHeight(-distanceY / OFFSET_RADIO);
-                }else if (distanceY > 0){
-                    updateFooterHeight(-distanceY / OFFSET_RADIO);
+                if(layoutManager instanceof LinearLayoutManager){
+                    //第一个条目完全显示   //头部高度大于0   deltaY大于0  向下移动
+                    if ((((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition() == 0 || ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 1) && (mHeaderView.getVisibleHeight() > 0 || distanceY > 0)) {
+                        // 更新头部高度
+                        updateHeaderHeight(distanceY / OFFSET_RADIO);
+                    } else if (isSlideToBottom() && (mFooterView.getBottomMargin() > 0 || distanceY < 0)) {
+                        Log.e("PullRefreshRecyclerView","-------111------"+distanceY);
+                        //已经到达底部,改变状态或者自动加载
+                        updateFooterHeight(-distanceY / OFFSET_RADIO);
+                    }else if (distanceY > 0){
+                        updateFooterHeight(-distanceY / OFFSET_RADIO);
+                    }
+                }else if(layoutManager instanceof StaggeredGridLayoutManager){
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                    if( (mHeaderView.getVisibleHeight() > 0 || distanceY > 0)){
+                        updateHeaderHeight(distanceY / OFFSET_RADIO);
+                    }else if(isSlideToBottom() && (mFooterView.getBottomMargin() > 0 || distanceY < 0)){
+                        updateFooterHeight(-distanceY / OFFSET_RADIO);
+                    }else if (distanceY > 0){
+                        updateFooterHeight(-distanceY / OFFSET_RADIO);
+                    }
                 }
+
 
                 break;
             default:
                 mLastY = -1; // 复位
-                if ((((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 0 || ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 1)) {
-                    // 松手的时候  高度大于  一定值  调用刷新
-                    if (mEnablePullRefresh && mHeaderView.getVisibleHeight() > mHeaderView.getRealityHeight()) {
-                        //变为刷新状态
-                        mPullRefreshing = true;
-                        mHeaderView.setState(RecyclerViewHeader.STATE_REFRESHING);
-                        //回调事件
-                        if (mOnRefreshListener != null) {
-                            mOnRefreshListener.onRefresh();
+                if(layoutManager instanceof LinearLayoutManager){
+                    if ((((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition() == 0 || ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 1)) {
+                        // 松手的时候  高度大于  一定值  调用刷新
+                        if (mEnablePullRefresh && mHeaderView.getVisibleHeight() > mHeaderView.getRealityHeight()) {
+                            //变为刷新状态
+                            mPullRefreshing = true;
+                            mHeaderView.setState(RecyclerViewHeader.STATE_REFRESHING);
+                            //回调事件
+                            if (mOnRefreshListener != null) {
+                                mOnRefreshListener.onRefresh();
+                            }
                         }
-                    }
-                    resetHeaderHeight();
-                } else if (isSlideToBottom()) {
-                    // invoke load more.
-                    if (mEnablePullLoad && mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA && !mPullLoading) {
-                        mPullLoading = true;
-                        mFooterView.setState(RecyclerViewFooter.STATE_LOADING);
-                        if (mOnRefreshListener != null) {
-                            mOnRefreshListener.onLoadMore();
-                        }
+                        resetHeaderHeight();
+                    } else if (isSlideToBottom()) {
+                        // invoke load more.
+                        if (mEnablePullLoad && mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA && !mPullLoading) {
+                            mPullLoading = true;
+                            mFooterView.setState(RecyclerViewFooter.STATE_LOADING);
+                            if (mOnRefreshListener != null) {
+                                mOnRefreshListener.onLoadMore();
+                            }
 
-                    }
-                    resetFooterHeight();
-                } else {
+                        }
+                        resetFooterHeight();
+                    } else {
 //                    resetFooterHeight();
-                    resetHeaderHeight();
+                        resetHeaderHeight();
+                    }
+                }else if(layoutManager instanceof StaggeredGridLayoutManager){
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                    int firstCompletelyVisibleItemPositions[] = new int[staggeredGridLayoutManager.getSpanCount()];
+                    firstCompletelyVisibleItemPositions = staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions( firstCompletelyVisibleItemPositions );
+                    for(int i=0;i<staggeredGridLayoutManager.getSpanCount();i++){
+                        Log.d( "GridLayoutManager","a  = "+" i = "+i+"    as"+ firstCompletelyVisibleItemPositions[i]);
+                    }
+                    Log.d( "GridLayoutManager","a  = " +isSlideToBottom());
+                    if (firstCompletelyVisibleItemPositions[0] == 0 || firstCompletelyVisibleItemPositions[0]  == 1) {
+                        // 松手的时候  高度大于  一定值  调用刷新
+                        if (mEnablePullRefresh && mHeaderView.getVisibleHeight() > mHeaderView.getRealityHeight()) {
+                            //变为刷新状态
+                            mPullRefreshing = true;
+                            mHeaderView.setState(RecyclerViewHeader.STATE_REFRESHING);
+                            //回调事件
+                            if (mOnRefreshListener != null) {
+                                mOnRefreshListener.onRefresh();
+                            }
+                        }
+                        resetHeaderHeight();
+                    } else if (isSlideToBottom()) {
+                        // invoke load more.
+                        if (mEnablePullLoad && mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA && !mPullLoading) {
+                            mPullLoading = true;
+                            mFooterView.setState(RecyclerViewFooter.STATE_LOADING);
+                            if (mOnRefreshListener != null) {
+                                mOnRefreshListener.onLoadMore();
+                            }
+
+                        }
+                        resetFooterHeight();
+                    } else {
+//                    resetFooterHeight();
+                        resetHeaderHeight();
+                    }
                 }
 
                 break;
@@ -235,7 +300,7 @@ public class PullRefreshRecyclerView extends RecyclerView {
             }
         }
         //移动到顶部
-        smoothScrollBy(0, 0);
+//        smoothScrollBy(0, 0);
     }
 
     /**
@@ -260,9 +325,10 @@ public class PullRefreshRecyclerView extends RecyclerView {
                 finalHeight = mParent.getHeaderMessageViewHeight();
             }
         }
-
+        Log.d( "resetHeaderHeight","finalHeight "+finalHeight+"  height   " +height);
         mScrollBack = SCROLLBACK_HEADER;//设置标识
         mScroller.startScroll(0, height, 0, finalHeight - height, SCROLL_DURATION);
+//        mHeaderView.setVisibleHeight( finalHeight );
         // 触发计算滚动
         invalidate();
     }

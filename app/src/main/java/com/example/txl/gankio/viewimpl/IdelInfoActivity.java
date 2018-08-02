@@ -7,15 +7,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.adapter.HeaderAndFooterWrapper;
 import com.example.txl.gankio.adapter.IdelInfoAdapter;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.IdelInfo;
@@ -148,7 +145,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
 
     @Override
     public void updateIdelInfoSuccess(List<IdelInfo.InfoContent> results) {
-        Log.e( TAG,"updateIdelInfoSuccess" );
+        Log.e( TAG,"updateFuLiDataSuccess" );
         idelInfoAdapter.updateData(results );
         recyclerview.stopRefresh();
     }

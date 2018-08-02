@@ -12,9 +12,9 @@ import java.util.List;
  * description：
  */
 public interface IGetFuLiData {
-    void onAddIdelInfoSuccess(List<BeautyGirls.Girl> results);
-    void onAddIdelInfoFailed();
+    void onAddFuLiDataSuccess(List<BeautyGirls.Girl> results);
+    void onAddFuLiDataFailed();
 
-    void updateIdelInfoSuccess(List<BeautyGirls.Girl> results);
-    void updateIdelInfoFailed();
+    void updateFuLiDataSuccess(List<BeautyGirls.Girl> results);
+    void updateFuLiDataFailed();
 }
