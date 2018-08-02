@@ -61,9 +61,10 @@ public class VideoFragment extends BaseFragment implements IGetFuLiData,SwipeRef
     private void initView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
-//        StaggeredGridLayoutManager recyclerViewLayoutManager =
-//                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerview.setLayoutManager(layoutManager);
+        StaggeredGridLayoutManager recyclerViewLayoutManager =
+                new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        recyclerViewLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recyclerview.setLayoutManager(recyclerViewLayoutManager);
         videoAdapter = new VideoAdapter();
         videoPresenter = new VideoPresenter( getContext() );
         recyclerview.setAdapter(videoAdapter  );
@@ -86,9 +87,10 @@ public class VideoFragment extends BaseFragment implements IGetFuLiData,SwipeRef
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
                 //最后一个可见的ITEM
-                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+//                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+//                layoutManager.f
             }
         } );
     }

@@ -74,5 +74,18 @@ public class MainPresenter extends BasePresenter {
 
             }
         });
+        okHttpClient.newCall(request).enqueue( new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e( TAG," 333333 getIdelReaderCategory onResponse 1=====" +response);
+                Log.e( TAG," 333333 getIdelReaderCategory onResponse 2=====" +response.cacheResponse());
+                Log.e( TAG," 333333getIdelReaderCategory onResponse 3=====" +response.networkResponse());
+            }
+        } );
     }
 }

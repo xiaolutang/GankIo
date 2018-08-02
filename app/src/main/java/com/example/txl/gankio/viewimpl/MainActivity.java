@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.example.txl.gankio.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.base.BaseFragment;
@@ -211,6 +213,10 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
 
                         break;
                     case R.id.nav_menu_login:
+                        if(App.getLoginUser() != null){
+                            Toast.makeText( MainActivity.this,"您已经登陆了！",Toast.LENGTH_SHORT ).show();
+                            break;
+                        }
                         startActivity( LoginActivity.class );
                         break;
                 }

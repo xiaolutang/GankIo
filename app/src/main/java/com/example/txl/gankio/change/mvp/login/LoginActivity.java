@@ -243,6 +243,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
     public void loginSuccess(User user) {
         Toast.makeText( this,"登录成功",Toast.LENGTH_SHORT ).show();
         App.setLoginUser( user );
+        finish();
     }
 
     @Override
