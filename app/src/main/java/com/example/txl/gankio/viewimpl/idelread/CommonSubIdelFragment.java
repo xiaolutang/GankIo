@@ -20,6 +20,7 @@ import com.example.txl.gankio.bean.CommonIdelReaderSubclassification;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.presenter.IdelReaderPresenter;
 import com.example.txl.gankio.viewinterface.IGetIdelReadView;
+import com.example.txl.gankio.widget.PullRefreshRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +34,7 @@ import butterknife.ButterKnife;
 public class CommonSubIdelFragment extends BaseFragment implements IGetIdelReadView,SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
+    PullRefreshRecyclerView recyclerview;
     @BindView(R.id.swiperefreshlayout)
     SwipeRefreshLayout swiperefreshlayout;
     IdelReaderPresenter idelReaderPresenter;
@@ -99,6 +100,7 @@ public class CommonSubIdelFragment extends BaseFragment implements IGetIdelReadV
         recyclerview.addItemDecoration( new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL) );
         recyclerview.setLayoutManager(layoutManager);
         recyclerview.setAdapter( adapter );
+        recyclerview.setEnablePullRefresh( false );
         idelReaderPresenter = new IdelReaderPresenter( getContext() );
         idelReaderPresenter.getIdelReaderSubCategory(category.getEn_name(),this  );
         swiperefreshlayout.setOnRefreshListener( this );

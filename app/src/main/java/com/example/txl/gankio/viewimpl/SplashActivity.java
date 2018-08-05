@@ -2,13 +2,11 @@ package com.example.txl.gankio.viewimpl;
 
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,7 @@ import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.presenter.MainPresenter;
-import com.example.txl.gankio.presenter.VideoPresenter;
+import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
 
@@ -48,7 +46,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
 
     private int prevPosition = 0;
 
-    VideoPresenter videoPresenter;
+    FuLiPresenter fuLiPresenter;
     PagerAdapter pagerAdapter;
 
     @Override
@@ -67,7 +65,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     @Override
     protected void initView() {
         super.initView();
-        videoPresenter = new VideoPresenter( this );
+        fuLiPresenter = new FuLiPresenter( this );
         pagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter( pagerAdapter );
         viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
@@ -122,7 +120,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     @Override
     protected void initData() {
         super.initData();
-        videoPresenter.getFuLiData( 5,1,this,true );
+        fuLiPresenter.getFuLiData( 5,1,this,true );
         new MainPresenter(this).prepareMainData( new IGetMainDataView(){
             @Override
             public void getIdelReaderSuccess(IdelReaderCategoryRoot root) {

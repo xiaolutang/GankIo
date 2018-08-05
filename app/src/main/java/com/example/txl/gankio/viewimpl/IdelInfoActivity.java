@@ -36,7 +36,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
     int currentPage = 1;
 
     @BindView(R.id.pullrefrefh_recyclerview)
-    PullRefreshRecyclerView recyclerview;
+    PullRefreshRecyclerView recyclerView;
 
     @BindView( R.id.idel_activity_toolbar )
     Toolbar toolbar;
@@ -84,12 +84,12 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
         DividerItemDecoration decoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         Drawable drawable = ContextCompat.getDrawable(this,R.drawable.list_item_divider);
         decoration.setDrawable( drawable );
-        recyclerview.addItemDecoration( new DividerItemDecoration(this,DividerItemDecoration.VERTICAL) );
-        recyclerview.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration( new DividerItemDecoration(this,DividerItemDecoration.VERTICAL) );
+        recyclerView.setLayoutManager(layoutManager);
         idelInfoAdapter = new IdelInfoAdapter(this);
         idelInfoPersenter = new IdelInfoPersenter( this );
-        recyclerview.setAdapter( idelInfoAdapter );
-        recyclerview.setOnRefreshListener( new PullRefreshRecyclerView.OnRefreshListener() {
+        recyclerView.setAdapter( idelInfoAdapter );
+        recyclerView.setOnPullRefreshListener( new PullRefreshRecyclerView.OnPullRefreshListener() {
             @Override
             public void onRefresh() {
                 Log.e( TAG,"onRefresh" );
@@ -98,12 +98,23 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
             }
 
             @Override
-            public void onLoadMore() {
+            public void loadMore() {
                 Log.e( TAG,"onLoadMore" );
                 idelInfoPersenter.getIdelReaderSubCategory( id,defaultCount,++currentPage,IdelInfoActivity.this,false );
             }
         } );
-//        recyclerview.addOnScrollListener( new OnScrollListener(){
+//        recyclerView.setOnRefreshListener( new PullRefreshRecyclerView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//               ;
+//            }
+//        } );
+//        recyclerView.addOnScrollListener( new OnScrollListener(){
 //            int lastVisibleItem ;
 //            @Override
 //            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -135,7 +146,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
     @Override
     public void onAddIdelInfoSuccess(List<IdelInfo.InfoContent> results) {
         idelInfoAdapter.addData(results  );
-        recyclerview.stopLoadMore();
+        recyclerView.setLoadMoreFinish();
     }
 
     @Override
@@ -147,7 +158,7 @@ public class IdelInfoActivity extends BaseActivity implements IGetIdelInfo,Swipe
     public void updateIdelInfoSuccess(List<IdelInfo.InfoContent> results) {
         Log.e( TAG,"updateFuLiDataSuccess" );
         idelInfoAdapter.updateData(results );
-        recyclerview.stopRefresh();
+        recyclerView.setRefreshFinish();
     }
 
     @Override

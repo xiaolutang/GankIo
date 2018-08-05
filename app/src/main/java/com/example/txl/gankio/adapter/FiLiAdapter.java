@@ -30,16 +30,14 @@ import java.util.List;
  * date：2018/7/8
  * description：实际放置的是图片
  */
-public class VideoAdapter extends RecyclerView.Adapter {
+public class FiLiAdapter extends RecyclerView.Adapter {
 
-    String TAG = VideoAdapter.class.getSimpleName();
+    String TAG = FiLiAdapter.class.getSimpleName();
 
     List<BeautyGirls.Girl> results = new ArrayList<>(  );
     SparseArray<Integer> heightArray;
-    int screenWidth;
 
-    public VideoAdapter() {
-        screenWidth = App.getAppContext().getResources().getDisplayMetrics().widthPixels;
+    public FiLiAdapter() {
     }
 
     @Override

@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.adapter.VideoAdapter;
+import com.example.txl.gankio.adapter.FiLiAdapter;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.BeautyGirls;
-import com.example.txl.gankio.presenter.VideoPresenter;
+import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.example.txl.gankio.widget.PullRefreshRecyclerView;
 
@@ -35,8 +35,8 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
     @BindView(R.id.swiperefreshlayout)
     SwipeRefreshLayout swiperefreshlayout;
 
-    VideoPresenter videoPresenter;
-    VideoAdapter videoAdapter;
+    FuLiPresenter fuLiPresenter;
+    FiLiAdapter fiLiAdapter;
 
     int defaultCount = 20;
     int currentPage = 1;
@@ -58,29 +58,38 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
                 new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerViewLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerview.setLayoutManager(recyclerViewLayoutManager);
-        videoAdapter = new VideoAdapter();
-        videoPresenter = new VideoPresenter( getContext() );
-        recyclerview.setAdapter(videoAdapter  );
-        recyclerview.setOnRefreshListener( new PullRefreshRecyclerView.OnRefreshListener() {
+        fiLiAdapter = new FiLiAdapter();
+        fuLiPresenter = new FuLiPresenter( getContext() );
+        recyclerview.setAdapter( fiLiAdapter );
+        recyclerview.setOnPullRefreshListener( new PullRefreshRecyclerView.OnPullRefreshListener() {
             @Override
             public void onRefresh() {
                 currentPage = 1;
-                videoPresenter.getFuLiData( defaultCount, currentPage, FuLiFragment.this,true);
+                fuLiPresenter.getFuLiData( defaultCount, currentPage, FuLiFragment.this,true);
             }
 
             @Override
-            public void onLoadMore() {
-                videoPresenter.getFuLiData( defaultCount,++currentPage,FuLiFragment.this,false );
+            public void loadMore() {
+                fuLiPresenter.getFuLiData( defaultCount,++currentPage,FuLiFragment.this,false );
             }
         } );
-        recyclerview.setmEnablePullLoad( true );
-        recyclerview.setmEnablePullRefresh( true );
+//        recyclerview.setOnRefreshListener( new PullRefreshRecyclerView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//                fuLiPresenter.getFuLiData( defaultCount,++currentPage,FuLiFragment.this,false );
+//            }
+//        } );
         swiperefreshlayout.setOnRefreshListener( this );
         swiperefreshlayout.setEnabled( false );
     }
 
     private void initData(){
-        videoPresenter.getFuLiData( defaultCount, currentPage, this,true);
+        fuLiPresenter.getFuLiData( defaultCount, currentPage, this,true);
     }
 
     @Override
@@ -96,14 +105,14 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
     @Override
     public void onRefresh() {
         currentPage = 1;
-        videoPresenter.getFuLiData( defaultCount, currentPage, this,true);
+        fuLiPresenter.getFuLiData( defaultCount, currentPage, this,true);
     }
 
     @Override
     public void onAddFuLiDataSuccess(List<BeautyGirls.Girl> results) {
-        videoAdapter.addData( results );
+        fiLiAdapter.addData( results );
         //fixme 这是一个不好的做法，应该是view自己能够判断什么时候数据刷新成功
-        recyclerview.stopLoadMore();
+        recyclerview.setLoadMoreFinish();
     }
 
     @Override
@@ -113,8 +122,8 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
 
     @Override
     public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
-        videoAdapter.updateData( results );
-        recyclerview.stopRefresh();
+        fiLiAdapter.updateData( results );
+        recyclerview.setRefreshFinish();
     }
 
     @Override

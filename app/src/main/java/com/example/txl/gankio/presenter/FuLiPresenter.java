@@ -25,9 +25,9 @@ import okhttp3.Response;
  * date：2018/7/8
  * description：
  */
-public class VideoPresenter extends BasePresenter {
+public class FuLiPresenter extends BasePresenter {
 
-    public VideoPresenter(Context mContext) {
+    public FuLiPresenter(Context mContext) {
         super( mContext );
     }
 

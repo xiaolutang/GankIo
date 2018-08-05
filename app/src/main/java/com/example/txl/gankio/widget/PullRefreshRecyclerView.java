@@ -1,446 +1,382 @@
 package com.example.txl.gankio.widget;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.util.SparseArrayCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.LinearLayout;
-import android.widget.Scroller;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
- * date：2018/7/10
+ * date：2018/8/2
  * description：
  */
 public class PullRefreshRecyclerView extends RecyclerView {
-    private float mLastY = -1; // save event y
-    /**
-     * 滚动需要的时间
-     */
-    public final static int SCROLL_DURATION = 200;
 
-    /**
-     * 提示消息显示时间
-     */
-    public final static int MESSAGE_SHOW_DURATION = 2000;
+    private final String TAG = PullRefreshRecyclerView.class.getSimpleName();
     /**
      * 阻尼效果
      */
-    private final static float OFFSET_RADIO = 1.5f;
-    /**
-     * 上拉加载的距离,默认50px
-     */
-    private static final int PULL_LOAD_MORE_DELTA = 50;
+    private final float OFFSET_RADIO = 1.5f;
 
-    /**
-     * 是否设置为自动加载更多,目前没实现
-     */
-    private boolean mEnableAutoLoading = false;
-
-    public boolean ismEnablePullLoad() {
-        return mEnablePullLoad;
-    }
-
-    public void setmEnablePullLoad(boolean mEnablePullLoad) {
-        this.mEnablePullLoad = mEnablePullLoad;
-    }
-
-    public boolean ismEnablePullRefresh() {
-        return mEnablePullRefresh;
-    }
-
-    public void setmEnablePullRefresh(boolean mEnablePullRefresh) {
-        this.mEnablePullRefresh = mEnablePullRefresh;
-    }
-
-    /**
-     * 是否可以上拉  默认可以
-     */
-    private boolean mEnablePullLoad = false;
     /**
      * 是否可以下拉   默认可以
      */
-    private boolean mEnablePullRefresh = false;
-    /**
-     * 是否正在加载
-     */
-    private boolean mPullLoading = false;
-    /**
-     * 是否正在刷新
-     */
-    private boolean mPullRefreshing = false;
-    /**
-     * 区分上拉和下拉
-     */
-    private int mScrollBack;
-    private final static int SCROLLBACK_HEADER = 0;
-    private final static int SCROLLBACK_FOOTER = 1;
-    //滚动类
-    private Scroller mScroller;
+    private boolean mEnablePullRefresh = true;
 
-    //头布局控件
-    private RecyclerViewHeader mHeaderView;
-    //尾控件
-    private RecyclerViewFooter mFooterView;
-    //消息提示类
-    private MessageRelativeLayout mParent;
-    //adapter的装饰类
-    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
 
+    private Context context;
+    private AbsPullRefreshView mHeader;
+    private AbsPullRefreshView mFooter;
+
+    private AdapterWrapper adapterWrapper;
+    private OnPullRefreshListener listener;
 
     public PullRefreshRecyclerView(Context context) {
-        this(context, null);
+        this( context,null );
     }
 
     public PullRefreshRecyclerView(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+        this( context, attrs, 0);
     }
 
     public PullRefreshRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context);
+        super( context, attrs, defStyle );
+        this.context = context;
     }
 
-    private void init(Context context) {
-        //滚动类
-        mScroller = new Scroller(context, new DecelerateInterpolator());
-        //获取到头布局
-        mHeaderView = new RecyclerViewHeader(context);
-        mHeaderView.setLayoutParams(new LinearLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        //获取尾布局
-        mFooterView = new RecyclerViewFooter(context);
-        mFooterView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
+    private void init(){
+        mHeader = new CommonPullRefreshView(context,this,AbsPullRefreshView.VIEW_TYPE_HEADER);
+        mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_RUNNING );
+        mFooter = new CommonPullRefreshView( context,this,AbsPullRefreshView.VIEW_TYPE_FOOTER );
+        adapterWrapper.AddHeaderView( mHeader.getView( context,this ) );
+        adapterWrapper.addFootView( mFooter.getView( context,this ) );
     }
-
-
-    private Adapter adapter;
 
     @Override
     public void setAdapter(Adapter adapter) {
-        this.adapter = adapter;
-        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(adapter);
+        adapterWrapper = new AdapterWrapper( adapter );
+        adapter.registerAdapterDataObserver( new AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                adapterWrapper.notifyDataSetChanged();
+            }
 
-        super.setAdapter(mHeaderAndFooterWrapper);
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                adapterWrapper.notifyItemRangeChanged( positionStart+adapterWrapper.mHeaderViews.size(),itemCount );
+            }
 
-        //添加头,确保是第一个
-        mHeaderAndFooterWrapper.addHeaderView(mHeaderView);
-        //添加尾,确保是第最后一个
-        mHeaderAndFooterWrapper.addFootView(mFooterView);
-        //获取到它的父容器
-        if (getParent() instanceof MessageRelativeLayout) {
-            mParent = (MessageRelativeLayout) getParent();
-        }
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+                adapterWrapper.notifyItemRangeChanged( positionStart+adapterWrapper.mHeaderViews.size(),itemCount );
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                adapterWrapper.notifyItemRangeInserted( positionStart+adapterWrapper.mHeaderViews.size(),itemCount );
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                adapterWrapper.notifyItemRangeRemoved( positionStart+adapterWrapper.mHeaderViews.size(),itemCount );
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                adapterWrapper.notifyDataSetChanged();
+            }
+        } );
+        init();
+        super.setAdapter( adapterWrapper );
+
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent( ev );
+    }
 
+    int mLastRawX, mLastRawY;
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        Log.d( "IdelInfoActivity","onTouchEvent" );
-        LayoutManager layoutManager = getLayoutManager();
-        if (mLastY == -1) {
-            mLastY = e.getRawY();
+        if(!mEnablePullRefresh){
+            return super.onTouchEvent( e );
         }
-        switch (e.getAction()) {
+        int rawX = (int) e.getRawX();
+        int rawY = (int) e.getRawY();
+        switch (e.getAction()){
             case MotionEvent.ACTION_DOWN:
-                //按下的时候记录值
-                mLastY = e.getRawY();
+                mLastRawX = (int) e.getRawX();
+                mLastRawY = (int) e.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-
-
-                float moveY = e.getRawY();
-                //手指滑动的差值
-                float distanceY = moveY - mLastY;
-                mLastY = moveY;
-                if(layoutManager instanceof LinearLayoutManager){
-                    //第一个条目完全显示   //头部高度大于0   deltaY大于0  向下移动
-                    if ((((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition() == 0 || ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 1) && (mHeaderView.getVisibleHeight() > 0 || distanceY > 0)) {
-                        // 更新头部高度
-                        updateHeaderHeight(distanceY / OFFSET_RADIO);
-                    } else if (isSlideToBottom() && (mFooterView.getBottomMargin() > 0 || distanceY < 0)) {
-                        Log.e("PullRefreshRecyclerView","-------111------"+distanceY);
-                        //已经到达底部,改变状态或者自动加载
-                        updateFooterHeight(-distanceY / OFFSET_RADIO);
-                    }else if (distanceY > 0){
-                        updateFooterHeight(-distanceY / OFFSET_RADIO);
+                int offsetY = (int) (e.getRawY() - mLastRawY);
+                Log.e( TAG,"onTouchEvent offsetY  = "+offsetY +" isSlideToTop "+isSlideToTop() +" isSlideToBottom "+isSlideToBottom());
+                if(isSlideToTop() && offsetY>0){
+                    mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_PULL );
+                    mHeader.setViewMarginTop( (int) (offsetY / OFFSET_RADIO) );
+                }else if(isSlideToBottom() && offsetY<0){
+                    mFooter.updateViewState( AbsPullRefreshView.VIEW_STATE_PULL );
+                    mFooter.setViewMarginBottom( (int) -(offsetY / OFFSET_RADIO) );
+                }
+//                mLastRawX = rawX;
+//                mLastRawY = rawY;
+                break;
+            case MotionEvent.ACTION_UP:
+                mLastRawX = -1;
+                mLastRawY = -1;
+                if(mFooter.getViewState() == AbsPullRefreshView.VIEW_STATE_PULL){
+                    mFooter.setViewMarginBottom( 0 );
+                    if(listener!=null){
+                        mFooter.updateViewState( AbsPullRefreshView.VIEW_STATE_RUNNING );
+                        listener.loadMore();
                     }
-                }else if(layoutManager instanceof StaggeredGridLayoutManager){
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
-                    if( (mHeaderView.getVisibleHeight() > 0 || distanceY > 0)){
-                        updateHeaderHeight(distanceY / OFFSET_RADIO);
-                    }else if(isSlideToBottom() && (mFooterView.getBottomMargin() > 0 || distanceY < 0)){
-                        updateFooterHeight(-distanceY / OFFSET_RADIO);
-                    }else if (distanceY > 0){
-                        updateFooterHeight(-distanceY / OFFSET_RADIO);
+                }else if(mHeader.getViewState() == AbsPullRefreshView.VIEW_STATE_PULL){
+                    mHeader.setViewMarginTop( 0 );
+                    if(listener!=null){
+                        mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_RUNNING );
+                        listener.onRefresh();
                     }
                 }
-
-
                 break;
-            default:
-                mLastY = -1; // 复位
-                if(layoutManager instanceof LinearLayoutManager){
-                    if ((((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition() == 0 || ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition() == 1)) {
-                        // 松手的时候  高度大于  一定值  调用刷新
-                        if (mEnablePullRefresh && mHeaderView.getVisibleHeight() > mHeaderView.getRealityHeight()) {
-                            //变为刷新状态
-                            mPullRefreshing = true;
-                            mHeaderView.setState(RecyclerViewHeader.STATE_REFRESHING);
-                            //回调事件
-                            if (mOnRefreshListener != null) {
-                                mOnRefreshListener.onRefresh();
-                            }
-                        }
-                        resetHeaderHeight();
-                    } else if (isSlideToBottom()) {
-                        // invoke load more.
-                        if (mEnablePullLoad && mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA && !mPullLoading) {
-                            mPullLoading = true;
-                            mFooterView.setState(RecyclerViewFooter.STATE_LOADING);
-                            if (mOnRefreshListener != null) {
-                                mOnRefreshListener.onLoadMore();
-                            }
+        }
+        return super.onTouchEvent( e );
+    }
 
-                        }
-                        resetFooterHeight();
-                    } else {
-//                    resetFooterHeight();
-                        resetHeaderHeight();
-                    }
-                }else if(layoutManager instanceof StaggeredGridLayoutManager){
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
-                    int firstCompletelyVisibleItemPositions[] = new int[staggeredGridLayoutManager.getSpanCount()];
-                    firstCompletelyVisibleItemPositions = staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions( firstCompletelyVisibleItemPositions );
-                    for(int i=0;i<staggeredGridLayoutManager.getSpanCount();i++){
-                        Log.d( "GridLayoutManager","a  = "+" i = "+i+"    as"+ firstCompletelyVisibleItemPositions[i]);
-                    }
-                    Log.d( "GridLayoutManager","a  = " +isSlideToBottom());
-                    if (firstCompletelyVisibleItemPositions[0] == 0 || firstCompletelyVisibleItemPositions[0]  == 1) {
-                        // 松手的时候  高度大于  一定值  调用刷新
-                        if (mEnablePullRefresh && mHeaderView.getVisibleHeight() > mHeaderView.getRealityHeight()) {
-                            //变为刷新状态
-                            mPullRefreshing = true;
-                            mHeaderView.setState(RecyclerViewHeader.STATE_REFRESHING);
-                            //回调事件
-                            if (mOnRefreshListener != null) {
-                                mOnRefreshListener.onRefresh();
-                            }
-                        }
-                        resetHeaderHeight();
-                    } else if (isSlideToBottom()) {
-                        // invoke load more.
-                        if (mEnablePullLoad && mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA && !mPullLoading) {
-                            mPullLoading = true;
-                            mFooterView.setState(RecyclerViewFooter.STATE_LOADING);
-                            if (mOnRefreshListener != null) {
-                                mOnRefreshListener.onLoadMore();
-                            }
+    private boolean isSlideToTop(){
+        LayoutManager layoutManager = getLayoutManager();
+        if(layoutManager instanceof StaggeredGridLayoutManager){
+            StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+            int firstCompletelyVisibleItemPositions[] = new int[staggeredGridLayoutManager.getSpanCount()];
+            firstCompletelyVisibleItemPositions = staggeredGridLayoutManager.findFirstCompletelyVisibleItemPositions( firstCompletelyVisibleItemPositions );
+            if(firstCompletelyVisibleItemPositions[0] == 0 || firstCompletelyVisibleItemPositions[0]  == 1){
+                return true;
+            }
+        }
+        if(layoutManager instanceof LinearLayoutManager){
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+            int position = linearLayoutManager.findFirstVisibleItemPosition();
+            if(position <= 1){
+                return true;
+            }else {
+                return false;
+            }
+        }
+        return !canScrollVertically(1);
+    }
 
-                        }
-                        resetFooterHeight();
-                    } else {
-//                    resetFooterHeight();
-                        resetHeaderHeight();
-                    }
+    private boolean isSlideToBottom() {
+        LayoutManager layoutManager = getLayoutManager();
+        if(layoutManager instanceof StaggeredGridLayoutManager){
+            StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+
+            int spanCount = staggeredGridLayoutManager.getSpanCount();
+            int lastCompletelyVisibleItemPositions[] = new int[spanCount];
+            lastCompletelyVisibleItemPositions = staggeredGridLayoutManager.findLastCompletelyVisibleItemPositions(lastCompletelyVisibleItemPositions  );
+            for (int i=0; i<spanCount; i++){
+                Log.e( TAG,"isSlideToBottom  第+"+i+"个    "+lastCompletelyVisibleItemPositions[i]+"  "+"  RealItemCount  " +adapterWrapper.getRealItemCount()+"   "+canScrollVertically(-1));
+                if(lastCompletelyVisibleItemPositions[i] >= adapterWrapper.getRealItemCount()-staggeredGridLayoutManager.getSpanCount() || !canScrollVertically(-1)){
+                    Log.e( TAG,"isBottom" );
+                    return true;
                 }
-
-                break;
+            }
+            return false;
         }
-
-
-        return super.onTouchEvent(e);
-    }
-
-    /**
-     * 更新尾部加载
-     *
-     * @param distance
-     */
-    private void updateFooterHeight(float distance) {
-        int height = mFooterView.getBottomMargin() + (int) distance;
-        Log.e("PullRefreshRecyclerView","-------------"+height);
-        if (mEnablePullLoad && !mPullLoading) {
-            if (height > PULL_LOAD_MORE_DELTA) {
-                //改变状态
-                mFooterView.setState(RecyclerViewFooter.STATE_READY);
-            } else {
-                mFooterView.setState(RecyclerViewFooter.STATE_NORMAL);
+        if(layoutManager instanceof LinearLayoutManager){
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+            int position = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+            if(position >= adapterWrapper.getItemCount()-2){
+                return true;
+            }else {
+                return false;
             }
         }
-        mFooterView.setBottomMargin(height);
-
+        Log.e( TAG,"canScrollVertically  "+canScrollVertically(-1) );
+        return !canScrollVertically(-1);
     }
 
-    /**
-     * 更新头部刷新
-     *
-     * @param distance
-     */
-    private void updateHeaderHeight(float distance) {
-
-        // 设置头部高度,原先的高度加上
-        mHeaderView.setVisibleHeight((int) distance + mHeaderView.getVisibleHeight());
-        // 未处于刷新状态，更新箭头
-        if (mEnablePullRefresh && !mPullRefreshing) {
-            //下拉高度到达可以刷新的位置
-            if (mHeaderView.getVisibleHeight() > mHeaderView.getRealityHeight()) {
-                mHeaderView.setState(RecyclerViewHeader.STATE_READY);
-            } else {
-                mHeaderView.setState(RecyclerViewHeader.STATE_NORMAL);
-            }
-        }
-        //移动到顶部
-//        smoothScrollBy(0, 0);
+    public void setOnPullRefreshListener(OnPullRefreshListener listener){
+        this.listener = listener;
     }
 
-    /**
-     * 重置头部高度
-     */
-    private void resetHeaderHeight() {
-        int height = mHeaderView.getVisibleHeight();
-        if (height == 0) // 如果=0  是不可见的 直接返回
-            return;
+    public void setRefreshFinish(){
 
-        if (mPullRefreshing && height <= mHeaderView.getRealityHeight()) {
+        mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_NORMAL );
+    }
+
+    public void setLoadMoreFinish(){
+        mFooter.updateViewState( AbsPullRefreshView.VIEW_STATE_NORMAL);
+    }
+
+    public void setEnablePullRefresh(boolean enablePullRefresh){
+        if(mEnablePullRefresh == enablePullRefresh){
             return;
         }
-
-        int finalHeight = 0;
-
-        if (mPullRefreshing && height > mHeaderView.getRealityHeight()) {
-            finalHeight = mHeaderView.getRealityHeight();
-        }
-        if (mParent != null) {
-            if (mHeaderView.getVisibleHeight() == mParent.getHeaderMessageViewHeight()) {
-                finalHeight = mParent.getHeaderMessageViewHeight();
-            }
-        }
-        Log.d( "resetHeaderHeight","finalHeight "+finalHeight+"  height   " +height);
-        mScrollBack = SCROLLBACK_HEADER;//设置标识
-        mScroller.startScroll(0, height, 0, finalHeight - height, SCROLL_DURATION);
-//        mHeaderView.setVisibleHeight( finalHeight );
-        // 触发计算滚动
-        invalidate();
-    }
-
-    /**
-     * 重置尾部高度
-     */
-    private void resetFooterHeight() {
-        int bottomMargin = mFooterView.getBottomMargin();
-        if (bottomMargin > 0) {
-            mScrollBack = SCROLLBACK_FOOTER;//设置标识
-            mScroller.startScroll(0, bottomMargin, 0, -bottomMargin, SCROLL_DURATION);
-            invalidate();
+        mEnablePullRefresh = enablePullRefresh;
+        if(mEnablePullRefresh){
+            mHeader = new CommonPullRefreshView(context,this,AbsPullRefreshView.VIEW_TYPE_HEADER);
+            mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_RUNNING );
+            mFooter = new CommonPullRefreshView( context,this,AbsPullRefreshView.VIEW_TYPE_FOOTER );
+            adapterWrapper.AddHeaderView( mHeader.getView( context,this ) );
+            adapterWrapper.addFootView( mFooter.getView( context,this ) );
+        }else {
+            adapterWrapper.mHeaderViews.clear();
+            adapterWrapper.mFootViews.clear();
         }
     }
 
-    /**
-     * 停止刷新
-     */
-    public void stopRefresh() {
-        mScrollBack = SCROLLBACK_HEADER;//设置标识
-        int obligateHeight;
-        if (mParent != null) {
-            obligateHeight = mParent.getHeaderMessageViewHeight();
-        } else {
-            obligateHeight = 0;
-        }
-        int height = mHeaderView.getVisibleHeight();
-        if (mPullRefreshing) {
-            //是否复位
+    private class AdapterWrapper extends Adapter<ViewHolder>{
 
-            mPullRefreshing = false;
+        private static final int BASE_ITEM_TYPE_HEADER = 100000;
+        private static final int BASE_ITEM_TYPE_FOOTER = 200000;
+        //头集合 尾结合
+        private SparseArrayCompat<View> mHeaderViews = new SparseArrayCompat<>();
+        private SparseArrayCompat<View> mFootViews = new SparseArrayCompat<>();
 
-            //显示更新了多少条消息
-            if (mParent != null) {
-                mParent.showMessage();
-            }
-            mScroller.startScroll(0, height, 0, obligateHeight - height, SCROLL_DURATION);
-            // 触发计算滚动
-            invalidate();
+        private Adapter mInnerAdapter;
 
-            //延时执行复位移动
-            if (mParent != null) {
-                handler.removeCallbacksAndMessages(null);
-                handler.sendEmptyMessageDelayed(1, MESSAGE_SHOW_DURATION);
-            }
+        public AdapterWrapper(Adapter mInnerAdapter) {
+            this.mInnerAdapter = mInnerAdapter;
         }
 
-    }
-
-    /**
-     * 停止加载
-     */
-    public void stopLoadMore() {
-        if (mPullLoading) {
-            mPullLoading = false;
-            mFooterView.setState(RecyclerViewFooter.STATE_NORMAL);
+        private boolean isHeaderViewPos(int position){
+            return position < mHeaderViews.size();
         }
-    }
 
-    /**
-     * 消息
-     */
-    private Handler handler = new Handler() {
+        public void AddHeaderView(View view){
+            mHeaderViews.put( mHeaderViews.size()+BASE_ITEM_TYPE_HEADER,view );
+        }
+
+        private boolean isFooterViewPos(int position){
+            return position >= mHeaderViews.size()+mInnerAdapter.getItemCount();
+        }
+
+        public int getHeadersCount(){
+            return mHeaderViews.size();
+        }
+
+        public int getFootersCount(){
+            return mFootViews.size();
+        }
+
+        public void addFootView(View view){
+            mFootViews.put( mFootViews.size()+BASE_ITEM_TYPE_FOOTER,view );
+        }
+
+        public int getRealItemCount(){
+            return mInnerAdapter.getItemCount();
+        }
+
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (mHeaderView.getVisibleHeight() == mParent.getHeaderMessageViewHeight()) {
-//                resetHeaderHeight();
-                mScroller.startScroll(0, mHeaderView.getVisibleHeight(), 0, -mHeaderView.getVisibleHeight(), SCROLL_DURATION);
-                postInvalidate();
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if(mHeaderViews.get( viewType ) != null){
+                return new HeaderViewHolder(mHeaderViews.get( viewType )  );
+            }else if(mFootViews.get( viewType ) != null){
+                return new FootViewHolder( mFootViews.get( viewType ) );
             }
-
-            mParent.hideMessage();
+            return mInnerAdapter.onCreateViewHolder( parent,viewType );
         }
-    };
+
+        @Override
+        public int getItemViewType(int position) {
+            if(isHeaderViewPos( position )){
+                return mHeaderViews.keyAt( position );
+            }else if(isFooterViewPos( position )){
+                return mFootViews.keyAt( position - mHeaderViews.size() - mInnerAdapter.getItemCount() );
+            }
+            return mInnerAdapter.getItemViewType(position - mHeaderViews.size());
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            if (isHeaderViewPos(position)) {
+
+                return;
+            }
+            if (isFooterViewPos(position)) {
+                return;
+            }
+            mInnerAdapter.onBindViewHolder(holder, position - getHeadersCount());
+        }
+
+        @Override
+        public int getItemCount() {
+            return mFootViews.size()+mHeaderViews.size()+mInnerAdapter.getItemCount();
+        }
+
+        @Override
+        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+//            mInnerAdapter.onAttachedToRecyclerView(recyclerView);
+
+            /**
+             * 解决网格布局问题
+             */
+            LayoutManager layoutManager = recyclerView.getLayoutManager();
+            if (layoutManager instanceof GridLayoutManager) {
+                final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        int viewType = getItemViewType(position);
+                        if (mHeaderViews.get(viewType) != null) {
+                            return gridLayoutManager.getSpanCount();
+                        } else if (mFootViews.get(viewType) != null) {
+                            return gridLayoutManager.getSpanCount();
+                        } else {
+                            return 1;
+                        }
+                    }
+                });
+            }
+        }
+
 
     @Override
-    public void computeScroll() {
-        if (mScroller.computeScrollOffset()) {
-            if (mScrollBack == SCROLLBACK_HEADER) {
-                mHeaderView.setVisibleHeight(mScroller.getCurrY());
-            } else {
-                mFooterView.setBottomMargin(mScroller.getCurrY());
+    public void onViewAttachedToWindow(ViewHolder holder) {
+        mInnerAdapter.onViewAttachedToWindow(holder);
+        int position = holder.getLayoutPosition();
+        if (isHeaderViewPos(position) || isFooterViewPos(position)) {
+            ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+
+            if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+
+                StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+                p.setFullSpan(true);
             }
-            postInvalidate();
+            if(lp != null && lp instanceof GridLayoutManager.LayoutParams){
+                GridLayoutManager.LayoutParams p = (GridLayoutManager.LayoutParams) lp;
+            }
         }
-        super.computeScroll();
     }
 
-    private OnRefreshListener mOnRefreshListener;
 
-    public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
-        mOnRefreshListener = onRefreshListener;
+        private class HeaderViewHolder extends ViewHolder {
+            HeaderViewHolder(View itemView) {
+                super(itemView);
+            }
+        }
+
+        private class FootViewHolder extends ViewHolder {
+            FootViewHolder(View itemView) {
+                super(itemView);
+
+            }
+        }
+
     }
 
-    /**
-     * 刷新接口,
-     */
-    public interface OnRefreshListener {
+    public interface OnPullRefreshListener {
         void onRefresh();
-
-        void onLoadMore();
+        void loadMore();
     }
-
-    /**
-     * 判断是否到底
-     *
-     * @return
-     */
-    private boolean isSlideToBottom() {
-        return computeVerticalScrollExtent() + computeVerticalScrollOffset() >= computeVerticalScrollRange();
-    }
-
 }

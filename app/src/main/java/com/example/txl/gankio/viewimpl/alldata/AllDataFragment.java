@@ -8,14 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.RelativeLayout;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.adapter.AllDataAdapter;
-import com.example.txl.gankio.adapter.VideoAdapter;
 import com.example.txl.gankio.base.BaseFragment;
-import com.example.txl.gankio.presenter.VideoPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
