@@ -102,6 +102,13 @@ public class PullRefreshRecyclerView extends RecyclerView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                Log.e( TAG,"MotionEvent.ACTION_DOWN   ");
+                mLastRawX = (int) ev.getRawX();
+                mLastRawY = (int) ev.getRawY();
+                break;
+        }
         return super.dispatchTouchEvent( ev );
     }
 
@@ -115,6 +122,7 @@ public class PullRefreshRecyclerView extends RecyclerView {
         int rawY = (int) e.getRawY();
         switch (e.getAction()){
             case MotionEvent.ACTION_DOWN:
+                Log.e( TAG,"MotionEvent.ACTION_DOWN   ");
                 mLastRawX = (int) e.getRawX();
                 mLastRawY = (int) e.getRawY();
                 break;
