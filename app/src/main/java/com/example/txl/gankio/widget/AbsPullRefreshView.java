@@ -6,7 +6,7 @@ package com.example.txl.gankio.widget;
  * date：2018/8/2
  * description：
  */
-public abstract class AbsPullRefreshView implements IPullRefresh {
+public abstract class AbsPullRefreshView implements IPullRefreshView {
     public static final int VIEW_TYPE_HEADER = 0;
     public static final int VIEW_TYPE_FOOTER = 1;
 

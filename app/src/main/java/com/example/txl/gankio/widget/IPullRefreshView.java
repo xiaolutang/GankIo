@@ -10,7 +10,7 @@ import android.view.ViewGroup;
  * date：2018/8/4
  * description：
  */
-public interface IPullRefresh {
+public interface IPullRefreshView {
     int viewState = -1;
     View getView(Context context, ViewGroup parent);
     void onPull(int currentHeight, int refreshHeight, int state);

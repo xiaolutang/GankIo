@@ -1,7 +1,6 @@
 package com.example.txl.gankio.widget;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -55,9 +54,9 @@ public class PullRefreshRecyclerView extends RecyclerView {
     }
 
     private void init(){
-        mHeader = new CommonPullRefreshView(context,this,AbsPullRefreshView.VIEW_TYPE_HEADER);
+        mHeader = new CommonPullRefreshView(context,this, AbsPullRefreshView.VIEW_TYPE_HEADER);
         mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_RUNNING );
-        mFooter = new CommonPullRefreshView( context,this,AbsPullRefreshView.VIEW_TYPE_FOOTER );
+        mFooter = new CommonPullRefreshView( context,this, AbsPullRefreshView.VIEW_TYPE_FOOTER );
         adapterWrapper.AddHeaderView( mHeader.getView( context,this ) );
         adapterWrapper.addFootView( mFooter.getView( context,this ) );
     }
@@ -231,9 +230,9 @@ public class PullRefreshRecyclerView extends RecyclerView {
         }
         mEnablePullRefresh = enablePullRefresh;
         if(mEnablePullRefresh){
-            mHeader = new CommonPullRefreshView(context,this,AbsPullRefreshView.VIEW_TYPE_HEADER);
+            mHeader = new CommonPullRefreshView(context,this, AbsPullRefreshView.VIEW_TYPE_HEADER);
             mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_RUNNING );
-            mFooter = new CommonPullRefreshView( context,this,AbsPullRefreshView.VIEW_TYPE_FOOTER );
+            mFooter = new CommonPullRefreshView( context,this, AbsPullRefreshView.VIEW_TYPE_FOOTER );
             adapterWrapper.AddHeaderView( mHeader.getView( context,this ) );
             adapterWrapper.addFootView( mFooter.getView( context,this ) );
         }else {

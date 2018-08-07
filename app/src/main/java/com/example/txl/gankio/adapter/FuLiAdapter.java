@@ -74,8 +74,8 @@ public class FuLiAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final ViewHolder viewHolder = (ViewHolder) holder;
         if(mIsRecyclerViewIdle){
-            final ViewHolder viewHolder = (ViewHolder) holder;
             final ImageView imageView = viewHolder.cardView.findViewById( R.id.image_item );
             if(heightArray == null){
                 heightArray = new SparseArray<>(  );
@@ -89,7 +89,7 @@ public class FuLiAdapter extends RecyclerView.Adapter {
                         layoutParams.height = realHeight;
                         imageView.setLayoutParams(layoutParams);
                         heightArray.put( position,realHeight );
-                        loader.bindBitmap(results.get( position ).getUrl() ,imageView ,itemWidth/3,heightArray.get( position ));
+                        loader.bindBitmap(results.get( position ).getUrl() ,imageView ,viewHolder.cardView.getWidth(),heightArray.get( position ));
                         TextView textView = viewHolder.cardView.findViewById( R.id.name_item );
                         String createAt = results.get( position ).getCreatedAt();
                         createAt = createAt.split( "T" )[0];

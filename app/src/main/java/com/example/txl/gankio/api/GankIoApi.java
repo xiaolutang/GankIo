@@ -27,6 +27,9 @@ public class GankIoApi {
     /**获取福利*/
     public static final String URL_GET_FULI_DATA = "http://gank.io/api/data/福利/";
 
+    /**获取休息视频*/
+    public static final String URL_GET_VIDEO_DATA = "http://gank.io/api/data/休息视频/";
+
     private static final OkHttpClient client;
 
     private static final long cacheSize = 1024 * 1024 * 20;// 缓存文件最大限制大小20M

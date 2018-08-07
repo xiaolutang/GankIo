@@ -11,8 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -22,9 +24,10 @@ import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.change.mvp.login.LoginActivity;
+import com.example.txl.gankio.change.mvp.video.VideoFragment;
+import com.example.txl.gankio.change.mvp.video.VideoPresenter;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.utils.ThemeUtils;
-import com.example.txl.gankio.viewimpl.alldata.AllDataFragment;
 import com.example.txl.gankio.viewimpl.idelread.IdelReadFragment;
 import com.example.txl.gankio.viewimpl.video.FuLiFragment;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
@@ -55,7 +58,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
     List<BaseFragment> fragmentList = new ArrayList<>(  );
     IdelReadFragment idelReadFragment;
     FuLiFragment fuLiFragment;
-    AllDataFragment allDataFragment;
+    VideoFragment videoFragment;
 
     private int currentFragmentIndex = 0;
 
@@ -64,6 +67,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
     private final int allDataFragmentIndex = 2;
 
     MainPresenter mainPresenter;
+    VideoPresenter videoPresenter;
 
 
 
@@ -93,10 +97,12 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         fragmentList.clear();
         idelReadFragment = new IdelReadFragment();
         fuLiFragment = new FuLiFragment();
-        allDataFragment = new AllDataFragment();
+        videoFragment = new VideoFragment();
         fragmentList.add( idelReadFragment );
         fragmentList.add( fuLiFragment );
-        fragmentList.add( allDataFragment );
+        fragmentList.add( videoFragment );
+        videoPresenter = new VideoPresenter(videoFragment  );
+        videoPresenter.start();
     }
 
     @Override

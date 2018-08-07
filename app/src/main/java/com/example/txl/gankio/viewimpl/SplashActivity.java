@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity implements IGetFuLiData{
 
-    public static boolean canGotoMain = false;
+    public static boolean canGotoMain = true;
     public static IdelReaderCategoryRoot root;
 
     @BindView( R.id.splash_vp )
