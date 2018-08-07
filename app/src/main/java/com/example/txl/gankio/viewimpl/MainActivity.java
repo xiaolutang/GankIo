@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         fragmentList.add( fuLiFragment );
         fragmentList.add( videoFragment );
         videoPresenter = new VideoPresenter(videoFragment  );
-        videoPresenter.start();
+//        videoPresenter.start();
     }
 
     @Override
