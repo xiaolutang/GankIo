@@ -16,12 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.example.txl.gankio.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.FuLiPresenter;
+import com.example.txl.gankio.utils.DownUtils;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
 
@@ -167,10 +169,24 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     @Override
     public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
         mList.clear();
+        String basePath = getFilesDir().getPath().toString();
         for(BeautyGirls.Girl girl : results){
+            DownUtils downUtils = new DownUtils( girl.getUrl(),basePath+ girl.get_id()+".jpg",2 );
+            Log.e( TAG,"url === "+girl.getUrl()+"   basePath = "+basePath  );
+            new Thread( new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        downUtils.download();
+                    } catch (Exception e) {
+                        Log.e( TAG,"downUtils " +e);
+                        e.printStackTrace();
+                    }
+                }
+            } ).start();
             ImageView imageView = new ImageView( this );
             imageView.setLayoutParams( new RelativeLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT ) );
-            Glide.with( this)
+            Glide.with( App.getAppContext())
                     .load(girl.getUrl())
                     .into(imageView);
             mList.add( imageView );

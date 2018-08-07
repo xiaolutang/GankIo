@@ -8,6 +8,8 @@ import android.util.Log;
 import com.example.txl.gankio.change.mvp.data.User;
 import com.example.txl.gankio.change.mvp.data.source.local.GankIoDatabase;
 import com.example.txl.gankio.utils.ThemeUtils;
+import com.example.txl.gankio.utils.image.utils.ImageLoader;
+
 import java.util.logging.LogRecord;
 
 /**
@@ -23,6 +25,7 @@ public class App extends Application {
 
     private static App _appInst;
     private static Handler _appMainHandler;
+    private static ImageLoader mImageLoader;
 
     public App() {
         _appInst = this;
@@ -41,7 +44,12 @@ public class App extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         _appMainHandler = new Handler(this.getMainLooper());
+        mImageLoader = ImageLoader.build( this );
         ThemeUtils.init();
+    }
+
+    public static ImageLoader getImageLoader(){
+        return mImageLoader;
     }
 
     public void postToMainLooper(Runnable runnable) {

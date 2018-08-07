@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.adapter.FiLiAdapter;
+import com.example.txl.gankio.adapter.FuLiAdapter;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.presenter.FuLiPresenter;
@@ -36,7 +36,7 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
     SwipeRefreshLayout swiperefreshlayout;
 
     FuLiPresenter fuLiPresenter;
-    FiLiAdapter fiLiAdapter;
+    FuLiAdapter fuLiAdapter;
 
     int defaultCount = 20;
     int currentPage = 1;
@@ -58,9 +58,9 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
                 new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerViewLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerview.setLayoutManager(recyclerViewLayoutManager);
-        fiLiAdapter = new FiLiAdapter();
+        fuLiAdapter = new FuLiAdapter(recyclerview);
         fuLiPresenter = new FuLiPresenter( getContext() );
-        recyclerview.setAdapter( fiLiAdapter );
+        recyclerview.setAdapter( fuLiAdapter );
         recyclerview.setOnPullRefreshListener( new PullRefreshRecyclerView.OnPullRefreshListener() {
             @Override
             public void onRefresh() {
@@ -110,7 +110,7 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
 
     @Override
     public void onAddFuLiDataSuccess(List<BeautyGirls.Girl> results) {
-        fiLiAdapter.addData( results );
+        fuLiAdapter.addData( results );
         //fixme 这是一个不好的做法，应该是view自己能够判断什么时候数据刷新成功
         recyclerview.setLoadMoreFinish();
     }
@@ -122,7 +122,7 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
 
     @Override
     public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
-        fiLiAdapter.updateData( results );
+        fuLiAdapter.updateData( results );
         recyclerview.setRefreshFinish();
     }
 

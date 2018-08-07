@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.txl.gankio"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -33,12 +33,13 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation("com.github.bumptech.glide:glide:4.6.1") {
+    implementation('com.github.bumptech.glide:glide:4.6.1') {
         exclude group: "com.android.support"
     }
-    implementation "com.android.support:support-fragment:26.1.0"
+    implementation 'com.android.support:support-fragment:26.1.0'
     compile 'com.android.support:cardview-v7:26.+'
     compile 'cn.jzvd:jiaozivideoplayer:6.2.12'
-    implementation "android.arch.persistence.room:runtime:1.1.1"
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    implementation files('libs/disklrucache-2.0.2.jar')
 }

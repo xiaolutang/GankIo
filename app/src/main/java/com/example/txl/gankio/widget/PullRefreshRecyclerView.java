@@ -1,6 +1,7 @@
 package com.example.txl.gankio.widget;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -97,7 +98,6 @@ public class PullRefreshRecyclerView extends RecyclerView {
         } );
         init();
         super.setAdapter( adapterWrapper );
-
     }
 
     @Override
