@@ -70,6 +70,18 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
         recyclerview.setLayoutManager(layoutManager);
         videoAdapter = new VideoAdapter();
         recyclerview.setAdapter(videoAdapter  );
+        swiperefreshlayout.setEnabled( false );
+        recyclerview.setOnPullRefreshListener( new PullRefreshRecyclerView.OnPullRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.refresh();
+            }
+
+            @Override
+            public void loadMore() {
+                presenter.loadMore();
+            }
+        } );
     }
 
     private void initData(){}
@@ -92,11 +104,13 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
     @Override
     public void refreshFinish(List<VideoBean.VideoInfo> videoInfoList) {
         videoAdapter.updateData( videoInfoList );
+        recyclerview.setRefreshFinish();
     }
 
     @Override
     public void loadMoreFinish(List<VideoBean.VideoInfo> videoInfoList) {
         videoAdapter.addData( videoInfoList );
+        recyclerview.setLoadMoreFinish();
     }
 
 }

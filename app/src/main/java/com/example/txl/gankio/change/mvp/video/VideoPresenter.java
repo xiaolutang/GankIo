@@ -135,6 +135,6 @@ public class VideoPresenter implements VideoContract.Presenter{
     @Override
     public void loadMore() {
         currentPageIndex ++;
-        getVideoData( true );
+        getVideoData( false );
     }
 }
