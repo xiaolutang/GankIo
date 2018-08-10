@@ -8,8 +8,8 @@
         android:layout_height="match_parent"
         >
 
-        <AdapterViewFlipper
-            android:id="@+id/AdapterViewFlipper"
+        <com.example.txl.gankio.widget.PageScrollerRecyclerView
+            android:id="@+id/RecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:foregroundGravity="center"
