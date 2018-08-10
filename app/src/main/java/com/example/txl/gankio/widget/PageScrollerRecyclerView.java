@@ -2,9 +2,13 @@ package com.example.txl.gankio.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
+import android.util.Log;
+import android.view.View;
+
+import com.example.txl.gankio.utils.AppExecutors;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -13,43 +17,90 @@ import android.view.MotionEvent;
  * description：按页滑动的RecyclerView
  */
 public class PageScrollerRecyclerView extends RecyclerView {
+    private static final String TAG = PageScrollerRecyclerView.class.getSimpleName();
 
-    IPullRefreshListener listener;
+    private IPullRefreshListener pullRefreshListener;
+    private IViewPageScrollListener pageScrollListener;
+    private PagerSnapHelper mPagerSnapHelper;
+
+    private int targetPos = 0;
+    private View targetView = null;
 
     public PageScrollerRecyclerView(Context context) {
-        super( context );
+        this( context ,null);
     }
 
     public PageScrollerRecyclerView(Context context, @Nullable AttributeSet attrs) {
-        super( context, attrs );
+        this( context, attrs ,0);
     }
 
     public PageScrollerRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super( context, attrs, defStyle );
+        init();
+    }
+
+    private void init(){
+        mPagerSnapHelper = new PagerSnapHelper(){
+            @Override
+            public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
+                // TODO 找到对应的Index
+                int targetPos = super.findTargetSnapPosition(layoutManager, velocityX, velocityY);
+                Log.e(TAG, "findTargetSnapPosition targetPos: " + targetPos);
+                return targetPos;
+            }
+
+            // 在 Adapter的 onBindViewHolder 之后执行
+            @Nullable
+            @Override
+            public View findSnapView(RecyclerView.LayoutManager layoutManager) {
+                // TODO 找到对应的View
+                TextureVideoPlayerView view = (TextureVideoPlayerView) super.findSnapView(layoutManager);
+                targetPos = layoutManager.getPosition( view );
+                Log.e(TAG, "findSnapView tag: " +view.getTag());
+                if(view == targetView){
+                    return view;
+                }
+                targetView = view;
+                if(pageScrollListener != null && targetView != null){
+                    new AppExecutors().mainThread().execute( new Runnable() {
+                        @Override
+                        public void run() {
+                            pageScrollListener.onPageScroll( targetPos,targetView );
+                        }
+                    } );
+                }
+                return view;
+            }
+        };
+        mPagerSnapHelper.attachToRecyclerView( this );
     }
 
     public void setPullRefreshListener(IPullRefreshListener listener) {
-        this.listener = listener;
+        this.pullRefreshListener = listener;
     }
 
-    //当前滑动距离
-    private int offsetY = 0;
-    private int offsetX = 0;
-    //按下屏幕点
-    private int startY = 0;
-    private int startX = 0;
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        if (e.getAction() == MotionEvent.ACTION_DOWN) {
-//手指按下的开始坐标
-            startY = offsetY;
-            startX = offsetX;
-        }
-        return super.onTouchEvent( e );
+    public void setPageScrollListener(IViewPageScrollListener listener){
+        this.pageScrollListener = listener;
     }
 
     @Override
     public void setOnFlingListener(@Nullable OnFlingListener onFlingListener) {
         super.setOnFlingListener( onFlingListener );
+    }
+
+    @Override
+    public void onScrollStateChanged(int state) {
+        Log.e(TAG, "onScrollStateChanged  " +state+"  "+targetPos+"  "+targetView);
+        switch (state) {
+            case RecyclerView.SCROLL_STATE_IDLE:
+                break;
+            case RecyclerView.SCROLL_STATE_DRAGGING:
+            case RecyclerView.SCROLL_STATE_SETTLING:
+        }
+        super.onScrollStateChanged( state );
+    }
+
+    public interface IViewPageScrollListener{
+        void onPageScroll(int targetPosition, View targetView);
     }
 }

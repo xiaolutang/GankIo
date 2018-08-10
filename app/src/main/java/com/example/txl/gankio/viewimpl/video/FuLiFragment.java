@@ -55,7 +55,7 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
         StaggeredGridLayoutManager recyclerViewLayoutManager =
-                new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerViewLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recyclerview.setLayoutManager(recyclerViewLayoutManager);
         fuLiAdapter = new FuLiAdapter(recyclerview);
