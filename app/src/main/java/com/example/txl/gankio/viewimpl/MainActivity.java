@@ -11,10 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -63,8 +61,8 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
     private int currentFragmentIndex = 0;
 
     private final int idelReadFragmentIndex = 0;
-    private final int videoFragmentIndex = 1;
-    private final int allDataFragmentIndex = 2;
+    private final int fuLiFragmentIndex = 1;
+    private final int videoFragmentIndex = 2;
 
     MainPresenter mainPresenter;
     VideoPresenter videoPresenter;
@@ -101,8 +99,6 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         fragmentList.add( idelReadFragment );
         fragmentList.add( fuLiFragment );
         fragmentList.add( videoFragment );
-        videoPresenter = new VideoPresenter(videoFragment  );
-        videoPresenter.start();
     }
 
     @Override
@@ -139,10 +135,10 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
                         currentFragmentIndex = idelReadFragmentIndex;
                         break;
                     case R.id.rb_dynamic:
-                        currentFragmentIndex = videoFragmentIndex;
+                        currentFragmentIndex = fuLiFragmentIndex;
                         break;
                     case R.id.rb_message:
-                        currentFragmentIndex = allDataFragmentIndex;
+                        currentFragmentIndex = videoFragmentIndex;
                         break;
 
                 }
@@ -151,6 +147,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
 
             }
         });
+        videoPresenter = new VideoPresenter(videoFragment  );
     }
 
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -162,12 +159,15 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
             switch (position) {
                 case 0:
                     radioGroup.check(R.id.rb_home);
+                    videoFragment.stopPlay();
                     break;
                 case 1:
                     radioGroup.check(R.id.rb_dynamic);
+                    videoFragment.stopPlay();
                     break;
                 case 2:
                     radioGroup.check(R.id.rb_message);
+                    videoPresenter.start();
                     break;
             }
         }

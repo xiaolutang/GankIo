@@ -69,8 +69,8 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         SimpleAndroidPlayer simpleAndroidPlayer;
-        public TextureVideoPlayerView textureVideoPlayerView;
-        public ViewHolder(View v) {
+        private TextureVideoPlayerView textureVideoPlayerView;
+        private ViewHolder(View v) {
             super(v);
             textureVideoPlayerView = (TextureVideoPlayerView) v;
         }
@@ -81,6 +81,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
                 public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
                     Log.d( TAG,"PageScrollerRecyclerView VideoActivity  onSurfaceTextureAvailable");
                     simpleAndroidPlayer = SimpleAndroidPlayerManager.newInstance();
+                    textureVideoPlayerView.addPlayer( simpleAndroidPlayer );
                     simpleAndroidPlayer.init( textureVideoPlayerView.getContext(),null );
                     simpleAndroidPlayer.setMediaPlaerSurface( new Surface(  textureVideoPlayerView.getTextureView().getSurfaceTexture() ));
                     simpleAndroidPlayer.open( playUrl );

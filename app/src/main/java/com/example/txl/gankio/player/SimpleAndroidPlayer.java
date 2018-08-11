@@ -102,6 +102,7 @@ public class SimpleAndroidPlayer implements IMediaPlayer {
         }
 
         MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping( true );
 //        mediaPlayer.setScreenOnWhilePlaying(true);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override

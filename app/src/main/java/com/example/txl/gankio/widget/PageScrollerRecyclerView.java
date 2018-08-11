@@ -23,6 +23,9 @@ public class PageScrollerRecyclerView extends RecyclerView {
     private IViewPageScrollListener pageScrollListener;
     private PagerSnapHelper mPagerSnapHelper;
 
+    //是否处于刷新状态
+    private boolean isPullRefreshing = false;
+
     private int targetPos = 0;
     private View targetView = null;
 
@@ -43,8 +46,11 @@ public class PageScrollerRecyclerView extends RecyclerView {
         mPagerSnapHelper = new PagerSnapHelper(){
             @Override
             public int findTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
-                // TODO 找到对应的Index
                 int targetPos = super.findTargetSnapPosition(layoutManager, velocityX, velocityY);
+                if(targetPos > getAdapter().getItemCount()-2 && !isPullRefreshing && pullRefreshListener!= null){
+                    isPullRefreshing = true;
+                    pullRefreshListener.loadMore();
+                }
                 Log.e(TAG, "findTargetSnapPosition targetPos: " + targetPos);
                 return targetPos;
             }
@@ -98,6 +104,14 @@ public class PageScrollerRecyclerView extends RecyclerView {
             case RecyclerView.SCROLL_STATE_SETTLING:
         }
         super.onScrollStateChanged( state );
+    }
+
+    public void setRefreshFinish(){
+
+    }
+
+    public void setLoadMoreFinish(){
+        isPullRefreshing = false;
     }
 
     public interface IViewPageScrollListener{

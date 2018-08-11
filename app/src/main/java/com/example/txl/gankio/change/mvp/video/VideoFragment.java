@@ -13,6 +13,9 @@ import com.example.txl.gankio.R;
 import com.example.txl.gankio.adapter.VideoAdapter;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.change.mvp.data.VideoBean;
+import com.example.txl.gankio.player.SimpleAndroidPlayer;
+import com.example.txl.gankio.player.SimpleAndroidPlayerManager;
+import com.example.txl.gankio.widget.IPullRefreshListener;
 import com.example.txl.gankio.widget.PageScrollerRecyclerView;
 
 import java.util.List;
@@ -61,8 +64,7 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
         recyclerview.setLayoutManager(layoutManager);
         videoAdapter = new VideoAdapter();
         recyclerview.setAdapter(videoAdapter  );
-        swiperefreshlayout.setEnabled( false );
-        recyclerview.setOnPullRefreshListener( new PullRefreshRecyclerView.OnPullRefreshListener() {
+        recyclerview.setPullRefreshListener( new IPullRefreshListener() {
             @Override
             public void onRefresh() {
                 presenter.refresh();
@@ -71,6 +73,12 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
             @Override
             public void loadMore() {
                 presenter.loadMore();
+            }
+        } );
+        swiperefreshlayout.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.refresh();
             }
         } );
     }
@@ -96,6 +104,7 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
     @Override
     public void onStop() {
         super.onStop();
+        stopPlay();
         Log.d( TAG,"onStop" );
     }
 
@@ -130,6 +139,7 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
 
     @Override
     public void refreshFinish(List<VideoBean.VideoInfo> videoInfoList) {
+        swiperefreshlayout.setRefreshing( false );
         videoAdapter.updateData( videoInfoList );
         recyclerview.setRefreshFinish();
     }
@@ -140,4 +150,12 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
         recyclerview.setLoadMoreFinish();
     }
 
+    public void stopPlay(){
+        try{
+            SimpleAndroidPlayer simpleAndroidPlayer = SimpleAndroidPlayerManager.getCurrentSimpleAndroidPlayer();
+            simpleAndroidPlayer.destroy();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
 }
