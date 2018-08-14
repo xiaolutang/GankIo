@@ -105,7 +105,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
 
                 @Override
                 public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-                    Log.d( TAG,"PageScrollerRecyclerView VideoActivity  onSurfaceTextureUpdated");
+
                 }
             } );
         }

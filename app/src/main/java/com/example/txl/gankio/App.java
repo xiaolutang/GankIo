@@ -3,14 +3,11 @@ package com.example.txl.gankio;
 import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
+import com.example.txl.gankio.cache.AppDataLoader;
 import com.example.txl.gankio.change.mvp.data.User;
-import com.example.txl.gankio.change.mvp.data.source.local.GankIoDatabase;
 import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.utils.image.utils.ImageLoader;
-
-import java.util.logging.LogRecord;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -26,6 +23,7 @@ public class App extends Application {
     private static App _appInst;
     private static Handler _appMainHandler;
     private static ImageLoader mImageLoader;
+    private static AppDataLoader mAppDataLoader;
 
     public App() {
         _appInst = this;
@@ -45,11 +43,16 @@ public class App extends Application {
         mContext = getApplicationContext();
         _appMainHandler = new Handler(this.getMainLooper());
         mImageLoader = ImageLoader.build( this );
+        mAppDataLoader = AppDataLoader.build( this );
         ThemeUtils.init();
     }
 
     public static ImageLoader getImageLoader(){
         return mImageLoader;
+    }
+
+    public static AppDataLoader getAppDataLoader(){
+        return mAppDataLoader;
     }
 
     public void postToMainLooper(Runnable runnable) {

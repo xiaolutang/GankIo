@@ -85,6 +85,15 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d( TAG,"onStop" );
+        if(currentFragmentIndex == videoFragmentIndex){
+            videoFragment.stopPlay();
+        }
+    }
+
     private void prepareMainData(){
         mainPresenter = new MainPresenter( this );
         mainPresenter.prepareMainData( this );

@@ -1,5 +1,6 @@
 package com.example.txl.gankio.change.mvp.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,8 @@ import java.util.List;
  * date：2018/8/7
  * description：
  */
-public class VideoBean {
+public class VideoBean implements Serializable{
+    private static final long serialVersionUID = -5209782578272943999L;
     boolean error;
     List<VideoInfo> results;
 
@@ -28,7 +30,8 @@ public class VideoBean {
         this.results = results;
     }
 
-    public class VideoInfo{
+    public class VideoInfo implements Serializable{
+        private static final long serialVersionUID = -5509782578272943999L;
         String _id;
         String createdAt;
         String desc;
@@ -120,7 +123,8 @@ public class VideoBean {
             this.content = content;
         }
 
-        public class VideoContent{
+        public class VideoContent implements Serializable {
+            private static final long serialVersionUID = -5809782578272943999L;
             int hasData;
             int videoWidth;
             int videoHeight;

@@ -98,13 +98,13 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
     @Override
     public void onPause() {
         super.onPause();
+        stopPlay();
         Log.d( TAG,"onPause" );
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        stopPlay();
         Log.d( TAG,"onStop" );
     }
 
