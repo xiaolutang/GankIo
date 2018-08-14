@@ -4,23 +4,13 @@ import android.util.Log;
 
 import com.example.txl.gankio.App;
 import com.example.txl.gankio.api.GankIoApi;
-import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.change.mvp.data.VideoBean;
 import com.example.txl.gankio.utils.StringUtils;
-import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.google.gson.Gson;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.FormElement;
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,7 +29,7 @@ public class VideoPresenter implements VideoContract.Presenter{
     /**
      * 默认每页的请求的数据
      * */
-    int defaultPageCount = 10;
+    int defaultPageCount = 5;
 
     /**
      * 当前页数
@@ -82,20 +72,18 @@ public class VideoPresenter implements VideoContract.Presenter{
                 Gson gson = new Gson();
                 VideoBean root = gson.fromJson( jsonString, VideoBean.class);
                 List<VideoBean.VideoInfo> list = root.getResults();
-                for (VideoBean.VideoInfo videoInfo:list){
-
-                    Connection connection = Jsoup.connect(videoInfo.getUrl()  );
-                    Document document = connection.get();
-                    Elements content = document.select("div.main-content-block");
-                    Elements script = content.select( "script" );
-
-                    String videoContent = "{"+script.last().toString().split( "\\{" )[2].split( "\\}" )[0]+"}";
-                    VideoBean.VideoInfo.VideoContent content2 = gson.fromJson( videoContent, VideoBean.VideoInfo.VideoContent.class);
-                    videoInfo.setContent( content2 );
-                    Log.d( TAG,"videoContent;  "+ videoContent);
+                Iterator iterator = list.iterator();
+                for (;iterator.hasNext();){
+                    VideoBean.VideoInfo videoInfo = (VideoBean.VideoInfo) iterator.next();
+                    VideoBean.VideoInfo.VideoContent content = App.getAppDataLoader().loadVideoInfoContent( videoInfo.getUrl());
+                    if(content == null){
+                        Log.w( TAG,"content is null" );
+                        iterator.remove();
+                    }else {
+                        videoInfo.setContent( content );
+                    }
 
                 }
-
                 App.getAppInstance().postToMainLooper( new Runnable() {
                     @Override
                     public void run() {
