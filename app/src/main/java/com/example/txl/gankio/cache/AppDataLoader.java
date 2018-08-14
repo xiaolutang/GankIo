@@ -241,6 +241,8 @@ public class AppDataLoader {
             InputStream inputStream =  snapshot.getInputStream( DISK_CACHE_INDEX );
             ObjectInputStream objectInputStream = new ObjectInputStream( inputStream );
             videoInfo = (VideoBean.VideoInfo.VideoContent) objectInputStream.readObject();
+            inputStream.close();
+            objectInputStream.close();
             if(videoInfo != null){
                 addVideoInfoToMemoryCache( key,videoInfo );
             }
@@ -291,8 +293,10 @@ public class AppDataLoader {
             Gson gson = new Gson();
             String videoContent = "{"+script.last().toString().split( "\\{" )[2].split( "\\}" )[0]+"}";
             VideoBean.VideoInfo.VideoContent content2 = gson.fromJson( videoContent, VideoBean.VideoInfo.VideoContent.class);
-            ObjectOutputStream outputStream1 = new ObjectOutputStream(outputStream);
-            outputStream1.writeObject(content2);//将对象存到diskLruCache
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(content2);//将对象存到diskLruCache
+            outputStream.close();
+            objectOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }catch (Exception e){
