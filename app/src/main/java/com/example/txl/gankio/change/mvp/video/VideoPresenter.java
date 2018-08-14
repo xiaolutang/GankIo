@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.txl.gankio.App;
 import com.example.txl.gankio.api.GankIoApi;
+import com.example.txl.gankio.cache.AppDataLoader;
 import com.example.txl.gankio.change.mvp.data.VideoBean;
 import com.example.txl.gankio.utils.StringUtils;
 import com.google.gson.Gson;
@@ -29,10 +30,10 @@ public class VideoPresenter implements VideoContract.Presenter{
     /**
      * 默认每页的请求的数据
      * */
-    int defaultPageCount = 5;
+    int defaultPageCount = 10;
 
     /**
-     * 当前页数
+     * 当前页数.
      * */
     int currentPageIndex = 1;
 
@@ -106,6 +107,7 @@ public class VideoPresenter implements VideoContract.Presenter{
 
             }
         });
+        preLoad();
     }
 
     @Override
@@ -124,5 +126,78 @@ public class VideoPresenter implements VideoContract.Presenter{
     public void loadMore() {
         currentPageIndex ++;
         getVideoData( false );
+    }
+
+    private void preLoad(){
+        String url = GankIoApi.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+(currentPageIndex+1);
+        Log.d(TAG, "preLoad url : "+url);
+        OkHttpClient okHttpClient = GankIoApi.getClient();
+        final Request request = new Request.Builder()
+                .cacheControl( GankIoApi.getDefaultCacheControl() )
+                .url( url)
+                .get()//默认就是GET请求，可以不写
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "last preLoad onFailure: ");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonString = StringUtils.replaceBlank( response.body().string());
+                Log.d( TAG,"last preLoad onResponse " +jsonString);
+                Gson gson = new Gson();
+                VideoBean root = gson.fromJson( jsonString, VideoBean.class);
+                List<VideoBean.VideoInfo> list = root.getResults();
+                Iterator iterator = list.iterator();
+                for (;iterator.hasNext();){
+                    VideoBean.VideoInfo videoInfo = (VideoBean.VideoInfo) iterator.next();
+                    App.getAppDataLoader().loadVideoInfoContent( videoInfo.getUrl(), new AppDataLoader.VideoInfoCallback() {
+                        @Override
+                        public void loadVideoInfoReady(VideoBean.VideoInfo.VideoContent content) {
+
+                        }
+                    } );
+                }
+            }
+        });
+        if(currentPageIndex == 1){
+            return;
+        }
+        url = GankIoApi.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+(currentPageIndex-1);
+        Log.d(TAG, "preLoad url : "+url);
+        final Request preRequest = new Request.Builder()
+                .cacheControl( GankIoApi.getDefaultCacheControl() )
+                .url( url)
+                .get()//默认就是GET请求，可以不写
+                .build();
+        Call preCall = okHttpClient.newCall(preRequest);
+        preCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "preLoad onFailure: ");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonString = StringUtils.replaceBlank( response.body().string());
+                Log.d( TAG,"preLoad onResponse " +jsonString);
+                Gson gson = new Gson();
+                VideoBean root = gson.fromJson( jsonString, VideoBean.class);
+                List<VideoBean.VideoInfo> list = root.getResults();
+                Iterator iterator = list.iterator();
+                for (;iterator.hasNext();){
+                    VideoBean.VideoInfo videoInfo = (VideoBean.VideoInfo) iterator.next();
+                    App.getAppDataLoader().loadVideoInfoContent( videoInfo.getUrl(), new AppDataLoader.VideoInfoCallback() {
+                        @Override
+                        public void loadVideoInfoReady(VideoBean.VideoInfo.VideoContent content) {
+
+                        }
+                    } );
+                }
+            }
+        });
     }
 }
