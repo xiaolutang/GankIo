@@ -2,6 +2,7 @@ package com.example.txl.gankio.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.player.SimpleAndroidPlayer;
@@ -33,6 +35,7 @@ public class TextureVideoPlayerView extends FrameLayout implements View.OnClickL
     private TextureView mTextureView;
     private ViewGroup mContainer;
     private ImageView togglePlayerImageView;
+    private TextView descTextView;
     //进度条
     //播控按钮
     //desc描述
@@ -56,6 +59,16 @@ public class TextureVideoPlayerView extends FrameLayout implements View.OnClickL
         this.addView( backImage, new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ));
         mTextureView = new TextureView( context );
         this.addView(mTextureView, new LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ));
+        descTextView = new TextView( context );
+        descTextView.setTextColor( Color.WHITE );
+        descTextView.setTextSize( 18 );
+        descTextView .setTypeface(Typeface.defaultFromStyle( Typeface.BOLD));
+        LayoutParams params = new FrameLayout.LayoutParams( ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT );
+        params.gravity = Gravity.BOTTOM | Gravity.LEFT;
+        params.bottomMargin = 45;
+        params.leftMargin = 30;
+        this.addView( descTextView, params);
+
         mContainer = new FrameLayout( context );
         mContainer.setBackgroundColor( Color.alpha( 0xffCC00FF ) );
         mContainer.setClickable( true );
@@ -116,13 +129,15 @@ public class TextureVideoPlayerView extends FrameLayout implements View.OnClickL
     /**
      * 遮罩层消失
      * */
-    private void disMissMask(){
-        mContainer.setBackgroundColor( 0x00000000 );
+    public void disMissMask(){
         togglePlayerImageView.setVisibility( GONE );
     }
 
     private void showMask(){
-        mContainer.setBackgroundColor( 0x77000000 );
         togglePlayerImageView.setVisibility( VISIBLE );
+    }
+
+    public void setDescString(String desc){
+        descTextView.setText( desc );
     }
 }

@@ -44,6 +44,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
         Log.d( TAG,"VideoActivity  "+"onBindViewHolder" );
         ViewHolder viewHolder = (ViewHolder) holder;
         ImageView backImage = viewHolder.textureVideoPlayerView.getBackImage();
+        viewHolder.textureVideoPlayerView.setDescString(results.get( position ).getDesc());
         App.getImageLoader().bindBitmap( results.get( position ).getContent().getCover(),backImage,0,0 );
         viewHolder.initPlayer(results.get( position ).getContent().getPlayAddr());
     }
@@ -86,6 +87,7 @@ public class VideoAdapter extends RecyclerView.Adapter {
                     simpleAndroidPlayer.setMediaPlaerSurface( new Surface(  textureVideoPlayerView.getTextureView().getSurfaceTexture() ));
                     simpleAndroidPlayer.open( playUrl );
                     simpleAndroidPlayer.play();
+                    textureVideoPlayerView.disMissMask();
                 }
 
                 @Override
