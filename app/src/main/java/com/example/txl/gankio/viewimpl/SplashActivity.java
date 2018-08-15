@@ -1,7 +1,10 @@
 package com.example.txl.gankio.viewimpl;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -14,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.txl.gankio.App;
@@ -24,6 +28,7 @@ import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.utils.DownUtils;
+import com.example.txl.gankio.utils.NetUtils;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
 
@@ -60,8 +65,48 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             startActivity(MainActivity.class);
             finish();
         }
+        checkNetState();
         initView();
         initData();
+    }
+
+    private void checkNetState(){
+        if(!NetUtils.isNetworkConnected( this )){
+            AlertDialog dialog = null;
+            AlertDialog.Builder builder = new AlertDialog.Builder( this, android.R.style.Theme_Material_Light_Dialog_Alert)
+                    .setTitle( "当前网络异常！请检查网络哦！" )
+                    .setPositiveButton( "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    } );
+            dialog  = builder.create();
+            dialog.show();
+            return;
+        }
+        if(!NetUtils.isNetworkConnectedByWifi( this )){
+            AlertDialog dialog = null;
+            AlertDialog.Builder builder = new AlertDialog.Builder( this, android.R.style.Theme_Material_Light_Dialog_Alert)
+                    .setTitle( "当前网络不是wifi请确认是否继续使用" )
+                    .setPositiveButton( "确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    } )
+                    .setNegativeButton( "取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    } );
+            dialog  = builder.create();
+            dialog.show();
+
+        }
     }
 
     @Override
