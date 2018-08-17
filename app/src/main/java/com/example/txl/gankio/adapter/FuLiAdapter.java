@@ -1,5 +1,6 @@
 package com.example.txl.gankio.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,13 +14,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.example.txl.gankio.App;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.utils.image.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.txl.gankio.App.*;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -34,19 +39,21 @@ public class FuLiAdapter extends RecyclerView.Adapter {
     List<BeautyGirls.Girl> results = new ArrayList<>(  );
     SparseArray<Integer> heightArray;
 
-    ImageLoader loader = App.getImageLoader();
+    ImageLoader loader = getImageLoader();
 
     RecyclerView recyclerView;
+    Context context;
     RecyclerView.LayoutManager layoutManager;
     int itemWidth = 0;
     boolean mIsRecyclerViewIdle = true;
 
-    public FuLiAdapter(RecyclerView recyclerView) {
+    public FuLiAdapter(RecyclerView recyclerView, Context context) {
         this.recyclerView = recyclerView;
+        this.context = context;
         recyclerView.addOnScrollListener( new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                FuLiAdapter.this.onScrollStateChanged( recyclerView, newState);
+//                FuLiAdapter.this.onScrollStateChanged( recyclerView, newState);
                 super.onScrollStateChanged( recyclerView, newState );
             }
 
@@ -81,7 +88,8 @@ public class FuLiAdapter extends RecyclerView.Adapter {
                         layoutParams.height = realHeight;
                         imageView.setLayoutParams(layoutParams);
                         heightArray.put( position,realHeight );
-                        loader.bindBitmap(results.get( position ).getUrl() ,imageView ,viewHolder.cardView.getWidth(),heightArray.get( position ));
+                        RequestOptions options = new RequestOptions();
+                        Glide.with( context ).setDefaultRequestOptions( options.placeholder( R.drawable.image_loading_50 ) ).load(results.get( position ).getUrl()  ).into( imageView );
                         TextView textView = viewHolder.cardView.findViewById( R.id.name_item );
                         String createAt = results.get( position ).getCreatedAt();
                         createAt = createAt.split( "T" )[0];
@@ -93,7 +101,8 @@ public class FuLiAdapter extends RecyclerView.Adapter {
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) imageView.getLayoutParams();
                 layoutParams.height = height;
                 imageView.setLayoutParams(layoutParams);
-                loader.bindBitmap(results.get( position ).getUrl() ,imageView ,itemWidth/3,height);
+                RequestOptions options = new RequestOptions();
+                Glide.with( context ).setDefaultRequestOptions( options.placeholder( R.drawable.image_loading_50 ) ).load(results.get( position ).getUrl()  ).into( imageView );
                 TextView textView = viewHolder.cardView.findViewById( R.id.name_item );
                 String createAt = results.get( position ).getCreatedAt();
                 createAt = createAt.split( "T" )[0];
@@ -134,7 +143,7 @@ public class FuLiAdapter extends RecyclerView.Adapter {
         if(layoutManager != null && itemWidth != 0){
             return itemWidth;
         }
-        DisplayMetrics dm = App.getAppContext().getResources().getDisplayMetrics();
+        DisplayMetrics dm = getAppContext().getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
         layoutManager = recyclerView.getLayoutManager();
         if(layoutManager instanceof StaggeredGridLayoutManager){

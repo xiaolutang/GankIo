@@ -6,11 +6,9 @@ import android.util.Log;
 import com.example.txl.gankio.App;
 import com.example.txl.gankio.api.GankIoApi;
 import com.example.txl.gankio.base.BasePresenter;
-import com.example.txl.gankio.bean.CommonIdelReaderSubclassification;
 import com.example.txl.gankio.bean.IdelInfo;
 import com.example.txl.gankio.utils.StringUtils;
 import com.example.txl.gankio.viewinterface.IGetIdelInfo;
-import com.example.txl.gankio.viewinterface.IGetIdelReadView;
 import com.google.gson.Gson;
 
 import java.io.IOException;
