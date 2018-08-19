@@ -147,10 +147,12 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
     }
 
     private class ArticleViewHolder extends BaseViewHolder{
+        ViewGroup rootView;
         TextView author, title, publishTime;
 
         public ArticleViewHolder(View itemView) {
             super( itemView );
+            rootView = (ViewGroup) itemView;
             author = itemView.findViewById( R.id.tv_article_author );
             title = itemView.findViewById( R.id.tv_article_title );
             publishTime = itemView.findViewById( R.id.tv_article_publish_time );
@@ -162,6 +164,15 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
             author.setText("作者："+ article.getAuthor() );
             title.setText( article.getTitle() );
             publishTime.setText( article.getNiceDate() );
+            rootView.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent( mContext, WebActivity.class );
+                    intent.putExtra( "url",article.getLink() );
+                    intent.putExtra( "title",article.getTitle() );
+                    mContext.startActivity( intent );
+                }
+            } );
         }
     }
 }

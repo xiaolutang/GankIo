@@ -49,7 +49,7 @@ public class WebActivity extends BaseActivity {
     }
 
     protected void initView() {
-        toolbar.setTitle( url );
+        toolbar.setTitle( getIntent().getStringExtra( "title" ) );
         toolbar.setNavigationIcon( R.drawable.icons8_go_back_24 );
         setSupportActionBar( toolbar );
         toolbar.setNavigationOnClickListener( new View.OnClickListener() {

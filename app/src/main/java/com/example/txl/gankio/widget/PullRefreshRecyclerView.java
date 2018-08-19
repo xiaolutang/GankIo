@@ -32,6 +32,16 @@ public class PullRefreshRecyclerView extends RecyclerView {
      */
     private boolean mEnablePullRefresh = true;
 
+    /**
+     * 可以上拉加载
+     * */
+    private boolean enablePull = true;
+
+    /**
+     * 可以下拉刷新
+     * */
+    private boolean enableRefresh = true;
+
 
     private Context context;
     private AbsPullRefreshView mHeader;
@@ -127,11 +137,10 @@ public class PullRefreshRecyclerView extends RecyclerView {
                 break;
             case MotionEvent.ACTION_MOVE:
                 int offsetY = (int) (e.getRawY() - mLastRawY);
-                Log.e( TAG,"onTouchEvent offsetY  = "+offsetY +" isSlideToTop "+isSlideToTop() +" isSlideToBottom "+isSlideToBottom());
-                if(isSlideToTop() && offsetY>0){
+                if(isSlideToTop() && offsetY>0 && enableRefresh){
                     mHeader.updateViewState( AbsPullRefreshView.VIEW_STATE_PULL );
                     mHeader.setViewMarginTop( (int) (offsetY / OFFSET_RADIO) );
-                }else if(isSlideToBottom() && offsetY<0){
+                }else if(isSlideToBottom() && offsetY<0 && enablePull){
                     mFooter.updateViewState( AbsPullRefreshView.VIEW_STATE_PULL );
                     mFooter.setViewMarginBottom( (int) -(offsetY / OFFSET_RADIO) );
                 }
@@ -239,6 +248,10 @@ public class PullRefreshRecyclerView extends RecyclerView {
             adapterWrapper.mHeaderViews.clear();
             adapterWrapper.mFootViews.clear();
         }
+    }
+
+    public void setEnableRefresh(boolean enableRefresh){
+        this.enableRefresh = enableRefresh;
     }
 
     private class AdapterWrapper extends Adapter<ViewHolder>{

@@ -36,6 +36,18 @@ public class WanAndroidActivity extends BaseActivity implements WanAndroidContra
         LinearLayoutManager manager = new LinearLayoutManager( this);
         manager.setOrientation(  LinearLayoutManager.VERTICAL );
         pullRefreshRecyclerView.setLayoutManager( manager );
+        pullRefreshRecyclerView.setEnableRefresh( false );
+        pullRefreshRecyclerView.setOnPullRefreshListener( new PullRefreshRecyclerView.OnPullRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+
+            @Override
+            public void loadMore() {
+                presenter.loadMore();
+            }
+        } );
         pullRefreshRecyclerView.addItemDecoration( new DividerItemDecoration( this, DividerItemDecoration.VERTICAL) );
         androidAdapter = new WanAndroidAdapter( this );
         pullRefreshRecyclerView.setAdapter( androidAdapter );
