@@ -159,7 +159,7 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
         @Override
         public void bindViewHolder(IDataModel model) {
             ArticleList.Data.Article article = (ArticleList.Data.Article) model;
-            author.setText( article.getAuthor() );
+            author.setText("作者："+ article.getAuthor() );
             title.setText( article.getTitle() );
             publishTime.setText( article.getNiceDate() );
         }
