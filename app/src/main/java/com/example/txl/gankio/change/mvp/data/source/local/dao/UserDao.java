@@ -1,4 +1,4 @@
-package com.example.txl.gankio.change.mvp.data.source.local;
+package com.example.txl.gankio.change.mvp.data.source.local.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;

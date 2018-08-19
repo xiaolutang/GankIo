@@ -48,9 +48,7 @@ public class WebActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
     protected void initView() {
-        super.initView();
         toolbar.setTitle( url );
         toolbar.setNavigationIcon( R.drawable.icons8_go_back_24 );
         setSupportActionBar( toolbar );
@@ -116,9 +114,7 @@ public class WebActivity extends BaseActivity {
         ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
     }
 
-    @Override
     protected void initData() {
-        super.initData();
 
         Log.e( TAG,  "url "+url );
         webView.loadUrl( url );

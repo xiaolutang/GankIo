@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.txl.gankio.App;
-import com.example.txl.gankio.api.GankIoApi;
+import com.example.txl.gankio.api.ApiFactory;
 import com.example.txl.gankio.base.BasePresenter;
 
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
@@ -40,10 +40,10 @@ public class MainPresenter extends BasePresenter {
     }
 
     public void getIdelReaderCategory(){
-        OkHttpClient okHttpClient = GankIoApi.getClient();
+        OkHttpClient okHttpClient = ApiFactory.getClient();
         final Request request = new Request.Builder()
-                .cacheControl( GankIoApi.getDefaultCacheControl() )
-                .url( GankIoApi.URL_GET_IDEL_CATEGORY )
+                .cacheControl( ApiFactory.getDefaultCacheControl() )
+                .url( ApiFactory.URL_GET_IDEL_CATEGORY )
                 .get()//默认就是GET请求，可以不写
                 .build();
         Call call = okHttpClient.newCall(request);

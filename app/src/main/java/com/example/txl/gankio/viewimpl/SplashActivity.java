@@ -23,6 +23,9 @@ import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
+import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
+import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
+import com.example.txl.gankio.change.mvp.data.source.RepositoryFactory;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.utils.DownUtils;
@@ -107,9 +110,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
         }
     }
 
-    @Override
     protected void initView() {
-        super.initView();
         fuLiPresenter = new FuLiPresenter( this );
         pagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter( pagerAdapter );
@@ -162,9 +163,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
         }} );
     }
 
-    @Override
     protected void initData() {
-        super.initData();
         fuLiPresenter.getFuLiData( 5,1,this,true );
         new MainPresenter(this).prepareMainData( new IGetMainDataView(){
             @Override
@@ -194,6 +193,19 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
 
             @Override
             public void getAllDataFailed(Object o) {
+
+            }
+        } );
+        RepositoryFactory.providerWanAndroidBannerRepository(this).getBannerData( new IWanAndroidBannerDataSource.IBannerDataCallBack() {
+            @Override
+            public void onBannerDataLoaded(WanAndroidBanner bannerData) {
+                for (WanAndroidBanner.Data data: bannerData.getData()){
+                    Log.d( TAG,"onBannerDataLoaded url:"+data);
+                }
+            }
+
+            @Override
+            public void onBannerDataLoadFailed() {
 
             }
         } );
@@ -247,6 +259,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             linearLayoutPoints.addView(pointView);
             mPointListView.add( pointView );
         }
+
         pagerAdapter.notifyDataSetChanged();
     }
 

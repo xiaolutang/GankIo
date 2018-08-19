@@ -21,12 +21,12 @@ import okhttp3.Response;
  */
 public class ApiRetrofit {
 
-    public GankIoApi gankIoApiService;
+    public ApiFactory apiFactoryService;
 
     public static final String gankIoBaseUrl = "http://gank.io/api/";
 
-    public GankIoApi getGankIoApiService(){
-        return gankIoApiService;
+    public ApiFactory getApiFactoryService(){
+        return apiFactoryService;
     }
 
     ApiRetrofit() {
@@ -48,7 +48,7 @@ public class ApiRetrofit {
 //                .build();
 //
 //
-//        gankIoApiService = retrofit.create(GankIoApi.class);
+//        apiFactoryService = retrofit.create(ApiFactory.class);
 
     }
 

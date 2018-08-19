@@ -21,6 +21,7 @@ import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
+import com.example.txl.gankio.change.mvp.wan.android.WanAndroidActivity;
 import com.example.txl.gankio.change.mvp.login.LoginActivity;
 import com.example.txl.gankio.change.mvp.video.VideoFragment;
 import com.example.txl.gankio.change.mvp.video.VideoPresenter;
@@ -99,7 +100,6 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         mainPresenter.prepareMainData( this );
     }
 
-    @Override
     public void initData(){
         fragmentList.clear();
         idelReadFragment = new IdelReadFragment();
@@ -110,7 +110,6 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
         fragmentList.add( videoFragment );
     }
 
-    @Override
     public void initView(){
         setSupportActionBar( toolbar );
         toolbar.setBackgroundColor( ThemeUtils.getToolBarColor());
@@ -196,6 +195,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
                     case R.id.nav_menu_categories:
                         break;
                     case R.id.nav_menu_recommend:
+                        startActivity( WanAndroidActivity.class );
                         break;
                     case R.id.nav_menu_feedback:
                         break;

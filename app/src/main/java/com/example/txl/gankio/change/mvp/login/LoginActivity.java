@@ -66,7 +66,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View{
         initView();
     }
 
-    @Override
     protected void initView() {
         mEmailView = findViewById( R.id.email );
         mPasswordView = findViewById( R.id.password );

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.txl.gankio.App;
-import com.example.txl.gankio.api.GankIoApi;
+import com.example.txl.gankio.api.ApiFactory;
 import com.example.txl.gankio.base.BasePresenter;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.utils.StringUtils;
@@ -32,11 +32,11 @@ public class FuLiPresenter extends BasePresenter {
     }
 
     public void getFuLiData(int count, int page, IGetFuLiData iGetFuLiData, boolean refresh){
-        String url = GankIoApi.URL_GET_FULI_DATA +""+count+"/"+page;
+        String url = ApiFactory.URL_GET_FULI_DATA +""+count+"/"+page;
         Log.d(TAG, "getFuLiData url : "+url);
-        OkHttpClient okHttpClient = GankIoApi.getClient();
+        OkHttpClient okHttpClient = ApiFactory.getClient();
         final Request request = new Request.Builder()
-                .cacheControl( GankIoApi.getDefaultCacheControl() )
+                .cacheControl( ApiFactory.getDefaultCacheControl() )
                 .url( url)
                 .get()//默认就是GET请求，可以不写
                 .build();

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.txl.gankio.change.mvp.data.User;
 import com.example.txl.gankio.change.mvp.data.source.UserDataSource;
+import com.example.txl.gankio.change.mvp.data.source.local.dao.UserDao;
 import com.example.txl.gankio.utils.AppExecutors;
 
 /**

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.txl.gankio.App;
-import com.example.txl.gankio.api.GankIoApi;
+import com.example.txl.gankio.api.ApiFactory;
 import com.example.txl.gankio.base.BasePresenter;
 import com.example.txl.gankio.bean.IdelInfo;
 import com.example.txl.gankio.utils.StringUtils;
@@ -37,11 +37,11 @@ public class IdelInfoPersenter extends BasePresenter {
      * @param count 每页多少个
      * */
     public void getIdelReaderSubCategory(String id,int count, int page, IGetIdelInfo iGetIdelReadView, boolean refresh){
-        String url = GankIoApi.URL_GET_IDEL_DATA +"id/"+id+"/count/"+count+"/page/"+page;
+        String url = ApiFactory.URL_GET_IDEL_DATA +"id/"+id+"/count/"+count+"/page/"+page;
         Log.d(TAG, "getIdelReaderSubCategory url : "+url);
-        OkHttpClient okHttpClient = GankIoApi.getClient();
+        OkHttpClient okHttpClient = ApiFactory.getClient();
         final Request request = new Request.Builder()
-                .cacheControl( GankIoApi.getDefaultCacheControl() )
+                .cacheControl( ApiFactory.getDefaultCacheControl() )
                 .url( url)
                 .get()//默认就是GET请求，可以不写
                 .build();

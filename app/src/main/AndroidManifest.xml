@@ -31,7 +31,8 @@
         <activity android:name=".viewimpl.WebActivity" />
         <activity
             android:name=".change.mvp.login.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
+        <activity android:name=".change.mvp.wan.android.WanAndroidActivity"></activity>
     </application>
 
 </manifest>

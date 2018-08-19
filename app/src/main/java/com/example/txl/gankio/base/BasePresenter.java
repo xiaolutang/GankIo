@@ -2,9 +2,6 @@ package com.example.txl.gankio.base;
 
 import android.content.Context;
 
-import com.example.txl.gankio.api.ApiFactory;
-import com.example.txl.gankio.api.GankIoApi;
-
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl

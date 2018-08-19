@@ -3,7 +3,7 @@ package com.example.txl.gankio.change.mvp.video;
 import android.util.Log;
 
 import com.example.txl.gankio.App;
-import com.example.txl.gankio.api.GankIoApi;
+import com.example.txl.gankio.api.ApiFactory;
 import com.example.txl.gankio.cache.AppDataLoader;
 import com.example.txl.gankio.change.mvp.data.VideoBean;
 import com.example.txl.gankio.utils.StringUtils;
@@ -45,11 +45,11 @@ public class VideoPresenter implements VideoContract.Presenter{
     }
 
     public void getVideoData(boolean refresh){
-        String url = GankIoApi.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+currentPageIndex;
+        String url = ApiFactory.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+currentPageIndex;
         Log.d(TAG, "getFuLiData url : "+url);
-        OkHttpClient okHttpClient = GankIoApi.getClient();
+        OkHttpClient okHttpClient = ApiFactory.getClient();
         final Request request = new Request.Builder()
-                .cacheControl( GankIoApi.getDefaultCacheControl() )
+                .cacheControl( ApiFactory.getDefaultCacheControl() )
                 .url( url)
                 .get()//默认就是GET请求，可以不写
                 .build();
@@ -129,11 +129,11 @@ public class VideoPresenter implements VideoContract.Presenter{
     }
 
     private void preLoad(){
-        String url = GankIoApi.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+(currentPageIndex+1);
+        String url = ApiFactory.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+(currentPageIndex+1);
         Log.d(TAG, "preLoad url : "+url);
-        OkHttpClient okHttpClient = GankIoApi.getClient();
+        OkHttpClient okHttpClient = ApiFactory.getClient();
         final Request request = new Request.Builder()
-                .cacheControl( GankIoApi.getDefaultCacheControl() )
+                .cacheControl( ApiFactory.getDefaultCacheControl() )
                 .url( url)
                 .get()//默认就是GET请求，可以不写
                 .build();
@@ -166,10 +166,10 @@ public class VideoPresenter implements VideoContract.Presenter{
         if(currentPageIndex == 1){
             return;
         }
-        url = GankIoApi.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+(currentPageIndex-1);
+        url = ApiFactory.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+(currentPageIndex-1);
         Log.d(TAG, "preLoad url : "+url);
         final Request preRequest = new Request.Builder()
-                .cacheControl( GankIoApi.getDefaultCacheControl() )
+                .cacheControl( ApiFactory.getDefaultCacheControl() )
                 .url( url)
                 .get()//默认就是GET请求，可以不写
                 .build();
