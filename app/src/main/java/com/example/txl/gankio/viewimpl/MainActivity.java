@@ -196,6 +196,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
                         break;
                     case R.id.nav_menu_recommend:
                         startActivity( WanAndroidActivity.class );
+                        drawerLayoutHome.closeDrawers();
                         break;
                     case R.id.nav_menu_feedback:
                         break;
