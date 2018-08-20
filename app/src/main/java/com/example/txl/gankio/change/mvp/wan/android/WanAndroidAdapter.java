@@ -7,7 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -149,6 +152,7 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
     private class ArticleViewHolder extends BaseViewHolder{
         ViewGroup rootView;
         TextView author, title, publishTime;
+        CheckBox zanButton, collectButton;
 
         public ArticleViewHolder(View itemView) {
             super( itemView );
@@ -156,6 +160,8 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
             author = itemView.findViewById( R.id.tv_article_author );
             title = itemView.findViewById( R.id.tv_article_title );
             publishTime = itemView.findViewById( R.id.tv_article_publish_time );
+            zanButton = itemView.findViewById( R.id.rb_article_zan );
+            collectButton = itemView.findViewById( R.id.rb_article_collect );
         }
 
         @Override
@@ -164,6 +170,27 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
             author.setText("作者："+ article.getAuthor() );
             title.setText( article.getTitle() );
             publishTime.setText( article.getNiceDate() );
+            zanButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int zan = article.getZan();
+                    if(isChecked){
+                        zan++;
+                    }else {
+                        zan--;
+                    }
+                    article.setZan( zan );
+                    zanButton.setText( "  "+zan );
+                }
+            } );
+            zanButton.setText( "  "+article.getZan() );
+            collectButton.setChecked( article.isCollect() );
+            collectButton.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    article.setCollect( isChecked );
+                }
+            } );
             rootView.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
