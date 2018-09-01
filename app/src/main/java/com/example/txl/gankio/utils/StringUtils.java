@@ -19,4 +19,15 @@ public class StringUtils {
         }
         return dest;
     }
+
+    public static float praseToFloat(String num){
+        float result = 0.0f;
+        try {
+            result = Float.parseFloat( num );
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

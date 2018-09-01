@@ -21,6 +21,7 @@ import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
+import com.example.txl.gankio.change.mvp.about.AboutActivity;
 import com.example.txl.gankio.change.mvp.wan.android.WanAndroidActivity;
 import com.example.txl.gankio.change.mvp.login.LoginActivity;
 import com.example.txl.gankio.change.mvp.video.VideoFragment;
@@ -193,10 +194,10 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
                     case R.id.nav_menu_home:
                         break;
                     case R.id.nav_menu_categories:
+                        startActivity( AboutActivity.class );
                         break;
                     case R.id.nav_menu_recommend:
                         startActivity( WanAndroidActivity.class );
-                        drawerLayoutHome.closeDrawers();
                         break;
                     case R.id.nav_menu_feedback:
                         break;
@@ -239,7 +240,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
 
                 // Menu item点击后选中，并关闭Drawerlayout
                 menuItem.setChecked(true);
-                //drawerlayoutHome.closeDrawers();
+                drawerLayoutHome.closeDrawers();
                 // Toast.makeText(MainActivity.this,msgString,Toast.LENGTH_SHORT).show();
                 return true;
             }

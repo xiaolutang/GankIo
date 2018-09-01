@@ -41,6 +41,11 @@ public class ApiFactory {
     /**获取首页文章列表*/
     public static final String WAN_ANDROID_GET_ARTICEL_LIST = "http://www.wanandroid.com/article/list";
 
+    /**自己服务器API接口*/
+    public static final String GANK_IO_UPDATE_APK = "http://192.168.31.92/web/update/aweme_aweGW_v2.3.0_1aac92c.apk";
+
+    public static final String GANK_IO_CHECK_UPDATE = "http://192.168.31.92/web/checkUpdate";
+
     private static final OkHttpClient client;
 
     private static final long cacheSize = 1024 * 1024 * 20;// 缓存文件最大限制大小20M

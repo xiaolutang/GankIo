@@ -1,5 +1,7 @@
 package com.example.txl.gankio.utils;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,23 +18,25 @@ import java.util.Locale;
  * description：
  */
 public class DownUtils {
+    private static final String TAG = DownUtils.class.getSimpleName();
     //定义下载资源的路径
     private String path;
     //指定下载文件所保存的位置
     private String targetFile;
     //定义使用多少线程下载该资源
-    private int threadNumber;
-    private DownThread[] threads;
+    private final int threadNumber;
+    private DownRunnable[] threads;
     private int fileSize;
 
     public DownUtils(String path, String targetFile, int threadNumber) {
         this.path = path;
         this.targetFile = targetFile;
         this.threadNumber = threadNumber;
-        threads = new DownThread[threadNumber];
+        threads = new DownRunnable[threadNumber];
     }
 
     public void download() throws Exception{
+        Log.d( TAG,"download:"+path );
         URL url = new URL( path );
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setConnectTimeout( 5*1000 );
@@ -42,11 +46,14 @@ public class DownUtils {
                 + "application/vnd.ms-xpsdocument, application/x-ms-xbap, application/x-ms-application, "
                 + "application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*");
         connection.setRequestProperty("Accept-Language", Locale.getDefault().toString());
+//        connection.connect();
         // 指定请求uri的源资源地址
 //                conn.setRequestProperty("Referer", downloadUrl);
         // 设置 HttpURLConnection的字符编码
         connection.setRequestProperty("Accept-Charset", "UTF-8");
         connection.setRequestProperty("Connection", "Keep-Alive");
+        connection.setRequestProperty("Accept-Encoding", "identity");
+        Log.d( TAG,"getResponseCode:" +connection.getResponseCode());
         fileSize = connection.getContentLength();
         connection.disconnect();
         int currentPartSize = fileSize/threadNumber +1;
@@ -61,21 +68,26 @@ public class DownUtils {
             int startPos = i * currentPartSize;
             RandomAccessFile currentPart = new RandomAccessFile( targetFile,"rw" );
             currentPart.seek( startPos );
-            threads[i] = new DownThread( startPos,currentPartSize,currentPart );
-            threads[i].start();
+            threads[i] = new DownRunnable( startPos,currentPartSize,currentPart );
+            ThreadUtils.execute( threads[i] );
         }
+        Log.d( TAG,"download:  download com" );
     }
 
     public double getCompleteRate(){
         int sumSize = 0;
-        for (int i=0; i<threadNumber; i++){
-            sumSize += threads[i].length;
+        try {
+            for (int i=0; i<threadNumber; i++){
+                sumSize += threads[i].length;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return sumSize * 1.0/fileSize;
     }
 
 
-    private class DownThread extends Thread{
+    private class DownRunnable implements Runnable{
         private int startPos;
         //定义当前线程负责下载的文件大小
         private int currentPartSize;
@@ -83,7 +95,7 @@ public class DownUtils {
         //定义该线程已经下载的字节数
         private int length;
 
-        public DownThread(int startPos, int currentPartSize, RandomAccessFile currentPart) {
+        public DownRunnable(int startPos, int currentPartSize, RandomAccessFile currentPart) {
             this.startPos = startPos;
             this.currentPartSize = currentPartSize;
             this.currentPart = currentPart;

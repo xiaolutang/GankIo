@@ -32,7 +32,15 @@
         <activity
             android:name=".change.mvp.login.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".change.mvp.wan.android.WanAndroidActivity"></activity>
+        <activity android:name=".change.mvp.wan.android.WanAndroidActivity" />
+
+        <service android:name=".change.mvp.update.UpdateService">
+            <intent-filter>
+                <action android:name="com.example.txl.gankio.change.mvp.checkupdate" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".change.mvp.about.AboutActivity"></activity>
     </application>
 
 </manifest>

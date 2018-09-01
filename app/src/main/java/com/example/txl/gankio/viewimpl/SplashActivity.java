@@ -1,11 +1,16 @@
 package com.example.txl.gankio.viewimpl;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -16,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.txl.gankio.App;
@@ -26,6 +32,7 @@ import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
 import com.example.txl.gankio.change.mvp.data.source.RepositoryFactory;
+import com.example.txl.gankio.change.mvp.update.UpdateService;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.utils.DownUtils;
@@ -66,9 +73,30 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             startActivity(MainActivity.class);
             finish();
         }
+        checkPermission();
         checkNetState();
         initView();
         initData();
+        checkUpdate();
+    }
+
+    private void checkPermission(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Toast.makeText(this, "请开通相关权限，否则无法正常使用本应用！", Toast.LENGTH_SHORT).show();
+            }
+            //申请权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
+    }
+
+    private void checkUpdate() {
+        Intent intent = new Intent(  );
+        intent.setPackage("com.example.txl.gankio");
+        intent.setAction( "com.example.txl.gankio.change.mvp.checkupdate" );
+        startService( intent );
     }
 
     private void checkNetState(){
@@ -224,21 +252,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     @Override
     public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
         mList.clear();
-        String basePath = getFilesDir().getPath().toString();
         for(BeautyGirls.Girl girl : results){
-            DownUtils downUtils = new DownUtils( girl.getUrl(),basePath+ girl.get_id()+".jpg",2 );
-            Log.e( TAG,"url === "+girl.getUrl()+"   basePath = "+basePath  );
-            new Thread( new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        downUtils.download();
-                    } catch (Exception e) {
-                        Log.e( TAG,"downUtils " +e);
-                        e.printStackTrace();
-                    }
-                }
-            } ).start();
             ImageView imageView = new ImageView( this );
             imageView.setLayoutParams( new RelativeLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT ) );
             Glide.with( App.getAppContext())
