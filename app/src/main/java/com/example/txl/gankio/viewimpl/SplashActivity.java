@@ -32,13 +32,12 @@ import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
 import com.example.txl.gankio.change.mvp.data.source.RepositoryFactory;
-import com.example.txl.gankio.change.mvp.update.UpdateService;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.FuLiPresenter;
-import com.example.txl.gankio.utils.DownUtils;
 import com.example.txl.gankio.utils.NetUtils;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
+import com.example.txl.gankio.widget.BannerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     private int prevPosition = 0;
 
     FuLiPresenter fuLiPresenter;
-    PagerAdapter pagerAdapter;
+    BannerAdapter<String> pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,55 +139,66 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
 
     protected void initView() {
         fuLiPresenter = new FuLiPresenter( this );
-        pagerAdapter = new MyViewPagerAdapter();
-        viewPager.setAdapter( pagerAdapter );
-        viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+        pagerAdapter = new BannerAdapter<>(this,viewPager);
+        pagerAdapter.setViewLoaderInterface( new BannerAdapter.ViewLoaderInterface() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            public void displayView(Context context, Object path, View imageView) {
+                Glide.with( App.getAppContext() ).load( path ).into( (ImageView) imageView );
             }
 
             @Override
-            public void onPageSelected(int position) {
-                mPointListView.get( prevPosition ).setImageResource( R.drawable.point_white );
-                mPointListView.get( position ).setImageResource( R.drawable.point_gray );
-                prevPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public View createView(Context context) {
+                return new ImageView( context );
             }
         } );
-        viewPager.setOnTouchListener( new View.OnTouchListener() {
-            float startX;
-            float endX;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        startX=event.getX();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        endX=event.getX();
-                        WindowManager windowManager= (WindowManager) getApplicationContext().getSystemService( Context.WINDOW_SERVICE);
-//获取屏幕的宽度
-                        Point size = new Point();
-                        windowManager.getDefaultDisplay().getSize(size);
-                        int width=size.x;
-//首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
-                        if(prevPosition ==(mList.size()-1)&&startX-endX>=(width/4)){
-                            Log.i(TAG,"进入了触摸");
-                            canGotoMain = true;
-                            startActivity(MainActivity.class);
-                            finish();
-                            return true;
-                        }
-                }
-
-            return false;
-        }} );
+        viewPager.setAdapter( pagerAdapter );
+//        viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                mPointListView.get( prevPosition ).setImageResource( R.drawable.point_white );
+//                mPointListView.get( position ).setImageResource( R.drawable.point_gray );
+//                prevPosition = position;
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        } );
+//        viewPager.setOnTouchListener( new View.OnTouchListener() {
+//            float startX;
+//            float endX;
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()){
+//                    case MotionEvent.ACTION_DOWN:
+//                        startX=event.getX();
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        endX=event.getX();
+//                        WindowManager windowManager= (WindowManager) getApplicationContext().getSystemService( Context.WINDOW_SERVICE);
+////获取屏幕的宽度
+//                        Point size = new Point();
+//                        windowManager.getDefaultDisplay().getSize(size);
+//                        int width=size.x;
+////首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
+//                        if(prevPosition ==(mList.size()-1)&&startX-endX>=(width/4)){
+//                            Log.i(TAG,"进入了触摸");
+//                            canGotoMain = true;
+//                            startActivity(MainActivity.class);
+//                            finish();
+//                            return true;
+//                        }
+//                }
+//
+//            return false;
+//        }} );
     }
 
     protected void initData() {
@@ -252,12 +262,14 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     @Override
     public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
         mList.clear();
+        List<String> imageUrls = new ArrayList<>(  );
         for(BeautyGirls.Girl girl : results){
             ImageView imageView = new ImageView( this );
             imageView.setLayoutParams( new RelativeLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT ) );
             Glide.with( App.getAppContext())
                     .load(girl.getUrl())
                     .into(imageView);
+            imageUrls.add( girl.getUrl() );
             mList.add( imageView );
             ImageView pointView = new ImageView(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(20, 20);
@@ -273,8 +285,8 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             linearLayoutPoints.addView(pointView);
             mPointListView.add( pointView );
         }
-
-        pagerAdapter.notifyDataSetChanged();
+        pagerAdapter.update( imageUrls );
+//        pagerAdapter.notifyDataSetChanged();
     }
 
     @Override
