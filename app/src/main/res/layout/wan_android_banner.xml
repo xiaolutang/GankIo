@@ -12,4 +12,5 @@
     app:indicator_margin="3dp"
     app:indicator_width="9dp"
     app:is_auto_play="true"
+    android:clipChildren="false"
     />
