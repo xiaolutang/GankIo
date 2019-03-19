@@ -22,13 +22,13 @@ public class ScreenUtils {
     private static float sNoncompatScaleDensity;
     public static void setCustomDensity(@NonNull Activity activity, @NonNull Application application){
         final DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
-        if(sNoncompatDensity == 0){
+        if (sNoncompatDensity == 0) {
             sNoncompatDensity = appDisplayMetrics.density;
             sNoncompatScaleDensity = appDisplayMetrics.scaledDensity;
             application.registerComponentCallbacks( new ComponentCallbacks() {
                 @Override
                 public void onConfigurationChanged(Configuration newConfig) {
-                    if(newConfig != null && newConfig.fontScale > 0){
+                    if (newConfig != null && newConfig.fontScale > 0) {
                         sNoncompatScaleDensity = application.getResources().getDisplayMetrics().scaledDensity;
                     }
                 }
@@ -42,7 +42,7 @@ public class ScreenUtils {
 
         final float targetDensity = appDisplayMetrics.widthPixels / DEFAULT_SCREEN_WIDTH;
         final int targetDensityDpi = (int) (160 * targetDensity);
-        final float targetScaleDensity = targetDensity * (appDisplayMetrics.scaledDensity/appDisplayMetrics.density);
+        final float targetScaleDensity = targetDensity * (sNoncompatScaleDensity / sNoncompatDensity);
 
         appDisplayMetrics.density = appDisplayMetrics.scaledDensity = targetDensity;
         appDisplayMetrics.densityDpi = targetDensityDpi;
