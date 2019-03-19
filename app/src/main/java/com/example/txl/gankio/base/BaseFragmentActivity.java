@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.jaeger.library.StatusBarUtil;
 
+import redesign.ScreenUtils;
+
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
@@ -21,6 +23,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         StatusBarUtil.setTransparent(this);
+        ScreenUtils.setCustomDensity( this,getApplication() );
     }
 
     @Override
