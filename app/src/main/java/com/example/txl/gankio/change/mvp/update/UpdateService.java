@@ -184,8 +184,8 @@ public class UpdateService extends IntentService {
 //        intent.setData(content_url);
 //        startActivity(intent);
 
-        utils = new DownUtils( info.getUpdateurl(),filePath,5 );
         try {
+            utils = new DownUtils( info.getUpdateurl(),filePath,5 );
             utils.download();
             mHandler.sendEmptyMessage( MSG_UPDATE_PROGRESS );
         } catch (Exception e) {

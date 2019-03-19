@@ -71,7 +71,6 @@ public class DownUtils {
             threads[i] = new DownRunnable( startPos,currentPartSize,currentPart );
             ThreadUtils.execute( threads[i] );
         }
-        Log.d( TAG,"download:  download com" );
     }
 
     public double getCompleteRate(){

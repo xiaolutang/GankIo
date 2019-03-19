@@ -152,53 +152,53 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             }
         } );
         viewPager.setAdapter( pagerAdapter );
-//        viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                mPointListView.get( prevPosition ).setImageResource( R.drawable.point_white );
-//                mPointListView.get( position ).setImageResource( R.drawable.point_gray );
-//                prevPosition = position;
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        } );
-//        viewPager.setOnTouchListener( new View.OnTouchListener() {
-//            float startX;
-//            float endX;
-//
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()){
-//                    case MotionEvent.ACTION_DOWN:
-//                        startX=event.getX();
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        endX=event.getX();
-//                        WindowManager windowManager= (WindowManager) getApplicationContext().getSystemService( Context.WINDOW_SERVICE);
-////获取屏幕的宽度
-//                        Point size = new Point();
-//                        windowManager.getDefaultDisplay().getSize(size);
-//                        int width=size.x;
-////首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
-//                        if(prevPosition ==(mList.size()-1)&&startX-endX>=(width/4)){
-//                            Log.i(TAG,"进入了触摸");
-//                            canGotoMain = true;
-//                            startActivity(MainActivity.class);
-//                            finish();
-//                            return true;
-//                        }
-//                }
-//
-//            return false;
-//        }} );
+        viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPointListView.get( prevPosition ).setImageResource( R.drawable.point_white );
+                mPointListView.get( position ).setImageResource( R.drawable.point_gray );
+                prevPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        } );
+        viewPager.setOnTouchListener( new View.OnTouchListener() {
+            float startX;
+            float endX;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        startX=event.getX();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        endX=event.getX();
+                        WindowManager windowManager= (WindowManager) getApplicationContext().getSystemService( Context.WINDOW_SERVICE);
+//获取屏幕的宽度
+                        Point size = new Point();
+                        windowManager.getDefaultDisplay().getSize(size);
+                        int width=size.x;
+//首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
+                        if(prevPosition ==(mList.size()-1)&&startX-endX>=(width/4)){
+                            Log.i(TAG,"进入了触摸");
+                            canGotoMain = true;
+                            startActivity(MainActivity.class);
+                            finish();
+                            return true;
+                        }
+                }
+
+            return false;
+        }} );
     }
 
     protected void initData() {
