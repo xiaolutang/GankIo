@@ -1,17 +1,14 @@
-package com.example.txl.gankio.api;
+package redesign.api;
 
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

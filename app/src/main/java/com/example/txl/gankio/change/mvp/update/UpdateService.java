@@ -1,6 +1,5 @@
 package com.example.txl.gankio.change.mvp.update;
 
-import android.Manifest;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,14 +14,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.api.ApiFactory;
+import redesign.api.ApiFactory;
 import com.example.txl.gankio.utils.DownUtils;
 import com.example.txl.gankio.utils.StringUtils;
 import com.google.gson.Gson;

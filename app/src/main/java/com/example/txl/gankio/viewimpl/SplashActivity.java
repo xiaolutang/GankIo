@@ -44,6 +44,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import redesign.api.ApiRetrofit;
 
 public class SplashActivity extends BaseActivity implements IGetFuLiData{
 
@@ -72,6 +73,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             startActivity(MainActivity.class);
             finish();
         }
+        new ApiRetrofit();
         checkPermission();
         checkNetState();
         initView();

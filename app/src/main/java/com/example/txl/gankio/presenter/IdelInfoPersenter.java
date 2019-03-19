@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.txl.gankio.App;
-import com.example.txl.gankio.api.ApiFactory;
+import redesign.api.ApiFactory;
 import com.example.txl.gankio.base.BasePresenter;
 import com.example.txl.gankio.bean.IdelInfo;
 import com.example.txl.gankio.utils.StringUtils;

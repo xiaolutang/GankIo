@@ -2,7 +2,7 @@ package com.example.txl.gankio.change.mvp.wan.android;
 
 import android.util.Log;
 
-import com.example.txl.gankio.api.ApiFactory;
+import redesign.api.ApiFactory;
 import com.example.txl.gankio.change.mvp.data.ArticleList;
 import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;

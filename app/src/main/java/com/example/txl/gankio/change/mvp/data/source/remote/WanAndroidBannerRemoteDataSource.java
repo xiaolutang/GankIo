@@ -2,10 +2,9 @@ package com.example.txl.gankio.change.mvp.data.source.remote;
 
 import android.util.Log;
 
-import com.example.txl.gankio.api.ApiFactory;
+import redesign.api.ApiFactory;
 import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
-import com.example.txl.gankio.change.mvp.data.source.local.WanAndroidBannerLocalDataSource;
 import com.example.txl.gankio.utils.AppExecutors;
 import com.example.txl.gankio.utils.StringUtils;
 import com.google.gson.Gson;

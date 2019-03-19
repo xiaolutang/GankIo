@@ -3,7 +3,7 @@ package com.example.txl.gankio.change.mvp.video;
 import android.util.Log;
 
 import com.example.txl.gankio.App;
-import com.example.txl.gankio.api.ApiFactory;
+import redesign.api.ApiFactory;
 import com.example.txl.gankio.cache.AppDataLoader;
 import com.example.txl.gankio.change.mvp.data.VideoBean;
 import com.example.txl.gankio.utils.StringUtils;

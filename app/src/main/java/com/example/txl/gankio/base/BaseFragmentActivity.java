@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.jaeger.library.StatusBarUtil;
+
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
@@ -18,6 +20,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
         if(getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+        StatusBarUtil.setTransparent(this);
     }
 
     @Override
