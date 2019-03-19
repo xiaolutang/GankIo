@@ -39,7 +39,6 @@ public class ScreenUtils {
                 }
             } );
         }
-
         final float targetDensity = appDisplayMetrics.widthPixels / DEFAULT_SCREEN_WIDTH;
         final int targetDensityDpi = (int) (160 * targetDensity);
         final float targetScaleDensity = targetDensity * (sNoncompatScaleDensity / sNoncompatDensity);
