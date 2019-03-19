@@ -62,7 +62,7 @@ public class PageScrollerRecyclerView extends RecyclerView {
                 // TODO 找到对应的View
                 TextureVideoPlayerView view = (TextureVideoPlayerView) super.findSnapView(layoutManager);
                 targetPos = layoutManager.getPosition( view );
-                Log.e(TAG, "findSnapView tag: " +view.getTag());
+                Log.e(TAG, "findSnapView TAG: " +view.getTag());
                 if(view == targetView){
                     return view;
                 }
