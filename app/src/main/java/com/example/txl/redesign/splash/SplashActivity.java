@@ -61,7 +61,6 @@ import retrofit2.Response;
 public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     public static boolean canGotoMain = false;
-    public static IdelReaderCategoryRoot root;
 
     @BindView( R.id.splash_vp )
     ViewPager viewPager;
