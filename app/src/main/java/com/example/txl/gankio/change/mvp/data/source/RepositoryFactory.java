@@ -8,7 +8,7 @@ import com.example.txl.gankio.change.mvp.data.source.local.UserLocalDataSource;
 import com.example.txl.gankio.change.mvp.data.source.local.WanAndroidBannerLocalDataSource;
 import com.example.txl.gankio.change.mvp.data.source.remote.UserRemoteDataSource;
 import com.example.txl.gankio.change.mvp.data.source.remote.WanAndroidBannerRemoteDataSource;
-import com.example.txl.gankio.utils.AppExecutors;
+import com.example.txl.redesign.utils.AppExecutors;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -26,7 +26,7 @@ public class RepositoryFactory {
             gankIoDatabase = GankIoDatabase.getInstance(context);
         }
         return UserRepository.getInstance(new UserRemoteDataSource(),
-                UserLocalDataSource.getInstance(new AppExecutors(),
+                UserLocalDataSource.getInstance(AppExecutors.getInstance(),
                         gankIoDatabase.userDao()));
     }
 
@@ -34,6 +34,6 @@ public class RepositoryFactory {
         if(gankIoDatabase == null){
             gankIoDatabase = GankIoDatabase.getInstance(context);
         }
-        return WanAndroidBannerRepository.getInstance( WanAndroidBannerLocalDataSource.getInstance( new AppExecutors(),gankIoDatabase.bannerDao() ), WanAndroidBannerRemoteDataSource.getInstance());
+        return WanAndroidBannerRepository.getInstance( WanAndroidBannerLocalDataSource.getInstance( AppExecutors.getInstance(),gankIoDatabase.bannerDao() ), WanAndroidBannerRemoteDataSource.getInstance());
     }
 }

@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.txl.redesign.api.ApiFactory;
 import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
-import com.example.txl.gankio.utils.AppExecutors;
+import com.example.txl.redesign.utils.AppExecutors;
 import com.example.txl.gankio.utils.StringUtils;
 import com.google.gson.Gson;
 
@@ -36,7 +36,7 @@ public class WanAndroidBannerRemoteDataSource implements IWanAndroidBannerDataSo
     }
 
     private WanAndroidBannerRemoteDataSource() {
-        this.mAppExecutors = new AppExecutors();
+        this.mAppExecutors = AppExecutors.getInstance();
     }
 
     @Override

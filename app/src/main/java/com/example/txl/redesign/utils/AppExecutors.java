@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.txl.gankio.utils;
+package com.example.txl.redesign.utils;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -40,6 +40,47 @@ public class AppExecutors {
 
     private final Executor mainThread;
 
+//    private static AppExecutors appExecutors;
+
+    /**
+     * 饿汉单例模式
+     * */
+//    public static AppExecutors getInstance(){
+//        if(appExecutors == null){
+//            appExecutors = new AppExecutors( );
+//        }
+//        return appExecutors;
+//    }
+
+    /**
+     * 懒汉
+     * */
+   /* public synchronized static AppExecutors getInstance(){
+        if(appExecutors == null){
+            appExecutors = new AppExecutors( );
+        }
+        return appExecutors;
+    }*/
+
+   /**
+    * 双重检查
+    * */
+//    public static AppExecutors getInstance(){
+//        if(appExecutors == null){
+//            synchronized (AppExecutors.class){
+//                if(appExecutors == null){
+//                    appExecutors = new AppExecutors( );
+//                }
+//            }
+//
+//        }
+//        return appExecutors;
+//    }
+
+   public static AppExecutors getInstance(){
+        return AppExecutorsHolder.appExecutors;
+    }
+
     @VisibleForTesting
     AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
@@ -47,7 +88,7 @@ public class AppExecutors {
         this.mainThread = mainThread;
     }
 
-    public AppExecutors() {
+    private AppExecutors() {
         this(new DiskIOThreadExecutor(), Executors.newFixedThreadPool(THREAD_COUNT),
                 new MainThreadExecutor());
     }
@@ -71,5 +112,9 @@ public class AppExecutors {
         public void execute(@NonNull Runnable command) {
             mainThreadHandler.post(command);
         }
+    }
+
+    private static class AppExecutorsHolder{
+        private static final AppExecutors appExecutors = new AppExecutors(  );
     }
 }

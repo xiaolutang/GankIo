@@ -6,7 +6,7 @@ import android.util.Log;
 import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
 import com.example.txl.gankio.change.mvp.data.source.local.dao.WanAndroidBannerDao;
-import com.example.txl.gankio.utils.AppExecutors;
+import com.example.txl.redesign.utils.AppExecutors;
 
 import java.util.List;
 

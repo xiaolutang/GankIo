@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.example.txl.gankio.utils.AppExecutors;
+import com.example.txl.redesign.utils.AppExecutors;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -68,7 +68,7 @@ public class PageScrollerRecyclerView extends RecyclerView {
                 }
                 targetView = view;
                 if(pageScrollListener != null && targetView != null){
-                    new AppExecutors().mainThread().execute( new Runnable() {
+                    AppExecutors.getInstance().mainThread().execute( new Runnable() {
                         @Override
                         public void run() {
                             pageScrollListener.onPageScroll( targetPos,targetView );

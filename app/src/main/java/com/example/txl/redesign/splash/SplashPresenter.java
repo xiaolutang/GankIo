@@ -7,6 +7,8 @@ import com.example.txl.redesign.api.ApiRetrofit;
 
 import org.json.JSONObject;
 
+import java.util.concurrent.CountDownLatch;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -23,6 +25,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     private final String TAG = getClass().getSimpleName();
 
     SplashContract.View view;
+    CountDownLatch countDownLatch;
 
     public SplashPresenter(@NonNull SplashContract.View view) {
         this.view = view;
@@ -41,17 +44,20 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     @Override
     public void start() {
+        countDownLatch = new CountDownLatch( 2 );
         ApiRetrofit.initGankAPi();
         ApiRetrofit.GankIoApi gankIoApi = ApiRetrofit.getGankIoApi();
         gankIoApi.getXianDuCategory().enqueue(new Callback<JSONObject>() {
             @Override
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                 Log.d(TAG,"onResponse sssssss"+response.body().toString());
+                countDownLatch.countDown();
             }
 
             @Override
             public void onFailure(Call<JSONObject> call, Throwable t) {
                 Log.d(TAG,"onFailure sssssss"+t.toString());
+                countDownLatch.countDown();
             }
         });
         Observer<JSONObject> observer = new Observer<JSONObject>() {
@@ -63,6 +69,7 @@ public class SplashPresenter implements SplashContract.Presenter {
             @Override
             public void onNext(JSONObject s) {
                 Log.d(TAG, Thread.currentThread().getName() +  "  Item: onNext " + s);
+                countDownLatch.countDown();
             }
             @Override
             public void onError(Throwable e) {
@@ -71,7 +78,11 @@ public class SplashPresenter implements SplashContract.Presenter {
 
             @Override
             public void onComplete() {
-
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         };
         gankIoApi.getTodayGanHuo()

@@ -7,7 +7,7 @@ import com.example.txl.gankio.change.mvp.data.ArticleList;
 import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
 import com.example.txl.gankio.change.mvp.data.source.WanAndroidBannerRepository;
-import com.example.txl.gankio.utils.AppExecutors;
+import com.example.txl.redesign.utils.AppExecutors;
 import com.example.txl.gankio.utils.StringUtils;
 import com.google.gson.Gson;
 
@@ -38,7 +38,7 @@ public class WanAndroidPresenter implements WanAndroidContract.Presenter {
     public WanAndroidPresenter(WanAndroidContract.View mView, WanAndroidBannerRepository repository) {
         this.mView = mView;
         this.repository = repository;
-        mAppExecutors = new AppExecutors();
+        mAppExecutors = AppExecutors.getInstance();
     }
 
     @Override
