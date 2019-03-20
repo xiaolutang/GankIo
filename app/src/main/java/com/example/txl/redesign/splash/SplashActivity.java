@@ -52,11 +52,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import com.example.txl.redesign.api.ApiRetrofit;
+import com.google.gson.Gson;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SplashActivity extends BaseActivity implements SplashContract.View,IGetFuLiData{
+public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     public static boolean canGotoMain = false;
     public static IdelReaderCategoryRoot root;
@@ -81,16 +83,19 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         setContentView( R.layout.activity_splash );
         ButterKnife.bind( this );
         if(canGotoMain){
-            startActivity(MainActivity.class);
-            finish();
+            gotoMain();
         }
         presenter = new SplashPresenter(this);
 
         checkPermission();
         checkNetState();
         initView();
-        initData();
         checkUpdate();
+    }
+
+    private void gotoMain() {
+        startActivity( MainActivity.class );
+        finish();
     }
 
     @Override
@@ -170,7 +175,11 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
             @Override
             public View createView(Context context) {
-                return new ImageView( context );
+                ImageView imageView = new ImageView( context );
+                imageView.setScaleType( ImageView.ScaleType.CENTER_CROP );
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(  ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT );
+                imageView.setLayoutParams( params );
+                return imageView;
             }
         } );
         viewPager.setAdapter( pagerAdapter );
@@ -182,9 +191,11 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
             @Override
             public void onPageSelected(int position) {
-                mPointListView.get( prevPosition ).setImageResource( R.drawable.point_white );
-                mPointListView.get( position ).setImageResource( R.drawable.point_gray );
-                prevPosition = position;
+                if(position<mList.size()){
+                    mPointListView.get( prevPosition ).setImageResource( R.drawable.point_white );
+                    mPointListView.get( position ).setImageResource( R.drawable.point_gray );
+                    prevPosition = position;
+                }
             }
 
             @Override
@@ -213,8 +224,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
                         if(prevPosition ==(mList.size()-1)&&startX-endX>=(width/4)){
                             Log.i(TAG,"进入了触摸");
                             canGotoMain = true;
-                            startActivity(MainActivity.class);
-                            finish();
+                            gotoMain();
                             return true;
                         }
                 }
@@ -223,69 +233,25 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         }} );
     }
 
-    protected void initData() {
-        fuLiPresenter.getFuLiData( 5,1,this,true );
-        new MainPresenter(this).prepareMainData( new IGetMainDataView(){
-            @Override
-            public void getIdelReaderSuccess(IdelReaderCategoryRoot root) {
-                SplashActivity.root = root;
-            }
-
-            @Override
-            public void getIdelReaderFailed(Object o) {
-
-            }
-
-            @Override
-            public void getVideoSuccess(Object o) {
-
-            }
-
-            @Override
-            public void getVideoFailed(Object o) {
-
-            }
-
-            @Override
-            public void getAllDataSuccess(Object o) {
-
-            }
-
-            @Override
-            public void getAllDataFailed(Object o) {
-
-            }
-        } );
-        RepositoryFactory.providerWanAndroidBannerRepository(this).getBannerData( new IWanAndroidBannerDataSource.IBannerDataCallBack() {
-            @Override
-            public void onBannerDataLoaded(WanAndroidBanner bannerData) {
-                for (WanAndroidBanner.Data data: bannerData.getData()){
-                    Log.d( TAG,"onBannerDataLoaded url:"+data);
-                }
-            }
-
-            @Override
-            public void onBannerDataLoadFailed() {
-
-            }
-        } );
+    @Override
+    public void showDataError() {
+        Toast.makeText( this,"加载数据出错！",Toast.LENGTH_SHORT ).show();
     }
 
     @Override
-    public void onAddFuLiDataSuccess(List<BeautyGirls.Girl> results) {
-
+    public void prepareDataFinish() {
+        // FIXME: 2019/3/20 使用广告的模式进行修改
+        Toast.makeText( this,"加载数据完成，可以滑动进入主页！",Toast.LENGTH_SHORT ).show();
     }
 
     @Override
-    public void onAddFuLiDataFailed() {
-
-    }
-
-    @Override
-    public void updateFuLiDataSuccess(List<BeautyGirls.Girl> results) {
+    public void prepareSplashFinish(JSONObject jsonObject) {
+        Gson gson = new Gson();
+        BeautyGirls root = gson.fromJson( jsonObject.toString(), BeautyGirls.class);
         mList.clear();
+        List<BeautyGirls.Girl> results = root.getResults();
         List<String> imageUrls = new ArrayList<>(  );
-        for(BeautyGirls.Girl girl : results){
+        for(BeautyGirls.Girl girl :results ){
             ImageView imageView = new ImageView( this );
             imageView.setLayoutParams( new RelativeLayout.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT ) );
             Glide.with( App.getAppContext())
@@ -308,49 +274,10 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
             mPointListView.add( pointView );
         }
         pagerAdapter.update( imageUrls );
-//        pagerAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void updateFuLiDataFailed() {
-
-    }
-
-    @Override
-    public void showDataError() {
-
     }
 
     @Override
     public void setPresenter(SplashContract.Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    public class MyViewPagerAdapter extends PagerAdapter {
-
-//当要显示的图片进行缓存时，会调用这个方法进行显示图片的初始化
-//我们将要显示的ImageView加入到ViewGroup中
-        public Object instantiateItem(ViewGroup container, int position) {
-        // TODO Auto-generated method stub
-            container.addView(mList.get(position));
-            return mList.get(position);
-        }
-        @Override
-//PagerAdapter只缓存三张要显示的图片，如果滑动的图片超出了缓存的范围，就会调用这个方法，将图片销毁
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            // TODO Auto-generated method stub
-            container.removeView(mList.get(position));
-        }
-        //获取要滑动的控件的数量，
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return mList.size();
-        }
-
-        //来判断显示的是否是同一张照片，这个我们将两个图片对比 再返回
-        public boolean isViewFromObject(View arg0, Object arg1) {
-            // TODO Auto-generated method stub
-            return arg0==arg1;
-        }
     }
 }

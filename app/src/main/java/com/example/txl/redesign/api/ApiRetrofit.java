@@ -19,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -109,5 +110,25 @@ public class ApiRetrofit {
          * */
         @GET("today")
         Observable<JSONObject> getTodayGanHuo();
+
+        /**
+         * 获取闲读子分类http://gank.io/api/xiandu/category/wow
+         * */
+        @GET("xiandu/category/{type}")
+        Observable<JSONObject> getXianDuSbuCategory(@Path("type") String type);
+
+        /**
+         * @param type 干货集中营数据类型，福利 | Android | iOS | 休息视频 | 拓展资源 | 前端 | all
+         * @param count 本次请求多少数据
+         * @param page 第几页
+         * */
+        @GET("data/{type}/{count}/{page}")
+        Observable<JSONObject> getFuLi(@Path("type") String type, @Path( "count" ) int count, @Path( "page" ) int page);
+
+        /**
+         * 获取随机数据
+         * */
+        @GET("random/data/{type}/{count}")
+        Observable<JSONObject> getRandomData(@Path("type") String type, @Path( "count" ) int count);
     }
 }
