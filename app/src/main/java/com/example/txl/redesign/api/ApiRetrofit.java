@@ -1,6 +1,4 @@
-package redesign.api;
-
-import android.util.Log;
+package com.example.txl.redesign.api;
 
 import com.example.txl.gankio.App;
 import com.example.txl.gankio.utils.NetUtils;
@@ -10,8 +8,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.X509TrustManager;
-
 import io.reactivex.Observable;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -20,11 +16,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Query;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -87,6 +81,9 @@ public class ApiRetrofit {
     };
 
     public static void initGankAPi(){
+        if(gankIoApi != null){
+            return;
+        }
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
         builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);

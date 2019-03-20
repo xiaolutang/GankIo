@@ -18,7 +18,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.txl.gankio.R;
-import redesign.api.ApiFactory;
+import com.example.txl.redesign.api.ApiFactory;
 import com.example.txl.gankio.utils.DownUtils;
 import com.example.txl.gankio.utils.StringUtils;
 import com.google.gson.Gson;

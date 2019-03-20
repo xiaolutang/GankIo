@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.jaeger.library.StatusBarUtil;
 
-import redesign.ScreenUtils;
+import com.example.txl.redesign.utils.ScreenUtils;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".viewimpl.MainActivity" />
         <activity android:name=".viewimpl.IdelInfoActivity" />
-        <activity android:name=".viewimpl.SplashActivity">
+        <activity android:name="com.example.txl.redesign.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

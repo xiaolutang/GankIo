@@ -1,4 +1,4 @@
-package com.example.txl.gankio.viewimpl;
+package com.example.txl.redesign.splash;
 
 
 import android.Manifest;
@@ -35,6 +35,7 @@ import com.example.txl.gankio.change.mvp.data.source.RepositoryFactory;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.utils.NetUtils;
+import com.example.txl.gankio.viewimpl.MainActivity;
 import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
 import com.example.txl.gankio.widget.BannerAdapter;
@@ -46,19 +47,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import redesign.api.ApiRetrofit;
+import com.example.txl.redesign.api.ApiRetrofit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SplashActivity extends BaseActivity implements IGetFuLiData{
+public class SplashActivity extends BaseActivity implements SplashContract.View,IGetFuLiData{
 
     public static boolean canGotoMain = false;
     public static IdelReaderCategoryRoot root;
@@ -75,6 +73,7 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
 
     FuLiPresenter fuLiPresenter;
     BannerAdapter<String> pagerAdapter;
+    private SplashContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,48 +84,21 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             startActivity(MainActivity.class);
             finish();
         }
-        ApiRetrofit.initGankAPi();
-        ApiRetrofit.GankIoApi gankIoApi = ApiRetrofit.getGankIoApi();
-        gankIoApi.getXianDuCategory().enqueue(new Callback<JSONObject>() {
-            @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                Log.d(TAG,"onResponse sssssss"+response.body().toString());
-            }
+        presenter = new SplashPresenter(this);
 
-            @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
-                Log.d(TAG,"onFailure sssssss"+t.toString());
-            }
-        });
-        Observer<JSONObject> observer = new Observer<JSONObject>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.d(TAG, "onSubscribe : " + d);
-            }
+        checkPermission();
+        checkNetState();
+        initView();
+        initData();
+        checkUpdate();
+    }
 
-            @Override
-            public void onNext(JSONObject s) {
-                Log.d(TAG, Thread.currentThread().getName() +  "  Item: onNext " + s);
-            }
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, "Error!");
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        gankIoApi.getTodayGanHuo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
-//        checkPermission();
-//        checkNetState();
-//        initView();
-//        initData();
-//        checkUpdate();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.start();
+        presenter.prepareSplashData();
+        presenter.prepareMainData();
     }
 
     private void checkPermission(){
@@ -342,6 +314,16 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
     @Override
     public void updateFuLiDataFailed() {
 
+    }
+
+    @Override
+    public void showDataError() {
+
+    }
+
+    @Override
+    public void setPresenter(SplashContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     public class MyViewPagerAdapter extends PagerAdapter {
