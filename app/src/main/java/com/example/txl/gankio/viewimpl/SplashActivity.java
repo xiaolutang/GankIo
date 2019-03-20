@@ -39,12 +39,24 @@ import com.example.txl.gankio.viewinterface.IGetFuLiData;
 import com.example.txl.gankio.viewinterface.IGetMainDataView;
 import com.example.txl.gankio.widget.BannerAdapter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import redesign.api.ApiRetrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SplashActivity extends BaseActivity implements IGetFuLiData{
 
@@ -73,12 +85,48 @@ public class SplashActivity extends BaseActivity implements IGetFuLiData{
             startActivity(MainActivity.class);
             finish();
         }
-        new ApiRetrofit();
-        checkPermission();
-        checkNetState();
-        initView();
-        initData();
-        checkUpdate();
+        ApiRetrofit.initGankAPi();
+        ApiRetrofit.GankIoApi gankIoApi = ApiRetrofit.getGankIoApi();
+        gankIoApi.getXianDuCategory().enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                Log.d(TAG,"onResponse sssssss"+response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Log.d(TAG,"onFailure sssssss"+t.toString());
+            }
+        });
+        Observer<JSONObject> observer = new Observer<JSONObject>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.d(TAG, "onSubscribe : " + d);
+            }
+
+            @Override
+            public void onNext(JSONObject s) {
+                Log.d(TAG, Thread.currentThread().getName() +  "  Item: onNext " + s);
+            }
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "Error!");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        gankIoApi.getTodayGanHuo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+//        checkPermission();
+//        checkNetState();
+//        initView();
+//        initData();
+//        checkUpdate();
     }
 
     private void checkPermission(){

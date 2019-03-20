@@ -5,9 +5,14 @@ import android.util.Log;
 import com.example.txl.gankio.App;
 import com.example.txl.gankio.utils.NetUtils;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.X509TrustManager;
+
+import io.reactivex.Observable;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -17,6 +22,7 @@ import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -28,14 +34,11 @@ import retrofit2.http.Query;
  */
 public class ApiRetrofit {
 
-    public GankIoApi gankIoApi;
+    private static final int TIME_OUT = 1000 * 10;
 
-    public static final String gankIoBaseUrl = "http://gank.io/api/";
+    private static GankIoApi gankIoApi;
 
-    Retrofit gankRetrofit = new Retrofit.Builder()
-            .baseUrl(gankIoBaseUrl)
-//            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+    private static final String GANK_IO_BASE_URL = "http://gank.io/api/";
 
     public GankIoApi getApiFactoryService(){
         return gankIoApi;
@@ -51,36 +54,9 @@ public class ApiRetrofit {
                 .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .cache(cache)
                 .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(gankIoBaseUrl)
-                .client(client)
-//                .addConverterFactory( GsonConverterFactory.create())
-//                .addCallAdapterFactory( RxJavaCallAdapterFactory.create())
-                .build();
-//
-//
-        gankIoApi = retrofit.create(GankIoApi.class);
-
-        //调用方法得到一个Call
-        Call<String> call = gankIoApi.getXianDuCategory();
-        //进行网络请求
-        call.enqueue(new Callback<String>() {
-
-            @Override
-            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-                Log.d( "ApiRetrofit"," onResponse   "+response.body() );
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.d( "ApiRetrofit"," onFailure   " +t.toString());
-            }
-        });
-
     }
 
-    Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = chain -> {
+    static Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = chain -> {
 
         CacheControl.Builder cacheBuilder = new CacheControl.Builder();
         cacheBuilder.maxAge(0, TimeUnit.SECONDS);
@@ -110,8 +86,31 @@ public class ApiRetrofit {
         }
     };
 
+    public static void initGankAPi(){
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
+        builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
+        builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(GANK_IO_BASE_URL)
+                .addConverterFactory(new JSONObjectConvertFactory())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(builder.build())
+                .build();
+        gankIoApi = retrofit.create(GankIoApi.class);
+    }
+
+    public static synchronized GankIoApi getGankIoApi() {
+        return gankIoApi;
+    }
+
     public interface GankIoApi{
-        @GET("/xiandu/categories ")
-        Call<String> getXianDuCategory ();
+        @GET("xiandu/categories ")
+        Call<JSONObject> getXianDuCategory ();
+
+        /**
+         * 今日最新干货
+         * */
+        @GET("today")
+        Observable<JSONObject> getTodayGanHuo();
     }
 }
