@@ -76,10 +76,6 @@ public class CommonSubIdelFragment extends BaseFragment implements IGetIdelReadV
 //        fragmentName = getArguments() != null ? getArguments().getString("fragmentName") : "aaa";
     }
 
-    @Override
-    public boolean hasMultiFragment() {
-        return false;
-    }
 
     @Override
     protected String getFragmentName() {

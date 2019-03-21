@@ -128,11 +128,6 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
     }
 
     @Override
-    public boolean hasMultiFragment() {
-        return false;
-    }
-
-    @Override
     public void setPresenter(VideoContract.Presenter presenter) {
         this.presenter = presenter;
     }

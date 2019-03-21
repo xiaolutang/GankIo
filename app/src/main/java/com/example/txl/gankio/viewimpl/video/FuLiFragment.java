@@ -97,10 +97,6 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
         return "休息视频";
     }
 
-    @Override
-    public boolean hasMultiFragment() {
-        return false;
-    }
 
     @Override
     public void onRefresh() {

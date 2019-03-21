@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Copyright (c) 2019, 唐小陆 All rights reserved.
  * author：txl
  * date：2019/3/20
- * description：用来处理全局缓存
+ * description：用来处理全局缓存,缓存
  */
 public class GlobalCacheUtils {
     /**
@@ -16,7 +16,6 @@ public class GlobalCacheUtils {
     public static final String KEY_TODAY = "today";
     /**
      * 闲读主分类
-     * 福利 | Android | iOS | 休息视频 | 拓展资源 | 前端 | all
      * */
     public static final String KEY_XIAN_DU_CATEGORY = "xian_du_categories";
     public static final String KEY_FU_LI = "福利";

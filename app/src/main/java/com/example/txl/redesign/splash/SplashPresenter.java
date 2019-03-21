@@ -25,6 +25,10 @@ import retrofit2.Response;
  */
 public class SplashPresenter implements SplashContract.Presenter {
     private final String TAG = getClass().getSimpleName();
+    /**
+     * 需要跑多少接口准备数据
+     * */
+    private final int NET_COUNT = 3;
 
     SplashContract.View view;
     CountDownLatch countDownLatch;
@@ -46,7 +50,7 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     @Override
     public void start() {
-        countDownLatch = new CountDownLatch( 3 );
+        countDownLatch = new CountDownLatch( NET_COUNT );
         AppExecutors.getInstance().networkIO().execute( new Runnable() {
             @Override
             public void run() {

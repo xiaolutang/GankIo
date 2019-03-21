@@ -78,11 +78,6 @@ public class IdelReadFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public boolean hasMultiFragment() {
-        return false;
-    }
-
-    @Override
     public void onRefresh() {
 
     }
