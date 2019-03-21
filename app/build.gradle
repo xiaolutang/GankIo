@@ -53,7 +53,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:2.1.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-4'
+//    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-21'
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
 //    去除其他项目引用的 GSON
     configurations {

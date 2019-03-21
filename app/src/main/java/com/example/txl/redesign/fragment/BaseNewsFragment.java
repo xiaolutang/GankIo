@@ -21,7 +21,7 @@ import org.json.JSONObject;
  */
 public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
-//    protected SmartRefreshLayout smartRefreshLayout;
+    protected SmartRefreshLayout smartRefreshLayout;
     protected RecyclerView recyclerView;
 
     @Override
@@ -43,7 +43,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     }
 
     protected void initView(){
-//        smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
+        smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
         recyclerView = rootView.findViewById( R.id.recycler_view );
     }
 
