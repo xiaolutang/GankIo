@@ -41,6 +41,7 @@
         </service>
 
         <activity android:name=".change.mvp.about.AboutActivity"></activity>
+        <activity android:name="com.example.txl.redesign.main.NewStyleMainActivity" />
     </application>
 
 </manifest>

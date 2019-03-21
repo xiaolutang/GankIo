@@ -20,5 +20,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="xiandu">闲读推荐</string>
+    <string name="main_page">首页</string>
+    <string name="fm">FM</string>
 
 </resources>

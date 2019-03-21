@@ -11,7 +11,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,16 +27,9 @@ import com.example.txl.gankio.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.BeautyGirls;
-import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
-import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
-import com.example.txl.gankio.change.mvp.data.source.RepositoryFactory;
-import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.utils.NetUtils;
 import com.example.txl.gankio.viewimpl.MainActivity;
-import com.example.txl.gankio.viewinterface.IGetFuLiData;
-import com.example.txl.gankio.viewinterface.IGetMainDataView;
 import com.example.txl.gankio.widget.BannerAdapter;
 
 import org.json.JSONObject;
@@ -47,16 +39,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import com.example.txl.redesign.api.ApiRetrofit;
-import com.google.gson.Gson;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.txl.redesign.main.NewStyleMainActivity;
+import com.google.gson.Gson;
 
 public class SplashActivity extends BaseActivity implements SplashContract.View{
 
@@ -93,7 +78,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     }
 
     private void gotoMain() {
-        startActivity( MainActivity.class );
+        startActivity( NewStyleMainActivity.class );
         finish();
     }
 
