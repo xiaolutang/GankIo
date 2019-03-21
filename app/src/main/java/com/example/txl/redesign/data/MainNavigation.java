@@ -48,7 +48,7 @@ public class MainNavigation extends Navigation<String>  implements Serializable,
         MainNavigation mainNavigation = new MainNavigation();
         mainNavigation.category = CATEGORY_MAIN;
         mainNavigation.childList = new ArrayList<>();
-        mainNavigation.childList.add(GlobalCacheUtils.KEY_TODAY);
+        mainNavigation.childList.add("推荐");//today
         mainNavigation.childList.add(GlobalCacheUtils.KEY_FU_LI);
         mainNavigation.childList.add(GlobalCacheUtils.KEY_ANDROID);
         mainNavigation.childList.add(GlobalCacheUtils.KEY_IOS);

@@ -104,6 +104,7 @@ public class NavigationFragment extends BaseFragment {
                 simplePagerTitleView.setNormalColor(colors.first);
                 simplePagerTitleView.setSelectedColor(colors.second);
                 simplePagerTitleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.dp_15));
+                simplePagerTitleView.setText( indicatorTitleList.get( index ) );
                 simplePagerTitleView.setOnClickListener(v -> viewPager.setCurrentItem( index ,true));
                 return simplePagerTitleView;
             }
@@ -111,7 +112,7 @@ public class NavigationFragment extends BaseFragment {
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                indicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
                 indicator.setLineHeight(context.getResources().getDimensionPixelOffset(R.dimen.dp_2));
                 indicator.setRoundRadius(context.getResources().getDimensionPixelOffset(R.dimen.dp_6));
                 indicator.setStartInterpolator(new AccelerateInterpolator());
@@ -139,7 +140,8 @@ public class NavigationFragment extends BaseFragment {
         List<BaseFragment> fragments = generateFragments(navigation);
         categoryFragmentAdapter = new CategoryFragmentAdapter(getChildFragmentManager());
         categoryFragmentAdapter.setFragmentList(fragments);
-
+        viewPager.setAdapter( categoryFragmentAdapter );
+        indicatorNavigatorAdapter.notifyDataSetChanged();
     }
 
     private List<BaseFragment> generateFragments(Navigation navigation){

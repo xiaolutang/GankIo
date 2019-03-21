@@ -37,19 +37,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import com.example.txl.redesign.main.NewStyleMainActivity;
 import com.google.gson.Gson;
+import com.jaeger.library.StatusBarUtil;
+
 
 public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     public static boolean canGotoMain = false;
 
-    @BindView( R.id.splash_vp )
     ViewPager viewPager;
-    @BindView( R.id.liner_points )
     LinearLayout linearLayoutPoints;
 
     private List<ImageView> mList=new ArrayList<ImageView>();// 存放要显示在ViewPager对象中的所有Imageview对象
@@ -65,7 +63,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_splash );
-        ButterKnife.bind( this );
         if(canGotoMain){
             gotoMain();
         }
@@ -80,6 +77,11 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     private void gotoMain() {
         startActivity( NewStyleMainActivity.class );
         finish();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setTransparent(this);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     private void checkUpdate() {
         Intent intent = new Intent(  );
-        intent.setPackage("com.example.txl.gankio");
+        intent.setPackage("com.txl.gankio");
         intent.setAction( "com.example.txl.gankio.change.mvp.checkupdate" );
         startService( intent );
     }
@@ -149,6 +151,8 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     }
 
     protected void initView() {
+        viewPager = findViewById( R.id.splash_vp );
+        linearLayoutPoints = findViewById( R.id.liner_points );
         fuLiPresenter = new FuLiPresenter( this );
         pagerAdapter = new BannerAdapter<>(this,viewPager);
         pagerAdapter.setViewLoaderInterface( new BannerAdapter.ViewLoaderInterface() {
