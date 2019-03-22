@@ -9,4 +9,6 @@
     <dimen name="dp_6">6dp</dimen>
     <dimen name="dp_2">2dp</dimen>
     <dimen name="dp_40">40dp</dimen>
+    <!--顶部tab导航高度-->
+    <dimen name="dp_top_navigation_height">40dp</dimen>
 </resources>

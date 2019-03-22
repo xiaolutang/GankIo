@@ -1,5 +1,6 @@
 package com.example.txl.redesign.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,6 +38,10 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     protected TwoLevelHeader twoLevelHeader;
     protected ImageView twoLevelContentImage;
     protected ImageView twoLevelImage;
+    /**
+     * 用来做顶部导航的背景
+     * */
+    private ImageView topPlacerView;
 
     private boolean isSecondFloor = false;
 
@@ -60,6 +65,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     @Override
     protected void initView(){
+        topPlacerView = rootView.findViewById(R.id.view_top_placer);
         smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
         String categoryId = getFragmentArguments().getString("category_id");
         presenter = new BaseNewsPresenter(this,categoryId);
@@ -85,6 +91,8 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
             twoLevelHeader.addView(twoLevelContentImage);
             twoLevelHeader.setRefreshHeader(classicsHeader);
             smartRefreshLayout.setRefreshHeader(twoLevelHeader);
+        }else {
+            topPlacerView.setBackgroundColor(getResources().getColor(R.color.red_base));
         }
         smartRefreshLayout.setOnMultiPurposeListener(new SecondFloorMultiPurposeListener());
 //        recyclerView = rootView.findViewById( R.id.recycler_view );
