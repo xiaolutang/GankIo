@@ -38,6 +38,8 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     protected ImageView twoLevelContentImage;
     protected ImageView twoLevelImage;
 
+    private boolean isSecondFloor = false;
+
     @Override
     protected String getFragmentName() {
         return TAG;
@@ -60,8 +62,11 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     protected void initView(){
         smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
         String categoryId = getFragmentArguments().getString("category_id");
+        presenter = new BaseNewsPresenter(this,categoryId);
+        presenter.start();
         //二楼效果
         if("推荐".equals(categoryId)){
+            isSecondFloor = true;
             twoLevelHeader = new TwoLevelHeader(getContext());
             ClassicsHeader classicsHeader = new ClassicsHeader(getContext());
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -69,8 +74,10 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
             twoLevelContentImage = new ImageView(getContext());
             params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             twoLevelContentImage.setLayoutParams(params);
+            twoLevelContentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             twoLevelContentImage.setImageResource(R.drawable.image_secondfloor_content);
             twoLevelImage = new ImageView(getContext());
+            twoLevelImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             twoLevelImage.setLayoutParams(params);
             twoLevelImage.setImageResource(R.drawable.image_secondfloor);
@@ -140,6 +147,9 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
         @Override
         public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
+            if(!isSecondFloor){
+                return;
+            }
             twoLevelContentImage.setAlpha(1 - Math.min(percent, 1));
             twoLevelImage.setTranslationY(Math.min(offset - twoLevelImage.getHeight() + twoLevelImage.getHeight(), smartRefreshLayout.getLayout().getHeight() - twoLevelImage.getHeight()));
         }
