@@ -44,7 +44,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     protected void initView(){
         smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
-        recyclerView = rootView.findViewById( R.id.recycler_view );
+//        recyclerView = rootView.findViewById( R.id.recycler_view );
     }
 
     @Override
