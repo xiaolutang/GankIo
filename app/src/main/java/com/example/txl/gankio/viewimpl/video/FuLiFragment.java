@@ -51,7 +51,7 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
         return view;
     }
 
-    private void initView(){
+    protected void initView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
         StaggeredGridLayoutManager recyclerViewLayoutManager =
@@ -88,7 +88,7 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
         swiperefreshlayout.setEnabled( false );
     }
 
-    private void initData(){
+    protected void initData(){
         fuLiPresenter.getFuLiData( defaultCount, currentPage, this,true);
     }
 

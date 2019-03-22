@@ -24,11 +24,21 @@ public class NewsContract {
         void loadMoreFinish(JSONObject jsonObject,boolean hasMore);
 
         void loadMoreError();
+
+        /**
+         * 刷新二楼结束
+         * */
+        void secondFloorFinish(JSONObject jsonObject);
     }
 
     interface Presenter extends IBasePresenter {
         void refresh();
 
         void loadMore();
+
+        /**
+         * 刷新二楼
+         * */
+        void refreshSecondFloor(String categoryId);
     }
 }

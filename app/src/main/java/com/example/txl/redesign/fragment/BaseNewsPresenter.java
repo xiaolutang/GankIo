@@ -100,6 +100,11 @@ public class BaseNewsPresenter implements NewsContract.Presenter {
     }
 
     @Override
+    public void refreshSecondFloor(String categoryId) {
+
+    }
+
+    @Override
     public void start() {
         gankIoApi = ApiRetrofit.getGankIoApi();
     }

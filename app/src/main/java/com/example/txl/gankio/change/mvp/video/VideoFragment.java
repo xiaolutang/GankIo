@@ -56,7 +56,7 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
 
     }
 
-    private void initView(){
+    protected void initView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
 //        StaggeredGridLayoutManager recyclerViewLayoutManager =
@@ -120,7 +120,7 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
         Log.d( TAG,"onDestroy" );
     }
 
-    private void initData(){}
+    protected void initData(){}
 
     @Override
     protected String getFragmentName() {

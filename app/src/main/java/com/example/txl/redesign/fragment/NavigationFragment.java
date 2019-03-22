@@ -77,13 +77,6 @@ public class NavigationFragment extends BaseFragment {
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initView();
-        initData();
-    }
-
     protected void initView(){
         viewPager= rootView.findViewById(R.id.vp_navigation);
         CommonNavigator commonNavigator = new CommonNavigator(getContext());

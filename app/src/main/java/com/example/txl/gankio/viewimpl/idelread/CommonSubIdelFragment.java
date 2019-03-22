@@ -87,7 +87,7 @@ public class CommonSubIdelFragment extends BaseFragment implements IGetIdelReadV
         this.fragmentName = fragmentname;
     }
 
-    private void initView(){
+    protected void initView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation( LinearLayoutManager.VERTICAL);
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
@@ -100,6 +100,11 @@ public class CommonSubIdelFragment extends BaseFragment implements IGetIdelReadV
         idelReaderPresenter = new IdelReaderPresenter( getContext() );
         idelReaderPresenter.getIdelReaderSubCategory(category.getEn_name(),this  );
         swiperefreshlayout.setOnRefreshListener( this );
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     public void setRecyclerViewAdapter(CommonSubIdelReaderAdapter adapter){

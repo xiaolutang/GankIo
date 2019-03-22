@@ -60,14 +60,14 @@ public class IdelReadFragment extends BaseFragment implements SwipeRefreshLayout
         return view;
     }
 
-    private void initView(){
+    protected void initView(){
         myViewPagerAdapter = new MyViewPagerAdapter( getFragmentManager() );
         viewPager.setAdapter(myViewPagerAdapter) ;
         tableLayout.setupWithViewPager(viewPager,true);
         tableLayout.setTabTextColors(R.color.main_black ,ThemeUtils.getThemeColor() );
     }
 
-    private void initData(){
+    protected void initData(){
         idelReaderPresenter = new IdelReaderPresenter( getContext() );
 //        idelReaderPresenter.getIdelReaderSubCategory();
     }
