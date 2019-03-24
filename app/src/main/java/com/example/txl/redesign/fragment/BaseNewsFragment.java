@@ -1,10 +1,10 @@
 package com.example.txl.redesign.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +44,9 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     private ImageView topPlacerView;
 
     private boolean isSecondFloor = false;
+    private String categoryId;
+
+
 
     @Override
     protected String getFragmentName() {
@@ -67,7 +70,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     protected void initView(){
         topPlacerView = rootView.findViewById(R.id.view_top_placer);
         smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
-        String categoryId = getFragmentArguments().getString("category_id");
+        categoryId = getFragmentArguments().getString("category_id");
         presenter = new BaseNewsPresenter(this,categoryId);
         presenter.start();
         //二楼效果
@@ -91,11 +94,20 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
             twoLevelHeader.addView(twoLevelContentImage);
             twoLevelHeader.setRefreshHeader(classicsHeader);
             smartRefreshLayout.setRefreshHeader(twoLevelHeader);
-        }else {
-            topPlacerView.setBackgroundColor(getResources().getColor(R.color.red_base));
         }
         smartRefreshLayout.setOnMultiPurposeListener(new SecondFloorMultiPurposeListener());
 //        recyclerView = rootView.findViewById( R.id.recycler_view );
+    }
+
+    @Override
+    public int getNavigationBgAlpha() {
+        if(TextUtils.isEmpty( categoryId )){
+            categoryId = getFragmentArguments().getString("category_id","");
+        }
+        if(categoryId.equals( "推荐" )){
+            return 0x00;
+        }
+        return super.getNavigationBgAlpha();
     }
 
     @Override

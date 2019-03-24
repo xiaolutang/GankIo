@@ -1,5 +1,6 @@
 package com.example.txl.gankio.base;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,4 +50,20 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
     protected abstract void initView();
 
     protected abstract void initData();
+
+    /**
+     * 当被选中的时候导航的背景透明度,默认不透明
+     * */
+    public int getNavigationBgAlpha(){
+        return 0xff;
+    }
+
+    public void setViewBackgroundAlpha(View view, int alpha) {
+        if (view == null) return;
+
+        Drawable drawable = view.getBackground();
+        if (drawable != null) {
+            drawable.setAlpha(alpha);
+        }
+    }
 }

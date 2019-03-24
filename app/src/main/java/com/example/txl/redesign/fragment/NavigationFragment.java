@@ -2,6 +2,7 @@ package com.example.txl.redesign.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -78,8 +80,73 @@ public class NavigationFragment extends BaseFragment {
         return rootView;
     }
 
+    private int selectPosition = 0;
+
     protected void initView(){
         viewPager= rootView.findViewById(R.id.vp_navigation);
+        viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d( TAG, "onPageScrolled  position :" + position + "  positionOffset : " + positionOffset + "   positionOffsetPixels " + positionOffsetPixels );
+                int currentAlpha = categoryFragmentAdapter.getItem( selectPosition ).getNavigationBgAlpha();
+                int targetPosition;
+                int targetAlpha;
+                if (selectPosition == position) {//右滑与当前position相等
+                    targetPosition = position + 1;
+                    if (targetPosition >= categoryFragmentAdapter.getCount()
+                            || currentAlpha == categoryFragmentAdapter.getItem( targetPosition ).getNavigationBgAlpha()) {
+                        return;
+                    }
+                    targetAlpha = categoryFragmentAdapter.getItem( targetPosition ).getNavigationBgAlpha();//目标透明度
+                    if(targetAlpha > currentAlpha){//透明度增加
+                        targetAlpha = (int) (currentAlpha +(targetAlpha-currentAlpha)*positionOffset);
+                    }else {//透明度减小
+                        if(targetAlpha == 0){
+                            //目标透明度是0，向右滑的过程中百分比增大，透明度减小
+                            targetAlpha = (int) (currentAlpha * (1-positionOffset));
+                        }else {
+                            //目标透明度不是0，向右滑的过程中百分比增大，透明度增大
+                            targetAlpha = (int) (currentAlpha - (currentAlpha-targetAlpha)*positionOffset);
+                        }
+                    }
+                    setViewBackgroundAlpha( indicatorContainer, targetAlpha );
+                } else if (position == selectPosition - 1) {//左滑相对当前position小1
+                    targetPosition = position;
+                    if (targetPosition < 0
+                            || currentAlpha == categoryFragmentAdapter.getItem( targetPosition ).getNavigationBgAlpha()) {
+                        return;
+                    }
+                    targetAlpha = categoryFragmentAdapter.getItem( targetPosition ).getNavigationBgAlpha();
+                    if(targetAlpha > currentAlpha){
+                        targetAlpha = (int) (currentAlpha + (targetAlpha-currentAlpha)*(1-positionOffset));
+                    }else {
+                        if(targetAlpha == 0){
+                            //目标透明度是0，向右滑的过程中百分比增大，透明度减小
+                            targetAlpha = (int) (currentAlpha * positionOffset);
+                        }else {
+                            //目标透明度不是0，向右滑的过程中百分比增大，透明度增大
+                            targetAlpha = (int) (currentAlpha - (currentAlpha -targetAlpha)*(1-positionOffset));
+                        }
+                    }
+                    Log.d( TAG, "正在向左滑动 targetAlpha  透明度 。。。targetPosition  " + targetPosition + " targetAlpha  " + targetAlpha );
+                    setViewBackgroundAlpha( indicatorContainer, targetAlpha );
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d( TAG, "onPageSelected  position:  " + position );
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+//                Log.d( TAG,"onPageScrollStateChanged  state:  "+state );
+                if (state == ViewPager.SCROLL_STATE_DRAGGING) {//state有三种状态下文会将，当手指刚触碰屏幕时state的值为1，我们就在这个时候给mViewPagerIndex 赋值。
+
+                    selectPosition = viewPager.getCurrentItem();
+                }
+            }
+        } );
         CommonNavigator commonNavigator = new CommonNavigator(getContext());
         mCategoryMagicIndicator = rootView.findViewById(R.id.magic_indicator);
         linearIndicatorLeft = rootView.findViewById(R.id.linear_indicator_left);
@@ -136,6 +203,17 @@ public class NavigationFragment extends BaseFragment {
         categoryFragmentAdapter.setFragmentList(fragments);
         viewPager.setAdapter( categoryFragmentAdapter );
         indicatorNavigatorAdapter.notifyDataSetChanged();
+        setDefaultSelectFragment(0);
+    }
+
+    private void setDefaultSelectFragment(int index) {
+        if(categoryFragmentAdapter != null && index >= 0 && categoryFragmentAdapter.getCount()>index){
+            viewPager.setCurrentItem( index );
+
+            setViewBackgroundAlpha( indicatorContainer,categoryFragmentAdapter.getItem( index ).getNavigationBgAlpha() );
+        }
+
+
     }
 
     private List<BaseFragment> generateFragments(Navigation navigation){

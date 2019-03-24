@@ -1,6 +1,5 @@
 package com.example.txl.redesign;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
@@ -21,7 +20,7 @@ public class CategoryFragmentAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public BaseFragment getItem(int position) {
         if(position >= fragmentList.size()){
             return null;
         }
