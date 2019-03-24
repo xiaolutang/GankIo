@@ -9,20 +9,21 @@
         android:layout_height="match_parent" />
     <!--顶部导航背景-->
     <RelativeLayout
-        android:id="@+id/relative_top_navigation_container"
+        android:id="@+id/relative_top_navigation_bg_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/image_top_navigation_bg"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_top_navigation_height"
+            android:layout_height="wrap_content"
             android:src="@drawable/image_secondfloor"
             android:scaleType="centerCrop"/>
     </RelativeLayout>
+    <!--导航-->
     <LinearLayout
         android:id="@+id/linear_indicator_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_top_navigation_height"
+        android:layout_height="wrap_content"
         android:background="@color/red_base">
         <LinearLayout
             android:id="@+id/linear_indicator_left"
@@ -34,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/magic_indicator"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp_top_navigation_height"
             android:layout_weight="1"
             android:background="@color/transparent"/>
         <LinearLayout

@@ -38,10 +38,6 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     protected TwoLevelHeader twoLevelHeader;
     protected ImageView twoLevelContentImage;
     protected ImageView twoLevelImage;
-    /**
-     * 用来做顶部导航的背景
-     * */
-    private ImageView topPlacerView;
 
     private boolean isSecondFloor = false;
     private String categoryId;
@@ -68,7 +64,6 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     @Override
     protected void initView(){
-        topPlacerView = rootView.findViewById(R.id.view_top_placer);
         smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
         categoryId = getFragmentArguments().getString("category_id");
         presenter = new BaseNewsPresenter(this,categoryId);
@@ -84,12 +79,12 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
             params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             twoLevelContentImage.setLayoutParams(params);
             twoLevelContentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            twoLevelContentImage.setImageResource(R.drawable.image_secondfloor_content);
+
             twoLevelImage = new ImageView(getContext());
             twoLevelImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             twoLevelImage.setLayoutParams(params);
-            twoLevelImage.setImageResource(R.drawable.image_secondfloor);
+
             twoLevelHeader.addView(twoLevelImage);
             twoLevelHeader.addView(twoLevelContentImage);
             twoLevelHeader.setRefreshHeader(classicsHeader);

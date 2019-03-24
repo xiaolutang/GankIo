@@ -1,5 +1,6 @@
 package com.example.txl.gankio.base;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -65,5 +66,27 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
         if (drawable != null) {
             drawable.setAlpha(alpha);
         }
+    }
+
+    /**
+     * 设置内容到顶部的宽度
+     * */
+    public void setContentPadding(){
+
+    }
+
+    public static int getStatusHeight(Context context) {
+
+        int statusHeight = -1;
+        try {
+            Class<?> clazz = Class.forName("com.android.internal.R$dimen");
+            Object object = clazz.newInstance();
+            int height = Integer.parseInt(clazz.getField("status_bar_height")
+                    .get(object).toString());
+            statusHeight = context.getResources().getDimensionPixelSize(height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statusHeight;
     }
 }

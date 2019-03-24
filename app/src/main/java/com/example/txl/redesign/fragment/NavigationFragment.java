@@ -1,8 +1,6 @@
 package com.example.txl.redesign.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseFragment;
@@ -69,6 +67,11 @@ public class NavigationFragment extends BaseFragment {
      * */
     private LinearLayout indicatorContainer;
 
+    /**
+     * 二楼内容
+     * */
+    private RelativeLayout secondFloorContainer;
+
     private ViewPager viewPager;
     private String category;
     private CategoryFragmentAdapter categoryFragmentAdapter;
@@ -87,7 +90,6 @@ public class NavigationFragment extends BaseFragment {
         viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d( TAG, "onPageScrolled  position :" + position + "  positionOffset : " + positionOffset + "   positionOffsetPixels " + positionOffsetPixels );
                 int currentAlpha = categoryFragmentAdapter.getItem( selectPosition ).getNavigationBgAlpha();
                 int targetPosition;
                 int targetAlpha;
@@ -128,7 +130,6 @@ public class NavigationFragment extends BaseFragment {
                             targetAlpha = (int) (currentAlpha - (currentAlpha -targetAlpha)*(1-positionOffset));
                         }
                     }
-                    Log.d( TAG, "正在向左滑动 targetAlpha  透明度 。。。targetPosition  " + targetPosition + " targetAlpha  " + targetAlpha );
                     setViewBackgroundAlpha( indicatorContainer, targetAlpha );
                 }
             }
@@ -152,6 +153,7 @@ public class NavigationFragment extends BaseFragment {
         linearIndicatorLeft = rootView.findViewById(R.id.linear_indicator_left);
         linearIndicatorRight = rootView.findViewById(R.id.linear_indicator_right);
         indicatorContainer = rootView.findViewById(R.id.linear_indicator_container);
+        secondFloorContainer = rootView.findViewById(R.id.relative_top_navigation_bg_container );
         indicatorNavigatorAdapter = new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -186,6 +188,15 @@ public class NavigationFragment extends BaseFragment {
         commonNavigator.setAdapter(indicatorNavigatorAdapter);
         mCategoryMagicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(mCategoryMagicIndicator,viewPager);
+        int statusHeight = getStatusHeight( getContext() );
+        indicatorContainer.setPadding( 0, statusHeight,0,0);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
+        params.topMargin = (int) (statusHeight + getResources().getDimension( R.dimen.dp_top_navigation_height ));
+        Log.d( TAG,"|  topMargin "+params.topMargin +"   statusHeight  "+statusHeight);
+        viewPager.setLayoutParams( params );
+        params = (RelativeLayout.LayoutParams) secondFloorContainer.getLayoutParams();
+        params.height = (int) (statusHeight + getResources().getDimension( R.dimen.dp_top_navigation_height ));
+        secondFloorContainer.setLayoutParams( params );
     }
 
     protected void initData(){

@@ -230,6 +230,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     public void prepareDataFinish() {
         // FIXME: 2019/3/20 使用广告的模式进行修改
         Toast.makeText( this,"加载数据完成，可以滑动进入主页！",Toast.LENGTH_SHORT ).show();
+        gotoMain();
     }
 
     @Override
