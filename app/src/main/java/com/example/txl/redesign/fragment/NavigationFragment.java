@@ -252,4 +252,19 @@ public class NavigationFragment extends BaseFragment {
     protected String getFragmentName() {
         return null;
     }
+
+    public void onChildHeadMoving(boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight){
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) secondFloorContainer.getLayoutParams();
+        int statusHeight = getStatusHeight( getContext() );
+        params.height = (int) (statusHeight + getResources().getDimension( R.dimen.dp_top_navigation_height )+offset);
+        secondFloorContainer.setLayoutParams( params );
+        float alpha = 1-percent;
+        if(alpha<=0){
+            mCategoryMagicIndicator.setVisibility( View.GONE );
+        }else {
+            mCategoryMagicIndicator.setVisibility( View.VISIBLE );
+        }
+        mCategoryMagicIndicator.setAlpha( (1-percent) );
+        Log.d( TAG,"onChildHeadMoving" );
+    }
 }

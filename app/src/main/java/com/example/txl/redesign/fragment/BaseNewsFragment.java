@@ -3,6 +3,7 @@ package com.example.txl.redesign.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.example.txl.gankio.base.BaseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.header.TwoLevelHeader;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
@@ -165,8 +167,18 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
             if(!isSecondFloor){
                 return;
             }
-            twoLevelContentImage.setAlpha(1 - Math.min(percent, 1));
-            twoLevelImage.setTranslationY(Math.min(offset - twoLevelImage.getHeight() + twoLevelImage.getHeight(), smartRefreshLayout.getLayout().getHeight() - twoLevelImage.getHeight()));
+            Fragment fragment = getParentFragment();
+            if(fragment instanceof NavigationFragment){
+                NavigationFragment navigationFragment = (NavigationFragment) fragment;
+                navigationFragment.onChildHeadMoving( isDragging,percent,offset,headerHeight,maxDragHeight );
+            }
+//            twoLevelContentImage.setAlpha(1 - Math.min(percent, 1));
+//            twoLevelImage.setTranslationY(Math.min(offset - twoLevelImage.getHeight() + twoLevelImage.getHeight(), smartRefreshLayout.getLayout().getHeight() - twoLevelImage.getHeight()));
+        }
+
+        @Override
+        public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
+            super.onStateChanged( refreshLayout, oldState, newState );
         }
     }
 }

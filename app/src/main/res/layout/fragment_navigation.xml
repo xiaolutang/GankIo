@@ -3,10 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
     <!--顶部导航背景-->
     <RelativeLayout
         android:id="@+id/relative_top_navigation_bg_container"
@@ -19,6 +15,11 @@
             android:src="@drawable/image_secondfloor"
             android:scaleType="centerCrop"/>
     </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <!--导航-->
     <LinearLayout
         android:id="@+id/linear_indicator_container"
