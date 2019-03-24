@@ -2,8 +2,11 @@ package com.example.txl.redesign.fragment;
 
 import com.example.txl.redesign.IBasePresenter;
 import com.example.txl.redesign.IBaseView;
+import com.example.txl.redesign.model.NewsData;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Copyright (c) 2019, 唐小陆 All rights reserved.
@@ -13,7 +16,7 @@ import org.json.JSONObject;
  */
 public class NewsContract {
     interface View extends IBaseView<Presenter> {
-        void refreshFinish(JSONObject jsonObject,boolean hasMore);
+        void refreshFinish(List<NewsData> dataList, boolean hasMore);
 
         void refreshError();
 

@@ -14,24 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
-        <ScrollView
-            android:id="@+id/scrollView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never">
-            <FrameLayout
-                android:id="@+id/contentPanel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/image_taobao"/>
-            </FrameLayout>
-        </ScrollView>
+            android:layout_height="match_parent"/>
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

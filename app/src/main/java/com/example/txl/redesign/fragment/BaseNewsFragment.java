@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseFragment;
+import com.example.txl.redesign.dapter.BaseNewsAdapter;
+import com.example.txl.redesign.model.NewsData;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -23,6 +26,8 @@ import com.scwang.smartrefresh.layout.header.TwoLevelHeader;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 
 /**
@@ -44,6 +49,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     private boolean isSecondFloor = false;
     private String categoryId;
 
+    protected BaseNewsAdapter baseNewsAdapter;
 
 
     @Override
@@ -56,12 +62,6 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_base_news,container,false);
         return rootView;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated( view, savedInstanceState );
-        initView();
     }
 
     @Override
@@ -93,7 +93,11 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
             smartRefreshLayout.setRefreshHeader(twoLevelHeader);
         }
         smartRefreshLayout.setOnMultiPurposeListener(new SecondFloorMultiPurposeListener());
-//        recyclerView = rootView.findViewById( R.id.recycler_view );
+        recyclerView = rootView.findViewById( R.id.recycler_view );
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getContext(),LinearLayoutManager.VERTICAL ,false);
+        recyclerView.setLayoutManager( linearLayoutManager );
+        baseNewsAdapter = new BaseNewsAdapter( getContext() );
+        recyclerView.setAdapter( baseNewsAdapter );
     }
 
     @Override
@@ -109,11 +113,13 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     @Override
     protected void initData() {
-
+        presenter.refresh();
+        presenter.refreshSecondFloor( categoryId );
     }
 
     @Override
-    public void refreshFinish(JSONObject jsonObject, boolean hasMore) {
+    public void refreshFinish(List<NewsData> dataList, boolean hasMore) {
+        baseNewsAdapter.setNewsData( dataList );
         smartRefreshLayout.finishRefresh();
     }
 
