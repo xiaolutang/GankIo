@@ -3,11 +3,13 @@ package com.example.txl.redesign.dapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
+import com.example.txl.redesign.model.BaseNewsData;
 import com.example.txl.redesign.model.NewsData;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class BaseNewsAdapter extends RecyclerView.Adapter{
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d( "onCreateViewHolder  ",viewType +"");
         View itemView =  mInflater.inflate( R.layout.gank_io_base_news,parent,false );
         return new BaseNewsViewHolder( itemView );
     }
@@ -55,6 +58,11 @@ public class BaseNewsAdapter extends RecyclerView.Adapter{
             }
         } );
         viewHolder.unBindViewHolder(newsData.get( position ));
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return newsData.get( position ).getType();
     }
 
     @Override
