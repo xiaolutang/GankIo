@@ -1,12 +1,14 @@
 package com.example.txl.redesign.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,14 +49,10 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     protected ImageView twoLevelImage;
 
     private boolean isSecondFloor = false;
-    private String categoryId;
+    protected String categoryId;
 
     protected BaseNewsAdapter baseNewsAdapter;
 
-    /**
-     * RecyclerView Y方向的滚动距离
-     * */
-    private int recyclerViewDy;
 
     @Override
     protected String getFragmentName() {
@@ -74,79 +72,11 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
         categoryId = getFragmentArguments().getString("category_id");
         presenter = new BaseNewsPresenter(this,categoryId);
         presenter.start();
-        //二楼效果
-        if("推荐".equals(categoryId)){
-            isSecondFloor = true;
-            twoLevelHeader = new TwoLevelHeader(getContext());
-            ClassicsHeader classicsHeader = new ClassicsHeader(getContext());
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            classicsHeader.setLayoutParams(params);
-            twoLevelContentImage = new ImageView(getContext());
-            params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            twoLevelContentImage.setLayoutParams(params);
-            twoLevelContentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-            twoLevelImage = new ImageView(getContext());
-            twoLevelImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            twoLevelImage.setLayoutParams(params);
-
-            twoLevelHeader.addView(twoLevelImage);
-            twoLevelHeader.addView(twoLevelContentImage);
-            twoLevelHeader.setRefreshHeader(classicsHeader);
-            smartRefreshLayout.setRefreshHeader(twoLevelHeader);
-        }
-        smartRefreshLayout.setOnMultiPurposeListener(new SecondFloorMultiPurposeListener());
         recyclerView = rootView.findViewById( R.id.recycler_view );
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getContext(),LinearLayoutManager.VERTICAL ,false);
         recyclerView.setLayoutManager( linearLayoutManager );
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int scrollY = getScrollY(dy);
-                if(getNavigationBgAlpha() != navigationBgAlpha){
-
-                    Fragment fragment = getParentFragment();
-                    if(fragment instanceof NavigationFragment){
-                        NavigationFragment navigationFragment = (NavigationFragment) fragment;
-                        navigationFragment.setNavigationAlpha((scrollY*1.0f)/0xff);
-                    }
-                }
-            }
-        });
         baseNewsAdapter = new BaseNewsAdapter( getContext() );
         recyclerView.setAdapter( baseNewsAdapter );
-    }
-
-    /**
-     * 获取RecyclerView的Y方向的滑动距离
-     * */
-    public int getScrollY(int dy) {
-        recyclerViewDy += dy;
-        if(recyclerViewDy > 255){
-            return 255;
-        }
-        if(recyclerViewDy<0){
-            return 0;
-        }
-        return recyclerViewDy;
-    }
-
-    @Override
-    public int getNavigationBgAlpha() {
-        if(TextUtils.isEmpty( categoryId )){
-            categoryId = getFragmentArguments().getString("category_id","");
-        }
-        if(categoryId.equals( "推荐" )){
-            return 0x00;
-        }
-        return super.getNavigationBgAlpha();
     }
 
     @Override
@@ -188,41 +118,5 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     @Override
     public void setPresenter(NewsContract.Presenter presenter) {
 
-    }
-
-    /**
-     *
-     * */
-    class SecondFloorMultiPurposeListener extends SimpleMultiPurposeListener{
-        @Override
-        public void onRefresh(RefreshLayout refreshLayout) {
-            super.onRefresh(refreshLayout);
-            presenter.refresh();
-        }
-
-        @Override
-        public void onLoadMore(RefreshLayout refreshLayout) {
-            super.onLoadMore(refreshLayout);
-            presenter.loadMore();
-        }
-
-        @Override
-        public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
-            if(!isSecondFloor){
-                return;
-            }
-            Fragment fragment = getParentFragment();
-            if(fragment instanceof NavigationFragment){
-                NavigationFragment navigationFragment = (NavigationFragment) fragment;
-                navigationFragment.onChildHeadMoving( isDragging,percent,offset,headerHeight,maxDragHeight );
-            }
-//            twoLevelContentImage.setAlpha(1 - Math.min(percent, 1));
-//            twoLevelImage.setTranslationY(Math.min(offset - twoLevelImage.getHeight() + twoLevelImage.getHeight(), smartRefreshLayout.getLayout().getHeight() - twoLevelImage.getHeight()));
-        }
-
-        @Override
-        public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
-            super.onStateChanged( refreshLayout, oldState, newState );
-        }
     }
 }

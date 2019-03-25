@@ -9,7 +9,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -113,7 +112,7 @@ public class NavigationFragment extends BaseFragment {
                             targetAlpha = (int) (currentAlpha - (currentAlpha-targetAlpha)*positionOffset);
                         }
                     }
-                    setViewBackgroundAlpha( indicatorContainer, targetAlpha );
+                    setNavigationAlpha( targetAlpha );
                 } else if (position == selectPosition - 1) {//左滑相对当前position小1
                     targetPosition = position;
                     if (targetPosition < 0
@@ -132,7 +131,7 @@ public class NavigationFragment extends BaseFragment {
                             targetAlpha = (int) (currentAlpha - (currentAlpha -targetAlpha)*(1-positionOffset));
                         }
                     }
-                    setViewBackgroundAlpha( indicatorContainer, targetAlpha );
+                    setNavigationAlpha(  targetAlpha );
                 }
             }
 
@@ -223,7 +222,7 @@ public class NavigationFragment extends BaseFragment {
         if(categoryFragmentAdapter != null && index >= 0 && categoryFragmentAdapter.getCount()>index){
             viewPager.setCurrentItem( index );
 
-            setViewBackgroundAlpha( indicatorContainer,categoryFragmentAdapter.getItem( index ).getNavigationBgAlpha() );
+            setNavigationAlpha( categoryFragmentAdapter.getItem( index ).getNavigationBgAlpha() );
         }
 
 
@@ -237,7 +236,12 @@ public class NavigationFragment extends BaseFragment {
             case Navigation.CATEGORY_MAIN:
                 MainNavigation mainNavigation = (MainNavigation) navigation;
                 for (String item : mainNavigation.getChildList()) {
-                    BaseNewsFragment baseNewsFragment = new BaseNewsFragment();
+                    BaseNewsFragment baseNewsFragment;
+                    if(item.equals( "推荐" )){
+                        baseNewsFragment = new SecondFloorNewsFragment();
+                    }else {
+                        baseNewsFragment  = new BaseNewsFragment();
+                    }
                     Bundle bundle = new Bundle();
                     bundle.putCharSequence("category_id",item);
                     baseNewsFragment.setArguments(bundle);
@@ -275,8 +279,7 @@ public class NavigationFragment extends BaseFragment {
         Log.d( TAG,"onChildHeadMoving" );
     }
 
-    public void setNavigationAlpha(float alpha){
-        Log.d(TAG,"setNavigationAlpha     "  +alpha);
-        setViewBackgroundAlpha( indicatorContainer, (int) alpha);
+    public void setNavigationAlpha(int alpha){
+        setViewBackgroundAlpha( indicatorContainer, alpha);
     }
 }

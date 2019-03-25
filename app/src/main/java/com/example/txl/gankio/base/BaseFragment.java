@@ -3,6 +3,7 @@ package com.example.txl.gankio.base;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -59,6 +60,10 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
      * */
     public int getNavigationBgAlpha(){
         return navigationBgAlpha;
+    }
+
+    public void setNavigationBgAlpha(@IntRange(from=0,to=255) int navigationBgAlpha){
+        this.navigationBgAlpha = navigationBgAlpha;
     }
 
     public void setViewBackgroundAlpha(View view, int alpha) {
