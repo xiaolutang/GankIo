@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
-import com.example.txl.redesign.model.BaseNewsData;
 import com.example.txl.redesign.model.NewsData;
 
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
  * date：2019/3/24
  * description：
  */
-public class BaseNewsAdapter extends RecyclerView.Adapter{
+public class BaseNewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder>{
 
     protected Context context;
     List<NewsData> newsData;
@@ -39,16 +38,15 @@ public class BaseNewsAdapter extends RecyclerView.Adapter{
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseNewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d( "onCreateViewHolder  ",viewType +"");
         View itemView =  mInflater.inflate( R.layout.gank_io_base_news,parent,false );
         return new BaseNewsViewHolder( itemView );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        BaseNewsViewHolder viewHolder = (BaseNewsViewHolder) holder;
-        viewHolder.itemView.setOnClickListener( new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull BaseNewsViewHolder holder, int position) {
+        holder.itemView.setOnClickListener( new View.OnClickListener() {
             final int currentPosition = position;
             @Override
             public void onClick(View v) {
@@ -57,7 +55,7 @@ public class BaseNewsAdapter extends RecyclerView.Adapter{
                 }
             }
         } );
-        viewHolder.unBindViewHolder(newsData.get( position ));
+        holder.onBindViewHolder(newsData.get( position ));
     }
 
     @Override

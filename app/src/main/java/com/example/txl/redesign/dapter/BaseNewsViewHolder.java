@@ -44,7 +44,7 @@ public class BaseNewsViewHolder extends RecyclerView.ViewHolder{
         recyclerViewImages = itemView.findViewById( R.id.recycler_view_images );
     }
 
-    public void unBindViewHolder(NewsData newsData){
+    public void onBindViewHolder(NewsData newsData){
         tvTitle.setText( newsData.getDesc() );
         tvAuthor.setText( "作者："+newsData.getWho() );
         checkBoxLike.setChecked( false );
