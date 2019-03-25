@@ -19,6 +19,8 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
 
     protected String fragmentName;
 
+    private int navigationBgAlpha = 0xff;
+
     /**
      * 根布局
      * */
@@ -56,7 +58,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
      * 当被选中的时候导航的背景透明度,默认不透明
      * */
     public int getNavigationBgAlpha(){
-        return 0xff;
+        return navigationBgAlpha;
     }
 
     public void setViewBackgroundAlpha(View view, int alpha) {

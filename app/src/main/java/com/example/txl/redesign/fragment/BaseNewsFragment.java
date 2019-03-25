@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.dapter.BaseNewsAdapter;
 import com.example.txl.redesign.model.NewsData;
+import com.example.txl.redesign.widget.GankSmartRefreshLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -36,7 +38,7 @@ import java.util.List;
  */
 public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
-    protected SmartRefreshLayout smartRefreshLayout;
+    protected GankSmartRefreshLayout smartRefreshLayout;
     protected RecyclerView recyclerView;
     protected NewsContract.Presenter presenter;
     /**
@@ -51,6 +53,10 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     protected BaseNewsAdapter baseNewsAdapter;
 
+    /**
+     * RecyclerView Y方向的滚动距离
+     * */
+    private int recyclerViewDy;
 
     @Override
     protected String getFragmentName() {
@@ -96,8 +102,27 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
         recyclerView = rootView.findViewById( R.id.recycler_view );
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getContext(),LinearLayoutManager.VERTICAL ,false);
         recyclerView.setLayoutManager( linearLayoutManager );
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                getScrollY(dy);
+            }
+        });
         baseNewsAdapter = new BaseNewsAdapter( getContext() );
         recyclerView.setAdapter( baseNewsAdapter );
+    }
+
+    /**
+     * 获取RecyclerView的Y方向的滑动距离
+     * */
+    public int getScrollY(int dy) {
+        return recyclerViewDy += dy;
     }
 
     @Override

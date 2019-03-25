@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshContent;
 
 /**
  * @author TXL
@@ -27,5 +28,9 @@ public class GankSmartRefreshLayout extends SmartRefreshLayout {
 
     private void init(Context context){
 
+    }
+
+    public RefreshContent getRefreshContent(){
+        return mRefreshContent;
     }
 }
