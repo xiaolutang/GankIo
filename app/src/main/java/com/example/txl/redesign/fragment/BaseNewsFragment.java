@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.dapter.BaseNewsAdapter;
 import com.example.txl.redesign.model.NewsData;
 import com.example.txl.redesign.widget.GankSmartRefreshLayout;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
@@ -111,7 +109,15 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                getScrollY(dy);
+                int scrollY = getScrollY(dy);
+                if(getNavigationBgAlpha() != navigationBgAlpha){
+
+                    Fragment fragment = getParentFragment();
+                    if(fragment instanceof NavigationFragment){
+                        NavigationFragment navigationFragment = (NavigationFragment) fragment;
+                        navigationFragment.setNavigationAlpha((scrollY*1.0f)/0xff);
+                    }
+                }
             }
         });
         baseNewsAdapter = new BaseNewsAdapter( getContext() );
@@ -122,7 +128,14 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
      * 获取RecyclerView的Y方向的滑动距离
      * */
     public int getScrollY(int dy) {
-        return recyclerViewDy += dy;
+        recyclerViewDy += dy;
+        if(recyclerViewDy > 255){
+            return 255;
+        }
+        if(recyclerViewDy<0){
+            return 0;
+        }
+        return recyclerViewDy;
     }
 
     @Override

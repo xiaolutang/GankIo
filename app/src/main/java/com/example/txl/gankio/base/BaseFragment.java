@@ -19,7 +19,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
 
     protected String fragmentName;
 
-    private int navigationBgAlpha = 0xff;
+    protected int navigationBgAlpha = 0xff;
 
     /**
      * 根布局

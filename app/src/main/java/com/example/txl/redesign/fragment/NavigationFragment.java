@@ -274,4 +274,9 @@ public class NavigationFragment extends BaseFragment {
         }
         Log.d( TAG,"onChildHeadMoving" );
     }
+
+    public void setNavigationAlpha(float alpha){
+        Log.d(TAG,"setNavigationAlpha     "  +alpha);
+        setViewBackgroundAlpha( indicatorContainer, (int) alpha);
+    }
 }
