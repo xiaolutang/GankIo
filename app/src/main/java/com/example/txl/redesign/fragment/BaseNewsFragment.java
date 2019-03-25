@@ -98,7 +98,6 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     @Override
     protected void initData() {
         presenter.refresh();
-        presenter.refreshSecondFloor( categoryId );
     }
 
     @Override

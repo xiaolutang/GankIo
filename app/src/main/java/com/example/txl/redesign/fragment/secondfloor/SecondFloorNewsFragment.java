@@ -76,7 +76,7 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
                 int scrollY = getScrollY(dy);
                 Log.d(TAG,"scrollY  ++++++++ "+scrollY);
                 Fragment fragment = getParentFragment();
-                if(fragment instanceof NavigationFragment){
+                if(fragment instanceof NavigationFragment && scrollY != 0){
                     NavigationFragment navigationFragment = (NavigationFragment) fragment;
                     navigationFragment.setNavigationAlpha(scrollY);
                     navigationBgAlpha = scrollY;
