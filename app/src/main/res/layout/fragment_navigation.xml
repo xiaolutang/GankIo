@@ -15,7 +15,7 @@
             android:src="@drawable/image_secondfloor"
             android:scaleType="centerCrop"/>
     </RelativeLayout>
-    <android.support.v4.view.ViewPager
+    <com.example.txl.redesign.widget.GankViewPager
         android:id="@+id/vp_navigation"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

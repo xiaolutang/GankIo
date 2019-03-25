@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -22,6 +23,7 @@ import com.example.txl.redesign.CategoryFragmentAdapter;
 import com.example.txl.redesign.data.MainNavigation;
 import com.example.txl.redesign.data.Navigation;
 import com.example.txl.redesign.utils.TextSelectUtils;
+import com.example.txl.redesign.widget.GankViewPager;
 import com.example.txl.redesign.widget.ScaleTransitionPagerTitleView;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -72,7 +74,7 @@ public class NavigationFragment extends BaseFragment {
      * */
     private RelativeLayout secondFloorContainer;
 
-    private ViewPager viewPager;
+    private GankViewPager viewPager;
     private String category;
     private CategoryFragmentAdapter categoryFragmentAdapter;
 
@@ -265,6 +267,11 @@ public class NavigationFragment extends BaseFragment {
             mCategoryMagicIndicator.setVisibility( View.VISIBLE );
         }
         mCategoryMagicIndicator.setAlpha( (1-percent) );
+        if(percent > 0.9){
+            viewPager.setAllowLeftRightTouch(false);
+        }else {
+            viewPager.setAllowLeftRightTouch(true);
+        }
         Log.d( TAG,"onChildHeadMoving" );
     }
 }
