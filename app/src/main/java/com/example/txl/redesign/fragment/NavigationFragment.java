@@ -21,6 +21,7 @@ import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.CategoryFragmentAdapter;
 import com.example.txl.redesign.data.MainNavigation;
 import com.example.txl.redesign.data.Navigation;
+import com.example.txl.redesign.fragment.secondfloor.SecondFloorNewsFragment;
 import com.example.txl.redesign.utils.TextSelectUtils;
 import com.example.txl.redesign.widget.GankViewPager;
 import com.example.txl.redesign.widget.ScaleTransitionPagerTitleView;

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
-import com.example.txl.redesign.model.NewsData;
+import com.example.txl.redesign.data.model.NewsData;
 
 import java.util.List;
 
@@ -58,10 +58,7 @@ public class BaseNewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder>{
         holder.onBindViewHolder(newsData.get( position ));
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return newsData.get( position ).getType();
-    }
+
 
     @Override
     public int getItemCount() {

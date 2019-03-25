@@ -1,4 +1,4 @@
-package com.example.txl.redesign.model;
+package com.example.txl.redesign.data.model;
 
 import java.util.List;
 

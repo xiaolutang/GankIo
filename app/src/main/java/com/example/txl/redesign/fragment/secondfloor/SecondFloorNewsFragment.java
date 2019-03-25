@@ -1,4 +1,4 @@
-package com.example.txl.redesign.fragment;
+package com.example.txl.redesign.fragment.secondfloor;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -8,12 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.txl.redesign.fragment.BaseNewsFragment;
+import com.example.txl.redesign.fragment.NavigationFragment;
+import com.example.txl.redesign.fragment.NewsContract;
+import com.example.txl.redesign.data.model.NewsData;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.header.TwoLevelHeader;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
+
+import java.util.List;
 
 /**
  * Copyright (c) 2019, 唐小陆 All rights reserved.
@@ -26,6 +32,12 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
      * RecyclerView Y方向的滚动距离
      * */
     private int recyclerViewDy;
+
+    @Override
+    public void refreshFinish(List<NewsData> dataList, boolean hasMore) {
+        baseNewsAdapter.setNewsData( dataList );
+        smartRefreshLayout.finishRefresh(true);
+    }
 
     @Override
     protected void initView() {
@@ -49,6 +61,7 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
         twoLevelHeader.addView(twoLevelImage);
         twoLevelHeader.addView(twoLevelContentImage);
         twoLevelHeader.setRefreshHeader(classicsHeader);
+        smartRefreshLayout.setEnableLoadMore( false );
         smartRefreshLayout.setRefreshHeader(twoLevelHeader);
         smartRefreshLayout.setOnMultiPurposeListener(new SecondFloorMultiPurposeListener());
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -70,6 +83,11 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
                 }
             }
         });
+    }
+
+    @Override
+    protected NewsContract.Presenter getPresenter() {
+        return new SecondFloorPresenter(this, categoryId );
     }
 
     /**

@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.txl.gankio.R;
-import com.example.txl.redesign.model.NewsData;
+import com.example.txl.redesign.data.model.NewsData;
 import com.example.txl.redesign.utils.GlideUtils;
 
 import java.util.List;

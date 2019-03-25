@@ -1,4 +1,4 @@
-package com.example.txl.redesign.model;
+package com.example.txl.redesign.data.model;
 
 /**
  * Copyright (c) 2019, 唐小陆 All rights reserved.
@@ -35,25 +35,8 @@ public class BaseNewsData {
         this.type = mType;
     }
 
-    public int getType(){
-        switch (type){
-            case TYPE_ANDROID:
-                return NewsType.TYPE_ANDROID.ordinal();
-            case TYPE_APP:
-                return NewsType.TYPE_APP.ordinal();
-            case TYPE_IOS:
-                return NewsType.TYPE_IOS.ordinal();
-            case TYPE_VIDEO:
-                return NewsType.TYPE_VIDEO.ordinal();
-            case TYPE_FRONT:
-                return NewsType.TYPE_FRONT.ordinal();
-            case TYPE_EXPANDING_RESUORCES:
-                return NewsType.TYPE_EXPANDING_RESUORCES.ordinal();
-            case TYPE_XIA_TUI_JIAN:
-                return NewsType.TYPE_XIA_TUI_JIAN.ordinal();
-            case TYPE_FU_LI:
-                return NewsType.TYPE_FU_LI.ordinal();
-        }
-        return 0;
+    public String getType(){
+
+        return type;
     }
 }
