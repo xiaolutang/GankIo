@@ -15,7 +15,10 @@ import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.dapter.BaseNewsAdapter;
 import com.example.txl.redesign.data.model.NewsData;
 import com.example.txl.redesign.widget.GankSmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.TwoLevelHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONObject;
 
@@ -38,7 +41,6 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     protected ImageView twoLevelContentImage;
     protected ImageView twoLevelImage;
 
-    private boolean isSecondFloor = false;
     protected String categoryId;
 
     protected BaseNewsAdapter baseNewsAdapter;
@@ -63,10 +65,30 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
         presenter = getPresenter();
         presenter.start();
         recyclerView = rootView.findViewById( R.id.recycler_view );
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getContext(),LinearLayoutManager.VERTICAL ,false);
+        RecyclerView.LayoutManager linearLayoutManager = getLayoutManager();
         recyclerView.setLayoutManager( linearLayoutManager );
-        baseNewsAdapter = new BaseNewsAdapter( getContext() );
+        baseNewsAdapter = getAdapter();
         recyclerView.setAdapter( baseNewsAdapter );
+        smartRefreshLayout.setOnRefreshListener( new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                presenter.refresh();
+            }
+        } );
+        smartRefreshLayout.setOnLoadMoreListener( new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                presenter.loadMore();
+            }
+        } );
+    }
+
+    protected RecyclerView.LayoutManager getLayoutManager() {
+        return new LinearLayoutManager( getContext(),LinearLayoutManager.VERTICAL ,false);
+    }
+
+    protected BaseNewsAdapter getAdapter() {
+        return new BaseNewsAdapter( getContext() );
     }
 
     protected NewsContract.Presenter getPresenter(){
@@ -91,12 +113,13 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
     }
 
     @Override
-    public void loadMoreFinish(JSONObject jsonObject, boolean hasMore) {
+    public void loadMoreFinish(List<NewsData> dataList, boolean hasMore) {
         if(!hasMore){
             smartRefreshLayout.finishLoadMoreWithNoMoreData();
         }else {
             smartRefreshLayout.finishLoadMore();
         }
+        baseNewsAdapter.addNewsData( dataList );
     }
 
     @Override

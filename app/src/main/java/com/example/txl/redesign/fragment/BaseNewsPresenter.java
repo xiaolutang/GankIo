@@ -1,11 +1,17 @@
 package com.example.txl.redesign.fragment;
 
 import com.example.txl.redesign.api.ApiRetrofit;
+import com.example.txl.redesign.data.model.BaseNewsResult;
 import com.example.txl.redesign.data.model.NewsData;
 import com.example.txl.redesign.data.model.TodayResult;
+import com.example.txl.redesign.utils.AppExecutors;
 import com.example.txl.redesign.utils.GlobalCacheUtils;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -44,15 +50,9 @@ public class BaseNewsPresenter implements NewsContract.Presenter {
     @Override
     public void refresh() {
         pageIndex = 1;
-
-    }
-
-    @Override
-    public void loadMore() {
-        pageIndex++;
-        Observable<JSONObject> observable = getDataObservable();
+        Observable<JSONObject> observable  = gankIoApi.getFuLi(categoryId,count,pageIndex);
         observable .subscribeOn( Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe( new Observer<JSONObject>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -65,7 +65,57 @@ public class BaseNewsPresenter implements NewsContract.Presenter {
                             view.refreshError();
                             return;
                         }
-                        view.loadMoreFinish(jsonObject,true);
+
+                        Gson gson = new Gson();
+                        BaseNewsResult baseNewsResult = gson.fromJson( jsonObject.toString(), BaseNewsResult.class );
+                        AppExecutors.getInstance().mainThread().execute( new Runnable() {
+                            @Override
+                            public void run() {
+                                view.refreshFinish(baseNewsResult.getResults(),true);
+                            }
+                        } );
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.loadMoreError();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                } );
+    }
+
+    @Override
+    public void loadMore() {
+        pageIndex++;
+        Observable<JSONObject> observable = gankIoApi.getFuLi(categoryId,count,pageIndex);
+        observable .subscribeOn( Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( new Observer<JSONObject>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(JSONObject jsonObject) {
+                        if(jsonObject.optBoolean( "error" )){
+                            view.loadMoreError();
+                            return;
+                        }
+
+                        Gson gson = new Gson();
+                        BaseNewsResult baseNewsResult = gson.fromJson( jsonObject.toString(), BaseNewsResult.class );
+                        AppExecutors.getInstance().mainThread().execute( new Runnable() {
+                            @Override
+                            public void run() {
+                                view.loadMoreFinish(baseNewsResult.getResults(),true);
+                            }
+                        } );
 
                     }
 
@@ -89,25 +139,5 @@ public class BaseNewsPresenter implements NewsContract.Presenter {
     @Override
     public void start() {
         gankIoApi = ApiRetrofit.getGankIoApi();
-    }
-
-    private Observable<JSONObject> getDataObservable() {
-        Observable<JSONObject> objectObservable = null;
-        switch (categoryId){
-            case "推荐":
-                requestKey = "today";
-                objectObservable = gankIoApi.getTodayGanHuo();
-                break;
-            case GlobalCacheUtils.KEY_FU_LI:
-            case GlobalCacheUtils.KEY_ANDROID:
-            case GlobalCacheUtils.KEY_IOS:
-            case GlobalCacheUtils.KEY_EXPANDING_RESUORCES:
-            case GlobalCacheUtils.KEY_FRONT:
-            case GlobalCacheUtils.KEY_ALL:
-                requestKey = categoryId;
-                objectObservable = gankIoApi.getFuLi(requestKey,count,pageIndex);
-                break;
-        }
-        return objectObservable;
     }
 }

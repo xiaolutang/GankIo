@@ -21,7 +21,9 @@ import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.CategoryFragmentAdapter;
 import com.example.txl.redesign.data.MainNavigation;
 import com.example.txl.redesign.data.Navigation;
+import com.example.txl.redesign.fragment.fuli.FuliFragment;
 import com.example.txl.redesign.fragment.secondfloor.SecondFloorNewsFragment;
+import com.example.txl.redesign.utils.GlobalCacheUtils;
 import com.example.txl.redesign.utils.TextSelectUtils;
 import com.example.txl.redesign.widget.GankViewPager;
 import com.example.txl.redesign.widget.ScaleTransitionPagerTitleView;
@@ -240,6 +242,8 @@ public class NavigationFragment extends BaseFragment {
                     BaseNewsFragment baseNewsFragment;
                     if(item.equals( "推荐" )){
                         baseNewsFragment = new SecondFloorNewsFragment();
+                    }else if(GlobalCacheUtils.KEY_FU_LI.equals( item )){
+                        baseNewsFragment = new FuliFragment();
                     }else {
                         baseNewsFragment  = new BaseNewsFragment();
                     }

@@ -19,6 +19,7 @@ public class NewsData extends BaseNewsData {
     private String who;
     private String readability;
     private List<String> images;
+    private String ganhuo_id;
 
     public String get_id() {
         return _id;
@@ -98,5 +99,13 @@ public class NewsData extends BaseNewsData {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public String getGanhuo_id() {
+        return ganhuo_id;
+    }
+
+    public void setGanhuo_id(String ganhuo_id) {
+        this.ganhuo_id = ganhuo_id;
     }
 }

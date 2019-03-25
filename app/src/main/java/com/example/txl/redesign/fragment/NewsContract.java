@@ -21,10 +21,10 @@ public class NewsContract {
         void refreshError();
 
         /**
-         * @param jsonObject 接口返回数据
+         * @param dataList 接口返回数据
          * @param hasMore 是否还有更多
          * */
-        void loadMoreFinish(JSONObject jsonObject,boolean hasMore);
+        void loadMoreFinish(List<NewsData> dataList,boolean hasMore);
 
         void loadMoreError();
 

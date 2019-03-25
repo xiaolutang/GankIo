@@ -109,18 +109,6 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
      * */
     class SecondFloorMultiPurposeListener extends SimpleMultiPurposeListener {
         @Override
-        public void onRefresh(RefreshLayout refreshLayout) {
-            super.onRefresh(refreshLayout);
-            presenter.refresh();
-        }
-
-        @Override
-        public void onLoadMore(RefreshLayout refreshLayout) {
-            super.onLoadMore(refreshLayout);
-            presenter.loadMore();
-        }
-
-        @Override
         public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
             Fragment fragment = getParentFragment();
             if(fragment instanceof NavigationFragment){

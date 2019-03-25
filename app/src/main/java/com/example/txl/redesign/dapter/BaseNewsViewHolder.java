@@ -34,6 +34,10 @@ public class BaseNewsViewHolder extends RecyclerView.ViewHolder{
 
     public BaseNewsViewHolder(View itemView) {
         super( itemView );
+        initView( itemView );
+    }
+
+    protected void initView(View itemView) {
         tvTitle = itemView.findViewById( R.id.tv_article_title );
         tvAuthor = itemView.findViewById( R.id.tv_article_author );
         checkBoxLike = itemView.findViewById( R.id.rb_article_zan );

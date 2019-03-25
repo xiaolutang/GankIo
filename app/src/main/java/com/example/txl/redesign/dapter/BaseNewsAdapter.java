@@ -23,7 +23,7 @@ public class BaseNewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder>{
 
     protected Context context;
     List<NewsData> newsData;
-    private LayoutInflater mInflater;
+    protected LayoutInflater mInflater;
     private OnItemClickListener itemClickListener;
 
     public BaseNewsAdapter(Context context) {
@@ -58,7 +58,10 @@ public class BaseNewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder>{
         holder.onBindViewHolder(newsData.get( position ));
     }
 
-
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType( position );
+    }
 
     @Override
     public int getItemCount() {
@@ -81,6 +84,9 @@ public class BaseNewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder>{
         if(this.newsData == null){
             this.newsData = newsData;
             notifyDataSetChanged();
+            return;
+        }
+        if(newsData == null){
             return;
         }
         this.newsData.addAll( newsData );
