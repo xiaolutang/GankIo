@@ -1,4 +1,4 @@
-package com.example.txl.gankio;
+package com.example.txl.redesign;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,6 +8,9 @@ import com.example.txl.gankio.cache.AppDataLoader;
 import com.example.txl.gankio.change.mvp.data.User;
 import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.utils.image.utils.ImageLoader;
+import com.example.txl.redesign.api.XmlyApi;
+import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
+import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
@@ -44,6 +47,7 @@ public class App extends Application {
         _appMainHandler = new Handler(this.getMainLooper());
         mImageLoader = ImageLoader.build( this );
         mAppDataLoader = AppDataLoader.build( this );
+        XmlyApi.initXMFM(this);
         ThemeUtils.init();
     }
 

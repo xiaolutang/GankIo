@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.change.mvp.data.VideoBean;
 import com.example.txl.gankio.player.SimpleAndroidPlayer;

@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.bean.CommonIdelReaderSubclassification;
 import com.example.txl.gankio.viewimpl.IdelInfoActivity;

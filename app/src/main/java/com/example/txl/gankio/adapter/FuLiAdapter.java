@@ -24,7 +24,7 @@ import com.example.txl.gankio.utils.image.utils.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.txl.gankio.App.*;
+import static com.example.txl.redesign.App.*;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

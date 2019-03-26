@@ -23,13 +23,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.utils.NetUtils;
-import com.example.txl.gankio.viewimpl.MainActivity;
 import com.example.txl.gankio.widget.BannerAdapter;
 
 import org.json.JSONObject;

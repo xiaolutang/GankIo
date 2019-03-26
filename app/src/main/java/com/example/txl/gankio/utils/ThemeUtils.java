@@ -6,7 +6,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.gankio.R;
 
 /**

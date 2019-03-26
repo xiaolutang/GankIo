@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.base.BaseFragment;

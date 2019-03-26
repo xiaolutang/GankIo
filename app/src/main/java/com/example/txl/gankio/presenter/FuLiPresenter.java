@@ -3,7 +3,7 @@ package com.example.txl.gankio.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.redesign.api.ApiFactory;
 import com.example.txl.gankio.base.BasePresenter;
 import com.example.txl.gankio.bean.BeautyGirls;

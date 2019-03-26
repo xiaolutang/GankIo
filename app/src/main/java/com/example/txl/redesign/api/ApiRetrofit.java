@@ -1,6 +1,6 @@
 package com.example.txl.redesign.api;
 
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.gankio.utils.NetUtils;
 
 import org.json.JSONObject;

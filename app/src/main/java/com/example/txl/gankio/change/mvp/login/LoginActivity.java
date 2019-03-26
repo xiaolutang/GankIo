@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.txl.gankio.App;
+import com.example.txl.redesign.App;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.change.mvp.data.User;

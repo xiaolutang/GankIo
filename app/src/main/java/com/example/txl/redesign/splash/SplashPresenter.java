@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.txl.redesign.api.ApiRetrofit;
+import com.example.txl.redesign.api.XmlyApi;
 import com.example.txl.redesign.utils.AppExecutors;
 import com.example.txl.redesign.utils.GlobalCacheUtils;
 
