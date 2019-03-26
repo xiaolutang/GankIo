@@ -1,4 +1,4 @@
-package com.example.txl.redesign.dapter;
+package com.example.txl.redesign.adpter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.example.txl.redesign.dapter;
+package com.example.txl.redesign.adpter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

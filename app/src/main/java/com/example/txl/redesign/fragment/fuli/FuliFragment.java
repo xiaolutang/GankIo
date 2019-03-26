@@ -1,12 +1,10 @@
 package com.example.txl.redesign.fragment.fuli;
 
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-import com.example.txl.redesign.dapter.BaseNewsAdapter;
-import com.example.txl.redesign.dapter.FuLiAdapter;
+import com.example.txl.redesign.adpter.BaseNewsAdapter;
+import com.example.txl.redesign.adpter.FuLiAdapter;
 import com.example.txl.redesign.fragment.BaseNewsFragment;
 
 /**

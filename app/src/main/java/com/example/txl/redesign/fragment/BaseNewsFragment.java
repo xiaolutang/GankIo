@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseFragment;
-import com.example.txl.redesign.dapter.BaseNewsAdapter;
+import com.example.txl.redesign.adpter.BaseNewsAdapter;
 import com.example.txl.redesign.data.model.NewsData;
 import com.example.txl.redesign.widget.GankSmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

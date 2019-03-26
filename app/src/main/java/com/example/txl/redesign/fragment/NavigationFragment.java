@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseFragment;
-import com.example.txl.redesign.CategoryFragmentAdapter;
+import com.example.txl.redesign.adpter.CategoryFragmentAdapter;
 import com.example.txl.redesign.data.MainNavigation;
 import com.example.txl.redesign.data.Navigation;
 import com.example.txl.redesign.fragment.fuli.FuliFragment;
