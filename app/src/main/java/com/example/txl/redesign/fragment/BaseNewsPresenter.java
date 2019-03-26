@@ -2,16 +2,10 @@ package com.example.txl.redesign.fragment;
 
 import com.example.txl.redesign.api.ApiRetrofit;
 import com.example.txl.redesign.data.model.BaseNewsResult;
-import com.example.txl.redesign.data.model.NewsData;
-import com.example.txl.redesign.data.model.TodayResult;
-import com.example.txl.redesign.utils.AppExecutors;
-import com.example.txl.redesign.utils.GlobalCacheUtils;
-import com.google.gson.Gson;
+import com.example.txl.redesign.utils.RxJavaUtils;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -51,35 +45,29 @@ public class BaseNewsPresenter implements NewsContract.Presenter {
     public void refresh() {
         pageIndex = 1;
         Observable<JSONObject> observable  = gankIoApi.getFuLi(categoryId,count,pageIndex);
-        observable .subscribeOn( Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe( new Observer<JSONObject>() {
+        observable .compose(RxJavaUtils.gsonTransform(BaseNewsResult.class))
+                .subscribeOn( Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( new Observer<BaseNewsResult>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(JSONObject jsonObject) {
-                        if(jsonObject.optBoolean( "error" )){
+                    public void onNext(BaseNewsResult baseNewsResult) {
+                        if(baseNewsResult.isError()){
                             view.refreshError();
                             return;
                         }
 
-                        Gson gson = new Gson();
-                        BaseNewsResult baseNewsResult = gson.fromJson( jsonObject.toString(), BaseNewsResult.class );
-                        AppExecutors.getInstance().mainThread().execute( new Runnable() {
-                            @Override
-                            public void run() {
-                                view.refreshFinish(baseNewsResult.getResults(),true);
-                            }
-                        } );
+                        view.refreshFinish(baseNewsResult.getResults(),true);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        view.loadMoreError();
+                        view.refreshError();
                     }
 
                     @Override
@@ -93,30 +81,22 @@ public class BaseNewsPresenter implements NewsContract.Presenter {
     public void loadMore() {
         pageIndex++;
         Observable<JSONObject> observable = gankIoApi.getFuLi(categoryId,count,pageIndex);
-        observable .subscribeOn( Schedulers.io())
+        observable .compose(RxJavaUtils.gsonTransform(BaseNewsResult.class))
+                .subscribeOn( Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( new Observer<JSONObject>() {
+                .subscribe( new Observer<BaseNewsResult>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(JSONObject jsonObject) {
-                        if(jsonObject.optBoolean( "error" )){
+                    public void onNext(BaseNewsResult baseNewsResult) {
+                        if(baseNewsResult.isError()){
                             view.loadMoreError();
                             return;
                         }
-
-                        Gson gson = new Gson();
-                        BaseNewsResult baseNewsResult = gson.fromJson( jsonObject.toString(), BaseNewsResult.class );
-                        AppExecutors.getInstance().mainThread().execute( new Runnable() {
-                            @Override
-                            public void run() {
-                                view.loadMoreFinish(baseNewsResult.getResults(),true);
-                            }
-                        } );
-
+                        view.loadMoreFinish(baseNewsResult.getResults(),true);
                     }
 
                     @Override
