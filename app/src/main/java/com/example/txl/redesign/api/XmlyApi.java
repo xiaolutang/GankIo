@@ -31,11 +31,11 @@ public class XmlyApi {
     }
 
     public static void getXmlyCategorys(Map<String, String> specificParams, IDataCallBack<CategoryList> callback){
-        Log.d(TAG,"getXmlyCategorys thread  "+Thread.currentThread());
+        Log.d(TAG,"getXmlyCategorys thread  "+Thread.currentThread().getName());
         CommonRequest.getCategories(specificParams, new IDataCallBack<CategoryList>() {
             @Override
             public void onSuccess(@Nullable CategoryList categoryList) {
-                Log.d(TAG,"onSuccess thread  "+Thread.currentThread());
+                Log.d(TAG,"onSuccess thread  "+Thread.currentThread().getName());
             }
 
             @Override
