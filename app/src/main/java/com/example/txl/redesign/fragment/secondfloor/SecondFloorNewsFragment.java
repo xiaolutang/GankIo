@@ -4,10 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.txl.gankio.R;
 import com.example.txl.redesign.fragment.BaseNewsFragment;
 import com.example.txl.redesign.fragment.NavigationFragment;
 import com.example.txl.redesign.fragment.NewsContract;
@@ -35,6 +37,7 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
 
     @Override
     public void refreshFinish(List<NewsData> dataList, boolean hasMore) {
+        rootView.findViewById( R.id.loading_root ).setVisibility( View.GONE );
         baseNewsAdapter.setNewsData( dataList );
         smartRefreshLayout.finishRefresh(true);
     }

@@ -72,6 +72,8 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
         smartRefreshLayout.setOnRefreshListener( new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                //抽取到baseRefresh
+                rootView.findViewById( R.id.loading_root ).setVisibility( View.VISIBLE );
                 presenter.refresh();
             }
         } );
@@ -102,6 +104,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     @Override
     public void refreshFinish(List<NewsData> dataList, boolean hasMore) {
+        rootView.findViewById( R.id.loading_root ).setVisibility( View.GONE );
         baseNewsAdapter.setNewsData( dataList );
         smartRefreshLayout.finishRefresh();
     }
