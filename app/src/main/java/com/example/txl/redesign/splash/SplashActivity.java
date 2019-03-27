@@ -38,6 +38,7 @@ import java.util.List;
 
 
 import com.example.txl.redesign.main.NewStyleMainActivity;
+import com.example.txl.redesign.utils.AppExecutors;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 
@@ -71,6 +72,17 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
         checkNetState();
         initView();
         checkUpdate();
+        AppExecutors.getInstance().diskIO().execute( new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.loadLibrary("xmopendatacrypto");
+                } catch (Exception var1) {
+                    Toast.makeText( SplashActivity.this,"xmopendatacrypto加载出错",Toast.LENGTH_SHORT ).show();
+                    Log.d( TAG,"xmopendatacrypto加载出错" );
+                }
+            }
+        } );
     }
 
     private void gotoMain() {

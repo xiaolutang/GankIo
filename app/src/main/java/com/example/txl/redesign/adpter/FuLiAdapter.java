@@ -47,7 +47,7 @@ public class FuLiAdapter extends BaseNewsAdapter {
         @Override
         public void onBindViewHolder(NewsData newsData) {
 
-            GlideUtils.loadImage( context,newsData.getUrl(),imageView, ContextCompat.getDrawable( context,R.drawable.image_secondfloor ) );
+            GlideUtils.loadImage( context,newsData.getUrl(),imageView,true );
         }
     }
 }

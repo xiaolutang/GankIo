@@ -31,7 +31,6 @@ public class BaseNewsPresenter implements NewsContract.Presenter {
 
     protected NewsContract.View view;
     protected String categoryId ;
-    protected String  requestKey;
 
     protected ApiRetrofit.GankIoApi gankIoApi;
 

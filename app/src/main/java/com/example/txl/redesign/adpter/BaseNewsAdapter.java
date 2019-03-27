@@ -2,9 +2,7 @@ package com.example.txl.redesign.adpter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,21 +17,14 @@ import java.util.List;
  * date：2019/3/24
  * description：
  */
-public class BaseNewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder>{
-
-    protected Context context;
-    List<NewsData> newsData;
-    protected LayoutInflater mInflater;
-    private OnItemClickListener itemClickListener;
+public class BaseNewsAdapter extends BaseAdapter<NewsData,BaseNewsViewHolder>{
 
     public BaseNewsAdapter(Context context) {
         this(context,null);
     }
 
     public BaseNewsAdapter(Context context, List<NewsData> newsData) {
-        mInflater= LayoutInflater.from( context );
-        this.context = context;
-        this.newsData = newsData;
+        super(context,newsData);
     }
 
     @NonNull
@@ -51,49 +42,15 @@ public class BaseNewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder>{
             @Override
             public void onClick(View v) {
                 if(itemClickListener != null){
-                    itemClickListener.onItemClick( v,currentPosition,newsData.get( currentPosition ) );
+                    itemClickListener.onItemClick( v,currentPosition,listData.get( currentPosition ) );
                 }
             }
         } );
-        holder.onBindViewHolder(newsData.get( position ));
+        holder.onBindViewHolder(listData.get( position ));
     }
 
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType( position );
-    }
-
-    @Override
-    public int getItemCount() {
-        if(newsData == null){
-            return 0;
-        }
-        return newsData.size();
-    }
-
-    public List<NewsData> getNewsData() {
-        return newsData;
-    }
-
-    public void setNewsData(List<NewsData> newsData) {
-        this.newsData = newsData;
-        notifyDataSetChanged();
-    }
-
-    public void addNewsData(List<NewsData> newsData){
-        if(this.newsData == null){
-            this.newsData = newsData;
-            notifyDataSetChanged();
-            return;
-        }
-        if(newsData == null){
-            return;
-        }
-        this.newsData.addAll( newsData );
-        notifyDataSetChanged();
-    }
-
-    public interface OnItemClickListener{
-        void onItemClick(View view, int position,NewsData newsData);
     }
 }
