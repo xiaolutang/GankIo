@@ -32,6 +32,7 @@ public abstract class BaseAdapter<D,T extends RecyclerView.ViewHolder> extends R
     public BaseAdapter(Context context, List<D> listData) {
         this.context = context;
         this.listData = listData;
+        mInflater = LayoutInflater.from( context );
     }
 
 
