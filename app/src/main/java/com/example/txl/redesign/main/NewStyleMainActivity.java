@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class NewStyleMainActivity extends BaseActivity {
 
+    private int lastSelectIndex = -1;
     List<BaseFragment> fragmentList = new ArrayList<>();
     RadioButton radioButton;
 
@@ -35,13 +36,24 @@ public class NewStyleMainActivity extends BaseActivity {
         initView();
     }
 
-    private void changeFragment(BaseFragment fragment) {
-
+    private void changeFragment(int index) {
+        if(index == lastSelectIndex){
+            return;
+        }
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        fragmentManager.executePendingTransactions();
-        transaction.replace(R.id.fl_main_page_content, fragment,fragment.getFragmentName());
+        if(lastSelectIndex != -1){
+            transaction.hide(fragmentList.get(lastSelectIndex));
+        }
+        BaseFragment fragment = fragmentList.get(index);
+        if(!fragment.isAdded()){
+            transaction.add(R.id.fl_main_page_content,fragment,fragment.getFragmentName());
+        }else {
+            transaction.show(fragment);
+        }
+        transaction.commit();
         transaction.commitAllowingStateLoss();
+        lastSelectIndex = index;
     }
 
     private void initFragment(){
@@ -71,20 +83,20 @@ public class NewStyleMainActivity extends BaseActivity {
         radioButton = findViewById(R.id.rb_first);
         radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
-                changeFragment(fragmentList.get(0));
+                changeFragment(0);
             }
         });
         radioButton.setChecked(true);
         radioButton = findViewById(R.id.rb_second);
         radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
-                changeFragment(fragmentList.get(1));
+                changeFragment(1);
             }
         });
         radioButton = findViewById(R.id.rb_third);
         radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
-                changeFragment(fragmentList.get(2));
+                changeFragment(2);
             }
         });
     }
