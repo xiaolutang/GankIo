@@ -78,7 +78,7 @@ public class CommonSubIdelFragment extends BaseFragment implements IGetIdelReadV
 
 
     @Override
-    protected String getFragmentName() {
+    public String getFragmentName() {
         Log.d( TAG, "getFragmentName  "+fragmentName);
         return fragmentName;
     }

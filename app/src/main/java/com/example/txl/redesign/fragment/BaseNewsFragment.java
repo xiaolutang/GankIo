@@ -47,7 +47,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
 
     @Override
-    protected String getFragmentName() {
+    public String getFragmentName() {
         return TAG;
     }
 

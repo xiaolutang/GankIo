@@ -32,7 +32,7 @@ public abstract class BaseRefreshFragment<A extends BaseAdapter,T extends IRefre
     protected A adapter;
 
     @Override
-    protected String getFragmentName() {
+    public String getFragmentName() {
         return TAG;
     }
 

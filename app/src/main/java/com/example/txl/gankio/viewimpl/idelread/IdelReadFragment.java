@@ -73,7 +73,7 @@ public class IdelReadFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    protected String getFragmentName() {
+    public String getFragmentName() {
         return "闲读";
     }
 

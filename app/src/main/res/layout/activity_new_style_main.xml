@@ -25,6 +25,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/red_base">
             <RadioButton
+                android:id="@+id/rb_first"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -35,6 +36,7 @@
                 android:drawablePadding="@dimen/dp_2"
                 android:textColor="@color/common_text_select"/>
             <RadioButton
+                android:id="@+id/rb_second"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -45,6 +47,7 @@
                 android:drawablePadding="@dimen/dp_2"
                 android:textColor="@color/common_text_select"/>
             <RadioButton
+                android:id="@+id/rb_third"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

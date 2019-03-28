@@ -25,7 +25,7 @@ import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
 public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> implements FmContract.View{
     private boolean loadCategoryError = false;
     @Override
-    protected String getFragmentName() {
+    public String getFragmentName() {
         return TAG;
     }
 

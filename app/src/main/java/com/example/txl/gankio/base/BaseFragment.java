@@ -37,7 +37,7 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
         super.onPause();
     }
 
-    protected abstract String getFragmentName();
+    public abstract String getFragmentName();
 
     protected Bundle getFragmentArguments()
     {

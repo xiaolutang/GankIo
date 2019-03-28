@@ -260,8 +260,8 @@ public class NavigationFragment extends BaseFragment {
 
 
     @Override
-    protected String getFragmentName() {
-        return null;
+    public String getFragmentName() {
+        return TAG;
     }
 
     public void onChildHeadMoving(boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight){

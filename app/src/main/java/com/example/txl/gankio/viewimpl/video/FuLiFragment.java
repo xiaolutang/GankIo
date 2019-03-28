@@ -93,7 +93,7 @@ public class FuLiFragment extends BaseFragment implements IGetFuLiData,SwipeRefr
     }
 
     @Override
-    protected String getFragmentName() {
+    public String getFragmentName() {
         return "休息视频";
     }
 

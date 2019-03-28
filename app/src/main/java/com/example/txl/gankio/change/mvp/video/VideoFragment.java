@@ -123,7 +123,7 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
     protected void initData(){}
 
     @Override
-    protected String getFragmentName() {
+    public String getFragmentName() {
         return "所有数据";
     }
 
