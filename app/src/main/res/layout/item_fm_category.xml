@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/dp_15">
     <ImageView
         android:id="@+id/image_fm_category_icon"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,5 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="@dimen/sp_12"/>
+        android:textSize="@dimen/sp_12"
+        android:layout_marginTop="@dimen/dp_6"/>
 </android.support.constraint.ConstraintLayout>

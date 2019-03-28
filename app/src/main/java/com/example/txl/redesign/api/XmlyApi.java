@@ -7,6 +7,7 @@ import android.util.Log;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
+import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
 
 import java.util.Map;
@@ -32,5 +33,9 @@ public class XmlyApi {
 
     public static void getXmlyCategorys(Map<String, String> specificParams, IDataCallBack<CategoryList> callback){
         CommonRequest.getCategories(specificParams, callback);
+    }
+
+    public static void getAlbumList(Map<String, String> specificParams, IDataCallBack<AlbumList> callback){
+        CommonRequest.getAlbumList(specificParams, callback);
     }
 }

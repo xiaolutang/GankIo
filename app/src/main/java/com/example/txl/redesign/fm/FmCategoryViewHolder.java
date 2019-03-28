@@ -2,6 +2,7 @@ package com.example.txl.redesign.fm;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -30,7 +31,8 @@ public class FmCategoryViewHolder extends XmlyFmViewHolder {
     public FmCategoryViewHolder(View itemView) {
         super( itemView );
         recyclerView = itemView.findViewById(R.id.recycler_item_fm_category);
-        recyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager( itemView.getContext(),2,GridLayoutManager.HORIZONTAL,false );
+        recyclerView.setLayoutManager(gridLayoutManager);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class FmCategoryViewHolder extends XmlyFmViewHolder {
 
         @Override
         public void onBindViewHolder(int position, Category data) {
-            GlideUtils.loadImage( imageIcon.getContext(),data.getCoverUrlMiddle(),imageIcon, true);
+            GlideUtils.loadImage( imageIcon.getContext(),data.getCoverUrlLarge(),imageIcon, true);
             tvName.setText( data.getCategoryName() );
         }
     }

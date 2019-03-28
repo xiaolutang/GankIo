@@ -1,20 +1,13 @@
 package com.example.txl.redesign.fm;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.txl.gankio.R;
 import com.example.txl.redesign.fragment.BaseRefreshFragment;
-import com.jaeger.library.StatusBarUtil;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
 
 import java.util.ArrayList;
@@ -26,7 +19,7 @@ import java.util.List;
  * date：2019/3/27
  * description：
  */
-public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> implements FmContract.View{
+public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> implements FmContract.View<AlbumList>{
     private boolean loadCategoryError = false;
     @Override
     public String getFragmentName() {
@@ -48,6 +41,8 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
         return new FmPresenter(this);
     }
 
+
+
     @Override
     protected void initData() {
         presenter.getFmCategory();
@@ -57,6 +52,7 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
     protected void initView() {
         super.initView();
         rootView.setPadding(0,getStatusHeight(getContext()),0,0);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
     }
 
     @Override
@@ -77,23 +73,41 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
     }
 
     @Override
-    public void onRefreshSuccess() {
-
+    public void onRefreshSuccess(AlbumList albumList) {
+        List<XmlyFmData> list = new ArrayList<>(  );
+        if(albumList != null){
+            for (Album album:albumList.getAlbums()){
+                XmlyFmData xmlyFmData = new XmlyFmData( XmlyFmData.TYPE_ALBUN_ITEM );
+                xmlyFmData.setAlbum( album );
+                list.add( xmlyFmData );
+            }
+        }
+        adapter.addNewsData( list );
+        smartRefreshLayout.finishRefresh();
     }
 
     @Override
     public void onRefreshFailed() {
-
+        smartRefreshLayout.finishRefresh();
     }
 
     @Override
-    public void onLoadMoreSuccess() {
-
+    public void onLoadMoreSuccess(AlbumList albumList,boolean hasMore) {
+        List<XmlyFmData> list = new ArrayList<>(  );
+        if(albumList != null){
+            for (Album album:albumList.getAlbums()){
+                XmlyFmData xmlyFmData = new XmlyFmData( XmlyFmData.TYPE_ALBUN_ITEM );
+                xmlyFmData.setAlbum( album );
+                list.add( xmlyFmData );
+            }
+        }
+        adapter.addNewsData( list );
+        smartRefreshLayout.finishLoadMore();
     }
 
     @Override
     public void onLoadMoreFailed() {
-
+        smartRefreshLayout.finishLoadMore();
     }
 
     @Override

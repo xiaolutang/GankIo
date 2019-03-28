@@ -30,8 +30,11 @@ public class FMAdapter extends BaseAdapter<XmlyFmData, BaseViewHolder> {
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(XmlyFmData.TYPE_CATEGORY_LIST == viewType){
-            return new FmCategoryViewHolder( mInflater.inflate( R.layout.item_fm_categories,parent,false ) );
+        switch (viewType){
+            case XmlyFmData.TYPE_CATEGORY_LIST:
+                return new FmCategoryViewHolder( mInflater.inflate( R.layout.item_fm_categories,parent,false ) );
+            case XmlyFmData.TYPE_ALBUN_ITEM:
+                return new FmAlbumViewHolder( mInflater.inflate( R.layout.item_fm_album,parent,false ) );
         }
        return null;
     }
@@ -44,6 +47,6 @@ public class FMAdapter extends BaseAdapter<XmlyFmData, BaseViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        return listData.get( position ).getType();
     }
 }

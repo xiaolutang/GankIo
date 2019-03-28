@@ -11,17 +11,16 @@ import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
  * description：
  */
 public interface FmContract {
-    interface View extends IRefreshView<Presenter> {
+    interface View<D> extends IRefreshView<Presenter,D> {
         void onCategorySuccess(CategoryList categoryList);
         void onCategoryFailed();
-        void onRefreshSuccess();
+        void onRefreshSuccess(D data);
         void onRefreshFailed();
-        void onLoadMoreSuccess();
+        void onLoadMoreSuccess(D data,boolean hasMore);
         void onLoadMoreFailed();
     }
 
     interface Presenter extends IRefreshPresenter {
-        void getAlbumList();
         void getFmCategory();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.txl.redesign.fm;
 
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
 
 /**
@@ -8,7 +9,8 @@ import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
  */
 public class XmlyFmData {
     public static final int TYPE_CATEGORY_LIST = 0;
-
+    public static final int TYPE_CATEGORY_ITEM = 1;
+    public static final int TYPE_ALBUN_ITEM = 2;
 
     public XmlyFmData(int type) {
         this.type = type;
@@ -18,7 +20,10 @@ public class XmlyFmData {
      * 数据类型
      * */
     private int type;
+
     private CategoryList categoryList;
+
+    private Album album;
 
     public int getType(){
         return type;
@@ -34,5 +39,13 @@ public class XmlyFmData {
 
     public void setCategoryList(CategoryList categoryList) {
         this.categoryList = categoryList;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 }
