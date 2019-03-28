@@ -14,6 +14,7 @@ import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.data.MainNavigation;
 import com.example.txl.redesign.fm.FmFragment;
 import com.example.txl.redesign.fragment.NavigationFragment;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,12 @@ public class NewStyleMainActivity extends BaseActivity {
         }
         transaction.commitAllowingStateLoss();
         lastSelectIndex = index;
+        if (fragment instanceof FmFragment) {
+            //状态栏字体是黑色
+            StatusBarUtil.setLightMode(this);
+        } else {
+            StatusBarUtil.setDarkMode(this);
+        }
     }
 
     private void initFragment(){

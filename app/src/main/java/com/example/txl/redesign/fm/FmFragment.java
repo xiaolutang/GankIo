@@ -115,8 +115,4 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
         presenter.loadMore();
     }
 
-    @Override
-    public void setStatusBar() {
-//        StatusBarUtil.setTransparent(getActivity());
-    }
 }

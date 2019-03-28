@@ -32,7 +32,6 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        setStatusBar();
     }
 
     @Override
@@ -96,9 +95,5 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
             e.printStackTrace();
         }
         return statusHeight;
-    }
-
-    public void setStatusBar(){
-
     }
 }
