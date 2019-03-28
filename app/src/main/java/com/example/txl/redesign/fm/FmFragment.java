@@ -33,7 +33,7 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate( R.layout.fragment_base_news,container,false);
+        rootView = inflater.inflate( R.layout.fragment_base_refresh,container,false);
         return rootView;
     }
 

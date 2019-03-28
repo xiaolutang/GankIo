@@ -40,8 +40,12 @@ public abstract class BaseRefreshFragment<A extends BaseAdapter,T extends IRefre
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_base_news,container,false);
+        rootView = inflater.inflate(getLayoutRes(),container,false);
         return rootView;
+    }
+
+    protected int getLayoutRes(){
+        return R.layout.fragment_base_refresh;
     }
 
     @Override

@@ -30,12 +30,6 @@ public class BaseNewsFragment extends BaseRefreshFragment<BaseNewsAdapter,NewsCo
         return TAG;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_base_news,container,false);
-        return rootView;
-    }
 
     @Override
     protected void initView(){
