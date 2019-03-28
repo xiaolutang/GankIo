@@ -7,9 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -22,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name="com.example.txl.redesign.album.AlbumListActivity"></activity>
         <activity android:name=".viewimpl.MainActivity" />
         <activity android:name=".viewimpl.IdelInfoActivity" />
         <activity android:name="com.example.txl.redesign.splash.SplashActivity">
@@ -43,7 +42,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".change.mvp.about.AboutActivity"></activity>
+        <activity android:name=".change.mvp.about.AboutActivity" />
         <activity android:name="com.example.txl.redesign.main.NewStyleMainActivity" />
     </application>
 
