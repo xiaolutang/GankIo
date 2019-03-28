@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.example.txl.gankio.R;
 import com.example.txl.redesign.adpter.BaseAdapter;
-import com.ximalaya.ting.android.opensdk.model.category.Category;
+import com.example.txl.redesign.adpter.BaseViewHolder;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * date：2019/3/27
  * description：
  */
-public class FMAdapter<T> extends BaseAdapter<T, FmViewHolder> {
+public class FMAdapter extends BaseAdapter<XmlyFmData, BaseViewHolder> {
 
     public FMAdapter(Context context) {
         super( context );
@@ -29,14 +29,21 @@ public class FMAdapter<T> extends BaseAdapter<T, FmViewHolder> {
 
     @NonNull
     @Override
-    public FmViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FmViewHolder( mInflater.inflate( R.layout.item_fm_category,parent,false ) );
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(XmlyFmData.TYPE_CATEGORY_LIST == viewType){
+            return new FmCategoryViewHolder( mInflater.inflate( R.layout.item_fm_categories,parent,false ) );
+        }
+       return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FmViewHolder holder, int position) {
-        holder.onBindViewHolder( (Category) listData.get( position ) );
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.onBindViewHolder(position,getNewsData().get(position) );
     }
 
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 }

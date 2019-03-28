@@ -1,7 +1,7 @@
 package com.example.txl.redesign.fm;
 
-import com.example.txl.redesign.IBaseView;
 import com.example.txl.redesign.IRefreshPresenter;
+import com.example.txl.redesign.IRefreshView;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
 
 /**
@@ -11,9 +11,13 @@ import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
  * description：
  */
 public interface FmContract {
-    interface View extends IBaseView<Presenter> {
+    interface View extends IRefreshView<Presenter> {
         void onCategorySuccess(CategoryList categoryList);
         void onCategoryFailed();
+        void onRefreshSuccess();
+        void onRefreshFailed();
+        void onLoadMoreSuccess();
+        void onLoadMoreFailed();
     }
 
     interface Presenter extends IRefreshPresenter {

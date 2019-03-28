@@ -9,10 +9,14 @@ import android.view.View;
  * date：2019/3/25
  * description：
  */
-public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder<D> extends RecyclerView.ViewHolder {
     public BaseViewHolder(View itemView) {
         super( itemView );
     }
 
-    protected abstract void onBindViewHolder(int position);
+    /**
+     * @param position 位置
+     * @param data 对应的数据
+     * */
+    public abstract void onBindViewHolder(int position,D data);
 }

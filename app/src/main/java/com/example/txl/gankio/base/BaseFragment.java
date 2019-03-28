@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+
+
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
@@ -26,6 +28,12 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
      * 根布局
      * */
     protected View rootView;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setStatusBar();
+    }
 
     @Override
     public void onResume() {
@@ -75,13 +83,6 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
         }
     }
 
-    /**
-     * 设置内容到顶部的宽度
-     * */
-    public void setContentPadding(){
-
-    }
-
     public static int getStatusHeight(Context context) {
 
         int statusHeight = -1;
@@ -95,5 +96,9 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
             e.printStackTrace();
         }
         return statusHeight;
+    }
+
+    public void setStatusBar(){
+
     }
 }
