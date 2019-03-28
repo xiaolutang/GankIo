@@ -4,15 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.example.txl.gankio.R;
 import com.example.txl.redesign.fragment.BaseNewsFragment;
 import com.example.txl.redesign.fragment.NavigationFragment;
-import com.example.txl.redesign.fragment.NewsContract;
 import com.example.txl.redesign.data.model.NewsData;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -30,6 +27,13 @@ import java.util.List;
  * description：有二楼效果的fragment
  */
 public class SecondFloorNewsFragment extends BaseNewsFragment {
+
+    /**
+     * 二楼效果
+     * */
+    protected TwoLevelHeader twoLevelHeader;
+    protected ImageView twoLevelContentImage;
+    protected ImageView twoLevelImage;
     /**
      * RecyclerView Y方向的滚动距离
      * */
@@ -37,9 +41,9 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
 
     @Override
     public void refreshFinish(List<NewsData> dataList, boolean hasMore) {
-        rootView.findViewById( R.id.loading_root ).setVisibility( View.GONE );
-        baseNewsAdapter.setNewsData( dataList );
+        adapter.setNewsData( dataList );
         smartRefreshLayout.finishRefresh(true);
+        closeLoadingView();
     }
 
     @Override
@@ -89,8 +93,8 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
     }
 
     @Override
-    protected NewsContract.Presenter getPresenter() {
-        return new SecondFloorPresenter(this, categoryId );
+    protected SecondFloorPresenter getPresenter() {
+        return new SecondFloorPresenter(this,categoryId);
     }
 
     /**

@@ -8,19 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.adpter.BaseNewsAdapter;
 import com.example.txl.redesign.data.model.NewsData;
-import com.example.txl.redesign.widget.GankSmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.TwoLevelHeader;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -29,21 +20,9 @@ import java.util.List;
  * @author TXL
  * description :
  */
-public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
-
-    protected GankSmartRefreshLayout smartRefreshLayout;
-    protected RecyclerView recyclerView;
-    protected NewsContract.Presenter presenter;
-    /**
-     * 二楼效果
-     * */
-    protected TwoLevelHeader twoLevelHeader;
-    protected ImageView twoLevelContentImage;
-    protected ImageView twoLevelImage;
+public class BaseNewsFragment extends BaseRefreshFragment<BaseNewsAdapter,NewsContract.Presenter> implements NewsContract.View{
 
     protected String categoryId;
-
-    protected BaseNewsAdapter baseNewsAdapter;
 
 
     @Override
@@ -60,29 +39,14 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     @Override
     protected void initView(){
-        smartRefreshLayout = rootView.findViewById( R.id.smart_refresh_layout );
         categoryId = getFragmentArguments().getString("category_id");
-        presenter = getPresenter();
-        presenter.start();
-        recyclerView = rootView.findViewById( R.id.recycler_view );
-        RecyclerView.LayoutManager linearLayoutManager = getLayoutManager();
-        recyclerView.setLayoutManager( linearLayoutManager );
-        baseNewsAdapter = getAdapter();
-        recyclerView.setAdapter( baseNewsAdapter );
-        smartRefreshLayout.setOnRefreshListener( new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                //抽取到baseRefresh
-                rootView.findViewById( R.id.loading_root ).setVisibility( View.VISIBLE );
-                presenter.refresh();
-            }
-        } );
-        smartRefreshLayout.setOnLoadMoreListener( new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                presenter.loadMore();
-            }
-        } );
+        super.initView();
+    }
+
+    @Override
+    protected void onRefresh() {
+        rootView.findViewById( R.id.loading_root ).setVisibility( View.VISIBLE );
+        presenter.refresh();
     }
 
     protected RecyclerView.LayoutManager getLayoutManager() {
@@ -93,7 +57,7 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
         return new BaseNewsAdapter( getContext() );
     }
 
-    protected NewsContract.Presenter getPresenter(){
+    protected BaseNewsPresenter getPresenter(){
         return new BaseNewsPresenter(this,categoryId);
     }
 
@@ -104,9 +68,9 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
 
     @Override
     public void refreshFinish(List<NewsData> dataList, boolean hasMore) {
-        rootView.findViewById( R.id.loading_root ).setVisibility( View.GONE );
-        baseNewsAdapter.setNewsData( dataList );
+        adapter.setNewsData( dataList );
         smartRefreshLayout.finishRefresh();
+        closeLoadingView();
     }
 
     @Override
@@ -121,17 +85,12 @@ public class BaseNewsFragment extends BaseFragment implements NewsContract.View{
         }else {
             smartRefreshLayout.finishLoadMore();
         }
-        baseNewsAdapter.addNewsData( dataList );
+        adapter.addNewsData( dataList );
     }
 
     @Override
     public void loadMoreError() {
         smartRefreshLayout.finishLoadMore();
-    }
-
-    @Override
-    public void secondFloorFinish(JSONObject jsonObject) {
-
     }
 
     @Override

@@ -51,7 +51,6 @@ public class NewStyleMainActivity extends BaseActivity {
         }else {
             transaction.show(fragment);
         }
-        transaction.commit();
         transaction.commitAllowingStateLoss();
         lastSelectIndex = index;
     }

@@ -12,9 +12,10 @@ import android.widget.Toast;
 
 import com.example.txl.gankio.R;
 import com.example.txl.redesign.fragment.BaseRefreshFragment;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright (c) 2019, 唐小陆 All rights reserved.
@@ -37,22 +38,6 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
     }
 
     @Override
-    protected void initView() {
-        super.initView();
-        smartRefreshLayout.setOnRefreshListener( new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                if(loadCategoryError){
-                    presenter.getFmCategory();
-                }else {
-                    presenter.refresh();
-                }
-            }
-        } );
-        presenter.getFmCategory();
-    }
-
-    @Override
     protected FMAdapter getAdapter() {
         return new FMAdapter( getContext() );
     }
@@ -69,13 +54,15 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
 
     @Override
     protected void initData() {
-
+        presenter.getFmCategory();
     }
 
     @Override
     public void onCategorySuccess(CategoryList categoryList) {
         loadCategoryError = false;
-        adapter.addNewsData( categoryList.getCategories() );
+        List<CategoryList> categoryLists = new ArrayList<>();
+        categoryLists.add(categoryList);
+        adapter.addNewsData( categoryLists);
     }
 
     @Override
@@ -87,5 +74,19 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
     @Override
     public void setPresenter(FmContract.Presenter presenter) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        if(loadCategoryError){
+            presenter.getFmCategory();
+        }else {
+            presenter.refresh();
+        }
+    }
+
+    @Override
+    public void onLoadMore() {
+        presenter.loadMore();
     }
 }

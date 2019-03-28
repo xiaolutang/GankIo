@@ -58,15 +58,23 @@ public abstract class BaseRefreshFragment<A extends BaseAdapter,T extends IRefre
         smartRefreshLayout.setOnRefreshListener( new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                presenter.refresh();
+                BaseRefreshFragment.this.onRefresh();
             }
         } );
         smartRefreshLayout.setOnLoadMoreListener( new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                presenter.loadMore();
+                BaseRefreshFragment.this.onLoadMore();
             }
         } );
+    }
+
+    protected void onRefresh(){
+        presenter.refresh();
+    }
+
+    protected void onLoadMore(){
+        presenter.loadMore();
     }
 
     protected abstract A getAdapter();
