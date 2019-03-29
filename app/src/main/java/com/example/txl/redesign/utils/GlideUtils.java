@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.txl.gankio.R;
 
@@ -21,6 +22,7 @@ public class GlideUtils {
         if(placeholder != null){
             requestOptions.placeholder( placeholder );
         }
+        requestOptions=requestOptions.format(DecodeFormat.PREFER_RGB_565);
 
         Glide.with( context ).setDefaultRequestOptions( requestOptions ).load( url ).into(imageView);
     }
