@@ -5,6 +5,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.txl.gankio.R;
+import com.example.txl.redesign.data.XmlyFmData;
+import com.example.txl.redesign.fragment.xmlyfm.XmlyFmViewHolder;
 import com.example.txl.redesign.utils.GlideUtils;
 import com.example.txl.redesign.utils.NewsItemClickHandle;
 

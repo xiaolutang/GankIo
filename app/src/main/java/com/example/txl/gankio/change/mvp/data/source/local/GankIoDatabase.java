@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.example.txl.gankio.change.mvp.data.User;
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
+import com.example.txl.redesign.data.wanandroid.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.local.dao.UserDao;
 import com.example.txl.gankio.change.mvp.data.source.local.dao.WanAndroidBannerDao;
 

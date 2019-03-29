@@ -6,7 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
+import com.example.txl.redesign.data.wanandroid.WanAndroidBanner;
 
 import java.util.List;
 

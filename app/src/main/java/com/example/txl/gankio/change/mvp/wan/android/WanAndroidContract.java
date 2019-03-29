@@ -2,7 +2,6 @@ package com.example.txl.gankio.change.mvp.wan.android;
 
 import com.example.txl.gankio.change.mvp.BasePresenter;
 import com.example.txl.gankio.change.mvp.BaseView;
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.login.LoginContract;
 
 import java.util.List;
@@ -15,9 +14,9 @@ import java.util.List;
  */
 public class WanAndroidContract {
     interface View extends BaseView<LoginContract.Presenter> {
-        void loadMoreFinish(List<IDataModel> iDataModels);
+        void loadMoreFinish(List<IWanAndroidDataModel> iWanAndroidDataModels);
         void loadMoreFailed();
-        void loadBannerFinish(List<IDataModel> iDataModels);
+        void loadBannerFinish(List<IWanAndroidDataModel> iWanAndroidDataModels);
     }
 
     interface Presenter extends BasePresenter {

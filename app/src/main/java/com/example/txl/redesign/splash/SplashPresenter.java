@@ -68,7 +68,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                 }
             }
         } );
-        ApiRetrofit.initGankAPi();
+        ApiRetrofit.init();
         ApiRetrofit.GankIoApi gankIoApi = ApiRetrofit.getGankIoApi();
         gankIoApi.getXianDuCategory().enqueue(new Callback<JSONObject>() {
             @Override

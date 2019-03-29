@@ -1,11 +1,13 @@
-package com.example.txl.redesign.fm;
+package com.example.txl.redesign.fragment.xmlyfm;
 
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.example.txl.redesign.data.XmlyFmData;
 import com.example.txl.redesign.fragment.BaseRefreshFragment;
+import com.example.txl.redesign.fragment.xmlyfm.FMAdapter;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList;
@@ -59,7 +61,7 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
     public void onCategorySuccess(CategoryList categoryList) {
         loadCategoryError = false;
         List<XmlyFmData> xmlyFmData = new ArrayList<>();
-        XmlyFmData xmlyFmData1 = new XmlyFmData(XmlyFmData.TYPE_CATEGORY_LIST);
+        XmlyFmData xmlyFmData1 = new XmlyFmData(XmlyFmData.XMLY_TYPE_CATEGORY_LIST);
         xmlyFmData1.setCategoryList(categoryList);
         xmlyFmData.add(xmlyFmData1);
         adapter.addNewsData( xmlyFmData);
@@ -77,7 +79,7 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
         List<XmlyFmData> list = new ArrayList<>(  );
         if(albumList != null){
             for (Album album:albumList.getAlbums()){
-                XmlyFmData xmlyFmData = new XmlyFmData( XmlyFmData.TYPE_ALBUN_ITEM );
+                XmlyFmData xmlyFmData = new XmlyFmData( XmlyFmData.XMLY_TYPE_ALBUN_ITEM );
                 xmlyFmData.setAlbum( album );
                 list.add( xmlyFmData );
             }
@@ -96,7 +98,7 @@ public class FmFragment extends BaseRefreshFragment<FMAdapter,FmPresenter> imple
         List<XmlyFmData> list = new ArrayList<>(  );
         if(albumList != null){
             for (Album album:albumList.getAlbums()){
-                XmlyFmData xmlyFmData = new XmlyFmData( XmlyFmData.TYPE_ALBUN_ITEM );
+                XmlyFmData xmlyFmData = new XmlyFmData( XmlyFmData.XMLY_TYPE_ALBUN_ITEM );
                 xmlyFmData.setAlbum( album );
                 list.add( xmlyFmData );
             }

@@ -1,9 +1,8 @@
-package com.example.txl.redesign.fm;
+package com.example.txl.redesign.fragment.xmlyfm;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.example.txl.gankio.R;
 import com.example.txl.redesign.adpter.BaseAdapter;
 import com.example.txl.redesign.adpter.BaseViewHolder;
+import com.example.txl.redesign.data.XmlyFmData;
 import com.example.txl.redesign.utils.GlideUtils;
 import com.ximalaya.ting.android.opensdk.model.category.Category;
 

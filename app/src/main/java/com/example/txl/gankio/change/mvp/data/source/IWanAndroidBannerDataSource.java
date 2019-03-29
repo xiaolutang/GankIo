@@ -1,8 +1,6 @@
 package com.example.txl.gankio.change.mvp.data.source;
 
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
-
-import java.util.List;
+import com.example.txl.redesign.data.wanandroid.WanAndroidBanner;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

@@ -2,7 +2,8 @@ package com.example.txl.redesign.utils;
 
 import android.content.Context;
 
-import com.example.txl.redesign.fm.XmlyFmData;
+import com.example.txl.redesign.data.XmlyFmData;
+
 
 /**
  * Copyright (c) 2019, 唐小陆 All rights reserved.
@@ -12,14 +13,13 @@ import com.example.txl.redesign.fm.XmlyFmData;
  */
 public class NewsItemClickHandle {
 
-    public static void fmItemClick(Context context, XmlyFmData xmlyFmData,Object... objects){
+    public static void fmItemClick(Context context, XmlyFmData xmlyFmData, Object... objects){
         switch (xmlyFmData.getType()){
-            case XmlyFmData.TYPE_CATEGORY_LIST:
-                break;
-            case XmlyFmData.TYPE_CATEGORY_ITEM:
-                break;
-            case XmlyFmData.TYPE_ALBUN_ITEM:
-                break;
+            case XmlyFmData.XMLY_TYPE_CATEGORY_LIST:
+            case XmlyFmData.XMLY_TYPE_CATEGORY_ITEM:
+            case XmlyFmData.XMLY_TYPE_ALBUN_ITEM:
+            case XmlyFmData.WAN_ANDROID_TYPE_BANNER:
+            case XmlyFmData.WAN_ANDROID_TYPE_ARTICLE:
         }
     }
 }

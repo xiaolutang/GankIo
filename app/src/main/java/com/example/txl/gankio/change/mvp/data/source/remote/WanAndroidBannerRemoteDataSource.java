@@ -3,7 +3,7 @@ package com.example.txl.gankio.change.mvp.data.source.remote;
 import android.util.Log;
 
 import com.example.txl.redesign.api.ApiFactory;
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
+import com.example.txl.redesign.data.wanandroid.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
 import com.example.txl.redesign.utils.AppExecutors;
 import com.example.txl.gankio.utils.StringUtils;

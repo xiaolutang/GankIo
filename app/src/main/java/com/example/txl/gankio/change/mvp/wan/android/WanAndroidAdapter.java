@@ -16,12 +16,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.change.mvp.data.ArticleList;
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
+import com.example.txl.redesign.data.wanandroid.ArticleList;
+import com.example.txl.redesign.data.wanandroid.WanAndroidArticle;
+import com.example.txl.redesign.data.wanandroid.WanAndroidBanner;
 import com.example.txl.gankio.viewimpl.WebActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoaderInterface;
 import com.youth.banner.view.BannerViewPager;
@@ -39,7 +39,7 @@ import java.util.List;
 public class WanAndroidAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<IDataModel> result = new ArrayList(  );
+    private List<IWanAndroidDataModel> result = new ArrayList(  );
 
     public WanAndroidAdapter(Context mContext) {
         this.mContext = mContext;
@@ -49,10 +49,10 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType){
-            case IDataModel.TYPE_BANNER:
+            case IWanAndroidDataModel.TYPE_BANNER:
                 Banner banner = (Banner) mInflater.inflate( R.layout.wan_android_banner,parent,false );
                 return new BannerViewHolder(banner);
-            case IDataModel.TYPE_ARTICLE:
+            case IWanAndroidDataModel.TYPE_ARTICLE:
                 ConstraintLayout constraintLayout = (ConstraintLayout) mInflater.inflate( R.layout.wan_android_item_article,parent,false );
                 return new ArticleViewHolder( constraintLayout );
 
@@ -75,12 +75,12 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
         return result.get( position ).getDataModelType();
     }
 
-    public void loadMore(List<IDataModel> dataModels){
+    public void loadMore(List<IWanAndroidDataModel> dataModels){
         result.addAll( dataModels );
         notifyDataSetChanged();
     }
 
-    public void refresh(List<IDataModel> dataModels){
+    public void refresh(List<IWanAndroidDataModel> dataModels){
         result.clear();
         result.addAll( dataModels );
         notifyDataSetChanged();
@@ -92,7 +92,7 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
             super( itemView );
         }
 
-        public void bindViewHolder(IDataModel model){
+        public void bindViewHolder(IWanAndroidDataModel model){
         }
     }
 
@@ -107,7 +107,7 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
         }
 
         @Override
-        public void bindViewHolder(IDataModel model) {
+        public void bindViewHolder(IWanAndroidDataModel model) {
             bannerTitles = new ArrayList<>(  );
             bannerImages = new ArrayList<>(  );
             WanAndroidBanner bannerData = (WanAndroidBanner) model;
@@ -197,8 +197,8 @@ public class WanAndroidAdapter extends RecyclerView.Adapter {
         }
 
         @Override
-        public void bindViewHolder(IDataModel model) {
-            ArticleList.Data.Article article = (ArticleList.Data.Article) model;
+        public void bindViewHolder(IWanAndroidDataModel model) {
+            WanAndroidArticle article = (WanAndroidArticle) model;
             author.setText("作者："+ article.getAuthor() );
             title.setText( article.getTitle() );
             publishTime.setText( article.getNiceDate() );

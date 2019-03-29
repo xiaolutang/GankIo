@@ -1,4 +1,4 @@
-package com.example.txl.redesign.fm;
+package com.example.txl.redesign.fragment.xmlyfm;
 
 import com.example.txl.redesign.IRefreshPresenter;
 import com.example.txl.redesign.IRefreshView;

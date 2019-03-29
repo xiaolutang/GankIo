@@ -98,6 +98,9 @@ public class ApiRetrofit {
     }
 
     public static synchronized GankIoApi getGankIoApi() {
+        if(gankIoApi == null){
+            initGankAPi();
+        }
         return gankIoApi;
     }
 
@@ -130,5 +133,47 @@ public class ApiRetrofit {
          * */
         @GET("random/data/{type}/{count}")
         Observable<JSONObject> getRandomData(@Path("type") String type, @Path( "count" ) int count);
+    }
+
+
+    private static final String WAN_ANDROID_BASE_URL = "http://www.wanandroid.com/";
+
+    private static WanAndroidApi androidApi;
+
+    public static synchronized WanAndroidApi getGWanAndroidApi() {
+        if(androidApi == null){
+            initWanAndroidAPi();
+        }
+        return androidApi;
+    }
+
+    public static void initWanAndroidAPi(){
+        if(androidApi != null){
+            return;
+        }
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR);
+        builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
+        builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(WAN_ANDROID_BASE_URL)
+                .addConverterFactory(new JSONObjectConvertFactory())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(builder.build())
+                .build();
+        androidApi = retrofit.create(WanAndroidApi.class);
+    }
+
+    public interface WanAndroidApi{
+        @GET("banner/json")
+        Observable<JSONObject> getBanner();
+
+        @GET("article/list/{page}/json")
+        Observable<JSONObject> getArticleList(@Path( "page" ) int page);
+    }
+
+
+    public static void init(){
+        initGankAPi();
+        initWanAndroidAPi();
     }
 }

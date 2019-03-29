@@ -3,8 +3,8 @@ package com.example.txl.gankio.change.mvp.wan.android;
 import android.util.Log;
 
 import com.example.txl.redesign.api.ApiFactory;
-import com.example.txl.gankio.change.mvp.data.ArticleList;
-import com.example.txl.gankio.change.mvp.data.WanAndroidBanner;
+import com.example.txl.redesign.data.wanandroid.ArticleList;
+import com.example.txl.redesign.data.wanandroid.WanAndroidBanner;
 import com.example.txl.gankio.change.mvp.data.source.IWanAndroidBannerDataSource;
 import com.example.txl.gankio.change.mvp.data.source.WanAndroidBannerRepository;
 import com.example.txl.redesign.utils.AppExecutors;
@@ -67,7 +67,7 @@ public class WanAndroidPresenter implements WanAndroidContract.Presenter {
                 mAppExecutors.mainThread().execute( new Runnable() {
                     @Override
                     public void run() {
-                        List<IDataModel> list = new ArrayList<>(  );
+                        List<IWanAndroidDataModel> list = new ArrayList<>(  );
                         list.addAll( root.getData().getDatas() );
                         mView.loadMoreFinish( list );
                     }
@@ -81,7 +81,7 @@ public class WanAndroidPresenter implements WanAndroidContract.Presenter {
         repository.getBannerData( new IWanAndroidBannerDataSource.IBannerDataCallBack() {
             @Override
             public void onBannerDataLoaded(WanAndroidBanner bannerData) {
-                List<IDataModel> list = new ArrayList<>(  );
+                List<IWanAndroidDataModel> list = new ArrayList<>(  );
                 list.add( bannerData );
                 mView.loadBannerFinish(list);
             }
@@ -119,7 +119,7 @@ public class WanAndroidPresenter implements WanAndroidContract.Presenter {
                 mAppExecutors.mainThread().execute( new Runnable() {
                     @Override
                     public void run() {
-                        List<IDataModel> list = new ArrayList<>(  );
+                        List<IWanAndroidDataModel> list = new ArrayList<>(  );
                         list.addAll( root.getData().getDatas() );
                         mView.loadMoreFinish( list );
                     }

@@ -1,11 +1,11 @@
-package com.example.txl.gankio.change.mvp.data;
+package com.example.txl.redesign.data.wanandroid;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.example.txl.gankio.change.mvp.wan.android.IDataModel;
+import com.example.txl.gankio.change.mvp.wan.android.IWanAndroidDataModel;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * description：
  */
 
-public class WanAndroidBanner  implements IDataModel {
+public class WanAndroidBanner  implements IWanAndroidDataModel {
     List<Data> data;
     int errorCode;
     String errorMsg;
@@ -47,7 +47,7 @@ public class WanAndroidBanner  implements IDataModel {
 
     @Override
     public int getDataModelType() {
-        return IDataModel.TYPE_BANNER;
+        return IWanAndroidDataModel.TYPE_BANNER;
     }
 
     @Entity(tableName = "tb_wan_android_banner_data")

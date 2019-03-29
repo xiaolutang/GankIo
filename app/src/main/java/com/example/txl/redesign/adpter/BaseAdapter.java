@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.txl.redesign.data.model.NewsData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,6 +65,16 @@ public abstract class BaseAdapter<D,T extends RecyclerView.ViewHolder> extends R
         }
         this.listData.addAll( newsData );
         notifyDataSetChanged();
+    }
+
+    public void addNewsData(int position,D data){
+        if(this.listData == null){
+            this.listData = new ArrayList<>();
+            listData.add(data);
+            notifyDataSetChanged();
+            return;
+        }
+        listData.add(position,data);
     }
 
     public interface OnItemClickListener{

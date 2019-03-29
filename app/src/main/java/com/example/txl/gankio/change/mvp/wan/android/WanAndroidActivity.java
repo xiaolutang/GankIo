@@ -59,8 +59,8 @@ public class WanAndroidActivity extends BaseActivity implements WanAndroidContra
     }
 
     @Override
-    public void loadMoreFinish(List<IDataModel> iDataModels) {
-        androidAdapter.loadMore( iDataModels );
+    public void loadMoreFinish(List<IWanAndroidDataModel> iWanAndroidDataModels) {
+        androidAdapter.loadMore(iWanAndroidDataModels);
         pullRefreshRecyclerView.setLoadMoreFinish();
     }
 
@@ -70,8 +70,8 @@ public class WanAndroidActivity extends BaseActivity implements WanAndroidContra
     }
 
     @Override
-    public void loadBannerFinish(List<IDataModel> iDataModels) {
-        androidAdapter.refresh( iDataModels);
+    public void loadBannerFinish(List<IWanAndroidDataModel> iWanAndroidDataModels) {
+        androidAdapter.refresh(iWanAndroidDataModels);
         pullRefreshRecyclerView.setRefreshFinish();
     }
 

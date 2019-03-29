@@ -2,17 +2,16 @@ package com.example.txl.redesign.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.data.MainNavigation;
-import com.example.txl.redesign.fm.FmFragment;
+import com.example.txl.redesign.fragment.wanandroid.WanAndroidFragment;
+import com.example.txl.redesign.fragment.xmlyfm.FmFragment;
 import com.example.txl.redesign.fragment.NavigationFragment;
 import com.jaeger.library.StatusBarUtil;
 
@@ -54,7 +53,7 @@ public class NewStyleMainActivity extends BaseActivity {
         }
         transaction.commitAllowingStateLoss();
         lastSelectIndex = index;
-        if (fragment instanceof FmFragment) {
+        if (fragment instanceof FmFragment || fragment instanceof WanAndroidFragment) {
             //状态栏字体是黑色
             StatusBarUtil.setLightMode(this);
         } else {
@@ -73,12 +72,8 @@ public class NewStyleMainActivity extends BaseActivity {
         fragmentList.add(navigationFragment);
 
         //添加一个重复的数据
-        navigationFragment = new NavigationFragment();
-        navigation = MainNavigation.buildMainNavigation();
-        bundle = new Bundle();
-        bundle.putParcelable("navigation",navigation);
-        navigationFragment.setArguments(bundle);
-        fragmentList.add(navigationFragment);
+        WanAndroidFragment wanAndroidFragment = new WanAndroidFragment();
+        fragmentList.add(wanAndroidFragment);
 
         //fm
         FmFragment fmFragment = new FmFragment();
