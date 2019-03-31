@@ -8,7 +8,6 @@ import com.example.txl.gankio.R;
 import com.example.txl.redesign.adpter.BaseAdapter;
 import com.example.txl.redesign.adpter.BaseViewHolder;
 import com.example.txl.redesign.data.XmlyFmData;
-import com.example.txl.redesign.fm.FmAlbumViewHolder;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
  * date：2019/3/27
  * description：
  */
-public class FMAdapter extends BaseAdapter<XmlyFmData, BaseViewHolder> {
+public class FMAdapter extends BaseAdapter<XmlyFmData, XmlyFmViewHolder> {
 
     public FMAdapter(Context context) {
         super( context );
@@ -31,7 +30,7 @@ public class FMAdapter extends BaseAdapter<XmlyFmData, BaseViewHolder> {
 
     @NonNull
     @Override
-    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public XmlyFmViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType){
             case XmlyFmData.XMLY_TYPE_CATEGORY_LIST:
                 return new FmCategoryViewHolder( mInflater.inflate( R.layout.item_fm_categories,parent,false ) );
@@ -42,7 +41,7 @@ public class FMAdapter extends BaseAdapter<XmlyFmData, BaseViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull XmlyFmViewHolder holder, int position) {
         holder.onBindViewHolder(position,getNewsData().get(position) );
     }
 

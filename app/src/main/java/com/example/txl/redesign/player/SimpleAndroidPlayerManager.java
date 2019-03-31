@@ -1,4 +1,4 @@
-package com.example.txl.gankio.player;
+package com.example.txl.redesign.player;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

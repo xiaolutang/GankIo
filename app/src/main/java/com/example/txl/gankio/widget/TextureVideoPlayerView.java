@@ -3,8 +3,6 @@ package com.example.txl.gankio.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -17,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.player.SimpleAndroidPlayer;
+import com.example.txl.redesign.player.SimpleAndroidPlayer;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.

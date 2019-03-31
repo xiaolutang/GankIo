@@ -1,12 +1,11 @@
-package com.example.txl.gankio.player;
+package com.example.txl.redesign.player;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,14 +17,12 @@ import java.lang.ref.WeakReference;
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
  * author：txl
- * date：2018/8/7
- * description：
+ * date：2018/8/9
+ * description：仅提供简单的播放器的封装，没有与之关联的surfaceView和TextureView
  */
-public class AndroidPlayer implements IMediaPlayer{
-    private static final String TAG = AndroidPlayer.class.getSimpleName();
+public class SimpleAndroidPlayer implements IMediaPlayer {
+    private static final String TAG = SimpleAndroidPlayer.class.getSimpleName();
     Context _ctx;
-    ViewGroup _parent;
-    SurfaceView _surface;
     MediaPlayer _mp;
     String _url;
     long _seekTarget;
@@ -47,11 +44,10 @@ public class AndroidPlayer implements IMediaPlayer{
     static final int PS_PREPARING = 0x0002;
     static final int PS_PLAYING = 0x0001;
     private IMediaPlayerEvents _listener;
-    private SurfaceHolder.Callback _surfaceHolderCallback;
-    private SurfaceHolder _surfaceHolder;
 
-    private static WeakReference<AndroidPlayer> _currentPlayer;
-    private WeakReference<AndroidPlayer> _previousPlayer;
+    private static WeakReference<SimpleAndroidPlayer> _currentPlayer;
+    private WeakReference<SimpleAndroidPlayer> _previousPlayer;
+    private Surface _surface;
 
     private void _changeState(int removeState, int addState) {
         _playerState = (_playerState & ~removeState) | addState;
@@ -65,49 +61,26 @@ public class AndroidPlayer implements IMediaPlayer{
         return (_playerState & state) != 0;
     }
 
-    public AndroidPlayer(boolean singlePlayer, boolean disposablePlayer) {
+    public SimpleAndroidPlayer(boolean singlePlayer, boolean disposablePlayer) {
         _singlePlayer = singlePlayer;
         _disposablePlayer = disposablePlayer;
         _previousPlayer = _currentPlayer;
-        _currentPlayer = new WeakReference<AndroidPlayer>(this);
+        _currentPlayer = new WeakReference<SimpleAndroidPlayer>(this);
     }
 
-    public AndroidPlayer(boolean singlePlayer) {
+    public SimpleAndroidPlayer(boolean singlePlayer) {
         this(singlePlayer, false);
     }
 
-    public AndroidPlayer() {
+    public SimpleAndroidPlayer() {
         this(false);
     }
 
     @Override
     public View init(Context ctx, ViewGroup parent) {
         _ctx = ctx;
-        _parent = parent;
-        _surface = new SurfaceView(ctx);
-        _surface.setZOrderOnTop(false);
-        _surface.setZOrderMediaOverlay(false);
         _createMediaPlayer();
-        _surfaceHolderCallback = new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                _onInitialized(holder);
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                _onInitialized(holder);
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                _onSurfaceDestroyed();
-            }
-        };
-        _surface.getHolder().addCallback(_surfaceHolderCallback);
-
-        _parent.addView(_surface);
-        return _surface;
+        return null;
     }
 
     @Override
@@ -122,14 +95,15 @@ public class AndroidPlayer implements IMediaPlayer{
 
     private void _createMediaPlayer() {
         if (_singlePlayer && _previousPlayer != null) {
-            AndroidPlayer prevPlayer = _previousPlayer.get();
+            SimpleAndroidPlayer prevPlayer = _previousPlayer.get();
             if (prevPlayer != null) {
                 prevPlayer._disposePlayer();
             }
         }
 
         MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setScreenOnWhilePlaying(true);
+        mediaPlayer.setLooping( true );
+//        mediaPlayer.setScreenOnWhilePlaying(true);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -182,9 +156,6 @@ public class AndroidPlayer implements IMediaPlayer{
             oldMediaPlayer.release();
         }
 
-        if (_surfaceHolder != null) {
-            mediaPlayer.setDisplay(_surfaceHolder);
-        }
     }
 
     private void _disposePlayer() {
@@ -221,7 +192,7 @@ public class AndroidPlayer implements IMediaPlayer{
         return false;
     }
 
-    protected void onFirstFramePaint(AndroidPlayer xulAndroidPlayer) {
+    protected void onFirstFramePaint(SimpleAndroidPlayer simpleAndroidPlayer) {
     }
 
     private boolean _onError(MediaPlayer mp, int what, int extra) {
@@ -285,20 +256,16 @@ public class AndroidPlayer implements IMediaPlayer{
             _mp.start();
         }
 
-        if (_surface != null) {
-            _surface.requestLayout();
-        }
-
         IMediaPlayerEvents listener = _listener;
         if (listener != null) {
             listener.onPrepared(this);
         }
     }
 
-    private void _onInitialized(SurfaceHolder holder) {
-        _surfaceHolder = holder;
-        if (_mp != null && holder != null) {
-            _mp.setDisplay(holder);
+    private void _onInitialized(Surface surface) {
+        _surface = surface;
+        if (_mp != null && surface != null) {
+            _mp.setSurface( surface );
         }
         if (!_hasState(PS_UNINITIALIZED)) {
             _onSurfaceRestored();
@@ -326,7 +293,6 @@ public class AndroidPlayer implements IMediaPlayer{
     }
 
     private void _onSurfaceDestroyed() {
-        _surfaceHolder = null;
         if (_mp == null) {
             return;
         }
@@ -499,12 +465,6 @@ public class AndroidPlayer implements IMediaPlayer{
             mp.release();
         }
 
-        SurfaceView surface = _surface;
-        _surface = null;
-        if (surface != null) {
-            _parent.removeView(surface);
-            _parent = null;
-        }
     }
 
     @Override
@@ -536,5 +496,9 @@ public class AndroidPlayer implements IMediaPlayer{
     @Override
     public boolean isPlaying() {
         return _mp != null && _hasState(PS_PLAYING | PS_PREPARED) && !_hasAnyState(PS_STOPPED | PS_UNINITIALIZED | PS_RELEASED);
+    }
+
+    public void setMediaPlaerSurface(Surface surface){
+        _onInitialized( surface );
     }
 }

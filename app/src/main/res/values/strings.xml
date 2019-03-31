@@ -23,5 +23,6 @@
     <string name="xiandu">闲读推荐</string>
     <string name="main_page">首页</string>
     <string name="fm">FM</string>
+    <string name="play_order_sequential">顺序播放</string>
 
 </resources>

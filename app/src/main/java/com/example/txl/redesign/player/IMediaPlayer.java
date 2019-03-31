@@ -1,4 +1,4 @@
-package com.example.txl.gankio.player;
+package com.example.txl.redesign.player;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -13,8 +13,8 @@ import com.example.txl.gankio.R;
 import com.example.txl.gankio.adapter.VideoAdapter;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.gankio.change.mvp.data.VideoBean;
-import com.example.txl.gankio.player.SimpleAndroidPlayer;
-import com.example.txl.gankio.player.SimpleAndroidPlayerManager;
+import com.example.txl.redesign.player.SimpleAndroidPlayer;
+import com.example.txl.redesign.player.SimpleAndroidPlayerManager;
 import com.example.txl.gankio.widget.IPullRefreshListener;
 import com.example.txl.gankio.widget.PageScrollerRecyclerView;
 

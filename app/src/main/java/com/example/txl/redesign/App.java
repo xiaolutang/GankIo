@@ -51,6 +51,12 @@ public class App extends Application {
         ThemeUtils.init();
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        XmlyApi.destroyXmlyFm(this);
+    }
+
     public static ImageLoader getImageLoader(){
         return mImageLoader;
     }

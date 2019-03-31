@@ -23,5 +23,7 @@
     <dimen name="dp_64">64dp</dimen>
     <dimen name="dp_16">16dp</dimen>
     <dimen name="sp_8">8sp</dimen>
+    <dimen name="dp_32">32dp</dimen>
+    <dimen name="dp_240">240dp</dimen>
     <!--顶部tab导航高度-->
 </resources>

@@ -1,4 +1,4 @@
-package com.example.txl.redesign.fm;
+package com.example.txl.redesign.fragment.xmlyfm;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -30,16 +30,26 @@ public class FmAlbumViewHolder extends XmlyFmViewHolder {
      * 阅读数
      * */
     TextView tvReads;
+
+    private XmlyFmData xmlyFmData;
+
     public FmAlbumViewHolder(View itemView) {
         super( itemView );
         imageViewIcon = itemView.findViewById( R.id.image_fm_album );
         tvAuthor = itemView.findViewById( R.id.tv_fm_album_author );
         tvDesc = itemView.findViewById( R.id.tv_album_item_des );
         tvReads = itemView.findViewById( R.id.tv_fm_album_reads );
+        itemView.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewsItemClickHandle.fmItemClick( itemView.getContext(),xmlyFmData );
+            }
+        } );
     }
 
     @Override
     public void onBindViewHolder(int position, XmlyFmData data) {
+        xmlyFmData= data;
         itemView.setOnClickListener( v -> NewsItemClickHandle.fmItemClick(itemView.getContext(),data) );
         GlideUtils.loadImage( itemView.getContext(),data.getAlbum().getCoverUrlMiddle(),imageViewIcon,true );
         tvAuthor.setText( data.getAlbum().getAnnouncer().getNickname() );
