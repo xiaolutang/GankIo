@@ -60,7 +60,7 @@ public class GlideUtils {
         /**
          * 是否是圆形
          * */
-        private boolean isCicrle;
+        private boolean isCircle;
 
         public GlideUtilsBuilder setContext(Context context) {
             this.context = context;
@@ -87,8 +87,8 @@ public class GlideUtils {
             return this;
         }
 
-        public GlideUtilsBuilder isCicrle(boolean isCicrle){
-            this.isCicrle = isCicrle;
+        public GlideUtilsBuilder isCircle(boolean isCircle){
+            this.isCircle = isCircle;
             return this;
         }
 
@@ -133,12 +133,12 @@ public class GlideUtils {
             if(requestOptions == null){
                 requestOptions = new RequestOptions();
             }
-            if(isCicrle){
+            if(isCircle){
                 requestOptions = requestOptions.apply( RequestOptions.bitmapTransform(new CircleCrop()) );
             }
             if(blur){
                 requestOptions =new RequestOptions();
-                requestOptions = requestOptions.transform( new BlurTransformation(context, 25, 3));
+                requestOptions = requestOptions.transform( new BlurTransformation(context, 15, 3));
             }
             if(placeholder != null){
                 requestOptions =requestOptions.placeholder( placeholder );

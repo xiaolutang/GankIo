@@ -1,37 +1,20 @@
 package com.example.txl.redesign.fragment.xmlyfm.album;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.RSRuntimeException;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.TransitionOptions;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.engine.Resource;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapResource;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseActivity;
@@ -190,14 +173,13 @@ public class TrackListActivity extends BaseActivity implements TrackListContract
                 .setImageView( imageMusicAuthorIcon )
                 .setPlaceholder( ContextCompat.getDrawable( this,R.drawable.easy_player_icon ) )
                 .setUrl( track.getCoverUrlLarge() )
-                .isCicrle( true )
+                .isCircle( true )
                 .load();
         tvMusicName.setText(track.getTrackTitle());
         tvAuthorName.setText(album.getAnnouncer().getNickname());
         new GlideUtils.GlideUtilsBuilder()
                 .setContext( this )
-                .setPlaceholder( ContextCompat.getDrawable( this,R.drawable.easy_player_icon ) )
-                .setUrl( track.getCoverUrlSmall() )
+                .setUrl( track.getCoverUrlMiddle() )
                 .setBlur( true )
                 .setRequestListener( new RequestListener<Drawable>() {
                     @Override
