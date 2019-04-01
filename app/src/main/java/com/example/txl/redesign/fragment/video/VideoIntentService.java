@@ -136,7 +136,7 @@ public class VideoIntentService extends IntentService {
 
 
         public List<VideoBean.VideoInfo> getVideoList(int pageIndex){
-            currentPageIndex = pageIndex;
+            Log.d( TAG,"getVideoList  " +pageIndex);
             if (Looper.getMainLooper() == Looper.myLooper()){
                 throw  new CalledFromWrongThreadException( "can,t call this method in main thread" );
             }
