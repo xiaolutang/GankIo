@@ -1,16 +1,20 @@
 package com.example.txl.redesign.fragment.secondfloor;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.txl.gankio.R;
 import com.example.txl.redesign.fragment.BaseNewsFragment;
 import com.example.txl.redesign.fragment.NavigationFragment;
 import com.example.txl.redesign.data.model.NewsData;
+import com.example.txl.redesign.fragment.video.DouYinVideoActivity;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
@@ -59,6 +63,7 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
         params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         twoLevelContentImage.setLayoutParams(params);
         twoLevelContentImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        twoLevelContentImage.setClickable( false );
 
         twoLevelImage = new ImageView(getContext());
         twoLevelImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -66,7 +71,16 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
         twoLevelImage.setLayoutParams(params);
 
         twoLevelHeader.addView(twoLevelImage);
+        twoLevelContentImage.setVisibility( View.INVISIBLE );
         twoLevelHeader.addView(twoLevelContentImage);
+        // FIXME: 2019/4/1 点击事件在这个位置但是显示却在NavigationFragment不利于维护
+        twoLevelImage.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( getContext(), DouYinVideoActivity.class );
+                getContext().startActivity( intent );
+            }
+        } );
         twoLevelHeader.setRefreshHeader(classicsHeader);
         smartRefreshLayout.setEnableLoadMore( false );
         smartRefreshLayout.setRefreshHeader(twoLevelHeader);

@@ -24,8 +24,8 @@ import com.example.txl.gankio.bean.IdelReaderCategoryRoot;
 import com.example.txl.gankio.change.mvp.about.AboutActivity;
 import com.example.txl.gankio.change.mvp.wan.android.WanAndroidActivity;
 import com.example.txl.gankio.change.mvp.login.LoginActivity;
-import com.example.txl.gankio.change.mvp.video.VideoFragment;
-import com.example.txl.gankio.change.mvp.video.VideoPresenter;
+import com.example.txl.redesign.fragment.video.VideoFragment;
+import com.example.txl.redesign.fragment.video.VideoPresenter;
 import com.example.txl.gankio.presenter.MainPresenter;
 import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.viewimpl.idelread.IdelReadFragment;
@@ -156,7 +156,7 @@ public class MainActivity extends BaseActivity implements IGetMainDataView {
 
             }
         });
-        videoPresenter = new VideoPresenter(videoFragment  );
+        videoPresenter = new VideoPresenter(this,videoFragment  );
     }
 
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {

@@ -1,4 +1,4 @@
-package com.example.txl.gankio.change.mvp.data;
+package com.example.txl.redesign.data;
 
 import java.io.Serializable;
 import java.util.List;

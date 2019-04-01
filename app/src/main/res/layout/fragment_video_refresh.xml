@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.example.txl.redesign.widget.GankSmartRefreshLayout
+        android:id="@+id/smart_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false">
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:id="@+id/classics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <com.example.txl.gankio.widget.PageScrollerRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foregroundGravity="center"
+            />
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.example.txl.redesign.widget.GankSmartRefreshLayout>
+    <include layout="@layout/loading"
+        android:id="@+id/loading_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

@@ -1,11 +1,16 @@
-package com.example.txl.gankio.change.mvp.video;
+package com.example.txl.redesign.fragment.video;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.example.txl.redesign.App;
 import com.example.txl.redesign.api.ApiFactory;
 import com.example.txl.gankio.cache.AppDataLoader;
-import com.example.txl.gankio.change.mvp.data.VideoBean;
+import com.example.txl.redesign.data.VideoBean;
 import com.example.txl.gankio.utils.StringUtils;
 import com.google.gson.Gson;
 
@@ -37,11 +42,29 @@ public class VideoPresenter implements VideoContract.Presenter{
      * */
     int currentPageIndex = 1;
 
-    VideoContract.View videoView;
+    VideoContract.View<List<VideoBean.VideoInfo>> videoView;
+    Context context;
+    VideoIntentService.VideoConsumer videoConsumer;
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            videoConsumer = (VideoIntentService.VideoConsumer) service;
+            refresh();
+        }
 
-    public VideoPresenter(VideoContract.View videoView) {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            videoConsumer = null;
+        }
+    };
+
+
+    public VideoPresenter(Context context,VideoContract.View<List<VideoBean.VideoInfo>> videoView) {
+        this.context = context;
         this.videoView = videoView;
         videoView.setPresenter( this );
+        Intent intent = new Intent( context,VideoIntentService.class );
+        context.bindService( intent, serviceConnection,Context.BIND_AUTO_CREATE);
     }
 
     public void getVideoData(boolean refresh){
@@ -98,9 +121,9 @@ public class VideoPresenter implements VideoContract.Presenter{
                             return;
                         }
                         if(refresh){
-                            videoView.refreshFinish(root.getResults());
+                            videoView.onRefreshSuccess(root.getResults());
                         }else {
-                            videoView.loadMoreFinish(root.getResults());
+                            videoView.onRefreshFailed();
                         }
                     }
                 } );
@@ -112,21 +135,46 @@ public class VideoPresenter implements VideoContract.Presenter{
 
     @Override
     public void start() {
-        currentPageIndex = 1;
-        getVideoData( true );
     }
 
     @Override
     public void refresh() {
         currentPageIndex = 1;
-        getVideoData( true );
+        if(videoConsumer == null){
+            return;
+        }
+        videoConsumer.getVideoList( currentPageIndex, new VideoIntentService.IVideoListCallback() {
+            @Override
+            public void onSuccess(List<VideoBean.VideoInfo> videoInfoList) {
+                videoView.onRefreshSuccess( videoInfoList );
+            }
+
+            @Override
+            public void onError() {
+                videoView.onRefreshFailed();
+            }
+        } );
     }
 
     @Override
     public void loadMore() {
+        if(videoConsumer == null){
+            return;
+        }
         currentPageIndex ++;
-        getVideoData( false );
+        videoConsumer.getVideoList( currentPageIndex, new VideoIntentService.IVideoListCallback() {
+            @Override
+            public void onSuccess(List<VideoBean.VideoInfo> videoInfoList) {
+                videoView.onLoadMoreSuccess( videoInfoList,true );
+            }
+
+            @Override
+            public void onError() {
+                videoView.onLoadMoreFailed();
+            }
+        } );
     }
+
 
     private void preLoad(){
         String url = ApiFactory.URL_GET_VIDEO_DATA +""+defaultPageCount+"/"+(currentPageIndex+1);
@@ -199,5 +247,10 @@ public class VideoPresenter implements VideoContract.Presenter{
                 }
             }
         });
+    }
+
+    @Override
+    public void destroy() {
+        context.unbindService( serviceConnection );
     }
 }

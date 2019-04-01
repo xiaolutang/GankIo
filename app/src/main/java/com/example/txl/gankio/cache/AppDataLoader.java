@@ -12,7 +12,7 @@ import android.util.Log;
 import android.util.LruCache;
 
 
-import com.example.txl.gankio.change.mvp.data.VideoBean;
+import com.example.txl.redesign.data.VideoBean;
 import com.google.gson.Gson;
 import com.jakewharton.disklrucache.DiskLruCache;
 
@@ -22,7 +22,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;

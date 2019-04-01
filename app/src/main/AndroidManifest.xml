@@ -23,7 +23,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.txl.redesign.fragment.xmlyfm.album.TrackListActivity"></activity>
+        <activity android:name="com.example.txl.redesign.fragment.video.DouYinVideoActivity"></activity>
+
+        <service
+            android:name="com.example.txl.redesign.fragment.video.VideoIntentService"
+            android:exported="false" />
+
+        <activity android:name="com.example.txl.redesign.fragment.xmlyfm.album.TrackListActivity" />
         <activity android:name=".viewimpl.MainActivity" />
         <activity android:name=".viewimpl.IdelInfoActivity" />
         <activity android:name="com.example.txl.redesign.splash.SplashActivity">
@@ -47,13 +53,10 @@
 
         <activity android:name=".change.mvp.about.AboutActivity" />
         <activity android:name="com.example.txl.redesign.main.NewStyleMainActivity" />
-        <service android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
-        android:process=":player"/>
-        <!--<receiver android:name="com.ximalaya.ting.android.opensdk.test.reciver.MyPlayerReceiver" android:exported="true" android:process=":player">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.app.test.android.Action_Close"/>-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+
+        <service
+            android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
+            android:process=":player" />
     </application>
 
 </manifest>

@@ -1,7 +1,7 @@
 package com.example.txl.gankio.adapter;
 
+import android.content.Context;
 import android.graphics.SurfaceTexture;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -10,15 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.txl.redesign.App;
 import com.example.txl.gankio.R;
-import com.example.txl.gankio.change.mvp.data.VideoBean;
+import com.example.txl.redesign.adpter.BaseAdapter;
+import com.example.txl.redesign.adpter.BaseViewHolder;
+import com.example.txl.redesign.data.VideoBean;
 import com.example.txl.redesign.player.SimpleAndroidPlayer;
 import com.example.txl.redesign.player.SimpleAndroidPlayerManager;
 import com.example.txl.gankio.widget.TextureVideoPlayerView;
+import com.example.txl.redesign.utils.GlideUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -27,53 +27,46 @@ import java.util.List;
  * date：2018/7/8
  * description：
  */
-public class VideoAdapter extends RecyclerView.Adapter {
+public class VideoAdapter extends BaseAdapter<VideoBean.VideoInfo, VideoAdapter.ViewHolder> {
     private static final String TAG = VideoAdapter.class.getSimpleName();
-
-    List<VideoBean.VideoInfo> results = new ArrayList<>(  );
+    public VideoAdapter(Context context) {
+        super( context );
+    }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextureVideoPlayerView textureVideoPlayerView = (TextureVideoPlayerView) LayoutInflater.from(parent.getContext())
                 .inflate( R.layout.video_item_textrueplayerview, parent, false);
         return new ViewHolder(textureVideoPlayerView);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d( TAG,"VideoActivity  "+"onBindViewHolder" );
-        ViewHolder viewHolder = (ViewHolder) holder;
-        ImageView backImage = viewHolder.textureVideoPlayerView.getBackImage();
-        viewHolder.textureVideoPlayerView.setDescString(results.get( position ).getDesc());
-        App.getImageLoader().bindBitmap( results.get( position ).getContent().getCover(),backImage,0,0 );
-        viewHolder.initPlayer(results.get( position ).getContent().getPlayAddr());
+        holder.onBindViewHolder( position,getNewsData().get( position ) );
     }
 
-    @Override
-    public int getItemCount() {
-        return results.size();
-    }
 
-    public void updateData(List<VideoBean.VideoInfo> infoContents){
-        results.clear();
-        results.addAll( infoContents );
-        Log.e( TAG,"updateData results "+results.size() );
-        notifyDataSetChanged();
-    }
 
-    public void addData(List<VideoBean.VideoInfo> infoContents){
-        int start = results.size();
-        results.addAll( infoContents );
-        notifyItemRangeInserted(start, infoContents.size() );
-        Log.e( TAG,"addData results "+results.size() );
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends BaseViewHolder<VideoBean.VideoInfo> {
         SimpleAndroidPlayer simpleAndroidPlayer;
         private TextureVideoPlayerView textureVideoPlayerView;
         private ViewHolder(View v) {
             super(v);
             textureVideoPlayerView = (TextureVideoPlayerView) v;
+        }
+
+        @Override
+        public void onBindViewHolder(int position, VideoBean.VideoInfo data) {
+            ImageView backImage = textureVideoPlayerView.getBackImage();
+            textureVideoPlayerView.setDescString(data.getDesc());
+            new GlideUtils.GlideUtilsBuilder()
+                    .useDefaultPlaceholder( true )
+                    .setImageView( backImage )
+                    .setContext( itemView.getContext() )
+                    .setUrl( data.getContent().getCover() )
+                    .load();
+            initPlayer(data.getContent().getPlayAddr());
         }
 
         void initPlayer(String playUrl){

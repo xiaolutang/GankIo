@@ -1,6 +1,7 @@
 package com.example.txl.redesign.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.example.txl.redesign.data.MainNavigation;
 import com.example.txl.redesign.data.Navigation;
 import com.example.txl.redesign.fragment.fuli.FuliFragment;
 import com.example.txl.redesign.fragment.secondfloor.SecondFloorNewsFragment;
+import com.example.txl.redesign.fragment.video.DouYinVideoActivity;
 import com.example.txl.redesign.utils.GlobalCacheUtils;
 import com.example.txl.redesign.utils.TextSelectUtils;
 import com.example.txl.redesign.widget.GankViewPager;

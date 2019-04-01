@@ -2,6 +2,7 @@ package com.example.txl.redesign;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 
 import com.example.txl.gankio.cache.AppDataLoader;
@@ -9,6 +10,7 @@ import com.example.txl.gankio.change.mvp.data.User;
 import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.utils.image.utils.ImageLoader;
 import com.example.txl.redesign.api.XmlyApi;
+import com.example.txl.redesign.fragment.video.VideoIntentService;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 
@@ -48,7 +50,13 @@ public class App extends Application {
         mImageLoader = ImageLoader.build( this );
         mAppDataLoader = AppDataLoader.build( this );
         XmlyApi.initXMFM(this);
+        startVideoService();
         ThemeUtils.init();
+    }
+
+    private void startVideoService(){
+        Intent intent = new Intent( this, VideoIntentService.class );
+        startService( intent );
     }
 
     @Override
