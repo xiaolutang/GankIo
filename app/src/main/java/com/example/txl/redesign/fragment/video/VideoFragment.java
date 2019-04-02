@@ -116,6 +116,8 @@ public class VideoFragment extends BaseRefreshFragment<VideoAdapter,VideoContrac
     public void onRefreshSuccess(List<VideoBean.VideoInfo> data) {
         adapter.setNewsData( data );
         smartRefreshLayout.finishRefresh();
+        //设计有问题，禁用刷新
+        smartRefreshLayout.setEnableRefresh( false );
         closeLoadingView();
     }
 
@@ -128,7 +130,12 @@ public class VideoFragment extends BaseRefreshFragment<VideoAdapter,VideoContrac
     @Override
     public void onLoadMoreSuccess(List<VideoBean.VideoInfo> data, boolean hasMore) {
         adapter.addNewsData(data );
-        smartRefreshLayout.finishLoadMore();
+        if(data == null || data.size()==0){
+            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+        }else {
+            smartRefreshLayout.finishLoadMore();
+        }
+
         closeLoadingView();
     }
 
