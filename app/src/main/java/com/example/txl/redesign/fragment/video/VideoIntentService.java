@@ -102,6 +102,7 @@ public class VideoIntentService extends IntentService {
                 }
                 iterator.next();
             }
+            Log.d( TAG,"创建currentPageIndex  "+currentPageIndex );
             map.put( currentPageIndex, resultList);
             currentPageIndex++;
         } catch (IOException e) {
@@ -144,11 +145,19 @@ public class VideoIntentService extends IntentService {
             try {
                 synchronized (this){
                     while (!map.containsKey( pageIndex )){
+                        synchronized (videoProducer){
+                            if(pageIndex == 1){
+                                map.clear();
+                                currentPageIndex = 1;
+                                videoProducer.notifyAll();
+                            }
+                        }
                         wait();
                     }
                 }
                 synchronized (videoProducer){
                     videoInfoList = map.remove( pageIndex );
+                    Log.d( TAG,"消费  "+pageIndex );
                     videoProducer.notifyAll();
                 }
             }catch (Exception e){
