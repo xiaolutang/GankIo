@@ -43,8 +43,15 @@ public class WanAndroidFragment extends BaseRefreshFragment<WanAndroidAdapter,Wa
     }
 
     @Override
+    protected void onRefresh() {
+        super.onRefresh();
+        adapter.clearData();
+    }
+
+    @Override
     public void onRefreshSuccess(List<XmlyFmData> data) {
         adapter.addNewsData(data);
+        smartRefreshLayout.finishRefresh();
         closeLoadingView();
     }
 

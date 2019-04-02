@@ -73,6 +73,7 @@ public class SecondFloorPresenter extends BaseNewsPresenter {
                             }
                             if(result.get福利() != null && result.get福利().size() != 0){
                                 dataList.addAll( result.get福利() );
+                                view.onFuliDataCallback(result.get福利());
                             }
 
 

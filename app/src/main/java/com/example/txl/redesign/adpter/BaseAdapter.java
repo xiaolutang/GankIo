@@ -67,6 +67,13 @@ public abstract class BaseAdapter<D,T extends RecyclerView.ViewHolder> extends R
         notifyDataSetChanged();
     }
 
+    public void clearData(){
+        if(this.listData != null){
+            this.listData.clear();
+            notifyDataSetChanged();
+        }
+    }
+
     public void addNewsData(int position,D data){
         if(this.listData == null){
             this.listData = new ArrayList<>();

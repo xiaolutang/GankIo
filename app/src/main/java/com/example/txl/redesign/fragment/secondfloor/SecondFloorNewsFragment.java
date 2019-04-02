@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class SecondFloorNewsFragment extends BaseNewsFragment {
 
+    List<NewsData> fuliDataList;
     /**
      * 二楼效果
      * */
@@ -144,5 +145,24 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
         public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
             super.onStateChanged( refreshLayout, oldState, newState );
         }
+
+        @Override
+        public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            super.onRefresh( refreshLayout );
+            if(fuliDataList != null && fuliDataList.size() != 0 ){
+                int index = (int) (fuliDataList.size()*Math.random());
+                Fragment fragment = getParentFragment();
+                if(fragment instanceof NavigationFragment){
+                    NavigationFragment navigationFragment = (NavigationFragment) fragment;
+                    navigationFragment.onSecondFloorRefresh( fuliDataList.get( index ).getUrl() );
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onFuliDataCallback(List<NewsData> dataList) {
+        super.onFuliDataCallback( dataList );
+        fuliDataList = dataList;
     }
 }

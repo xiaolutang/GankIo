@@ -34,7 +34,6 @@ public class BaseNewsFragment extends BaseRefreshFragment<BaseNewsAdapter,NewsCo
 
     @Override
     protected void onRefresh() {
-        rootView.findViewById( R.id.loading_root ).setVisibility( View.VISIBLE );
         presenter.refresh();
     }
 
@@ -75,6 +74,11 @@ public class BaseNewsFragment extends BaseRefreshFragment<BaseNewsAdapter,NewsCo
             smartRefreshLayout.finishLoadMore();
         }
         adapter.addNewsData( dataList );
+    }
+
+    @Override
+    public void onFuliDataCallback(List<NewsData> dataList) {
+
     }
 
     @Override

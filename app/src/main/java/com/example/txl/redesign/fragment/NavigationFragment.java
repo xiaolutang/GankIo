@@ -2,6 +2,7 @@ package com.example.txl.redesign.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,9 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.base.BaseFragment;
 import com.example.txl.redesign.adpter.CategoryFragmentAdapter;
@@ -25,6 +31,7 @@ import com.example.txl.redesign.data.Navigation;
 import com.example.txl.redesign.fragment.fuli.FuliFragment;
 import com.example.txl.redesign.fragment.secondfloor.SecondFloorNewsFragment;
 import com.example.txl.redesign.fragment.video.DouYinVideoActivity;
+import com.example.txl.redesign.utils.GlideUtils;
 import com.example.txl.redesign.utils.GlobalCacheUtils;
 import com.example.txl.redesign.utils.TextSelectUtils;
 import com.example.txl.redesign.widget.GankViewPager;
@@ -77,6 +84,7 @@ public class NavigationFragment extends BaseFragment {
      * 二楼内容
      * */
     private RelativeLayout secondFloorContainer;
+    private ImageView imageTopNavigationBg;
 
     private GankViewPager viewPager;
     private String category;
@@ -160,6 +168,7 @@ public class NavigationFragment extends BaseFragment {
         linearIndicatorRight = rootView.findViewById(R.id.linear_indicator_right);
         indicatorContainer = rootView.findViewById(R.id.linear_indicator_container);
         secondFloorContainer = rootView.findViewById(R.id.relative_top_navigation_bg_container );
+        imageTopNavigationBg = rootView.findViewById(R.id.image_top_navigation_bg );
         indicatorNavigatorAdapter = new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -289,4 +298,28 @@ public class NavigationFragment extends BaseFragment {
     public void setNavigationAlpha(int alpha){
         setViewBackgroundAlpha( indicatorContainer, alpha);
     }
+
+    public void onSecondFloorRefresh(String url){
+        new GlideUtils.GlideUtilsBuilder()
+        .setUrl( url )
+        .useDefaultPlaceholder( true )
+        .setContext( getContext() )
+        .setRequestListener( new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                Log.d( TAG,"onSecondFloorRefresh onLoadFailed" );
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                Log.d( TAG,"onSecondFloorRefresh onResourceReady" );
+                imageTopNavigationBg.setImageDrawable( resource );
+                return false;
+            }
+        } )
+        .loadAsDrawable();
+    }
+
+
 }

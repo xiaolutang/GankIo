@@ -26,6 +26,8 @@ public class NewsContract {
         void loadMoreFinish(List<NewsData> dataList,boolean hasMore);
 
         void loadMoreError();
+
+        void onFuliDataCallback(List<NewsData> dataList);
     }
 
     public interface Presenter extends IRefreshPresenter {
