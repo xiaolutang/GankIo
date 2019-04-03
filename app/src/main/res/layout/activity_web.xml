@@ -6,35 +6,29 @@
     android:layout_height="match_parent"
     tools:context="com.example.txl.gankio.viewimpl.WebActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/web_activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/red_base"/>
     <ProgressBar
         android:id="@+id/web_activity_progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:visibility="gone"
+        android:layout_height="@dimen/dp_5"
+        android:visibility="visible"
         android:progressDrawable="@drawable/progress_bar"
-        app:layout_constraintEnd_toEndOf="@+id/web_activity_appbarlayout"
-        app:layout_constraintStart_toStartOf="@+id/web_activity_appbarlayout"
-        app:layout_constraintTop_toBottomOf="@+id/web_activity_appbarlayout" />
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/web_activity_appbarlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/web_activity_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"/>
-    </android.support.design.widget.AppBarLayout>
-
+        app:layout_constraintEnd_toEndOf="@+id/web_activity_toolbar"
+        app:layout_constraintStart_toStartOf="@+id/web_activity_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/web_activity_toolbar" />
     <WebView
         android:id="@+id/web_view"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/web_activity_progressBar"
         app:layout_constraintVertical_bias="0.0" />

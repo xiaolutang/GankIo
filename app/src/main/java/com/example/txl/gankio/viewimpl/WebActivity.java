@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -43,8 +45,16 @@ public class WebActivity extends BaseActivity {
     }
 
     @Override
+    protected void setStatusBar() {
+        requestWindowFeature( Window.FEATURE_NO_TITLE);
+        //全屏
+        getWindow().setFlags( WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation_menu_search, menu);
+//        getMenuInflater().inflate(R.menu.navigation_menu_search, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

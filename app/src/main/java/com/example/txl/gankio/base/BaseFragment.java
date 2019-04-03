@@ -77,8 +77,10 @@ public abstract class BaseFragment extends Fragment implements IBaseView{
         if (view == null) return;
 
         Drawable drawable = view.getBackground();
+        drawable = drawable.mutate();
         if (drawable != null) {
             drawable.setAlpha(alpha);
+            view.setBackground( drawable );
         }
     }
 
