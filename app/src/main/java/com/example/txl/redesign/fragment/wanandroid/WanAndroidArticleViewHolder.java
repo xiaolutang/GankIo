@@ -12,6 +12,7 @@ import com.example.txl.gankio.viewimpl.WebActivity;
 import com.example.txl.redesign.data.XmlyFmData;
 import com.example.txl.redesign.data.wanandroid.WanAndroidArticle;
 import com.example.txl.redesign.fragment.xmlyfm.XmlyFmViewHolder;
+import com.example.txl.redesign.utils.NewsItemClickHandle;
 
 /**
  * @author TXL
@@ -61,10 +62,7 @@ public class WanAndroidArticleViewHolder extends XmlyFmViewHolder {
         rootView.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( rootView.getContext(), WebActivity.class );
-                intent.putExtra( "url",article.getLink() );
-                intent.putExtra( "title",article.getTitle() );
-                rootView.getContext().startActivity( intent );
+                NewsItemClickHandle.fmItemClick( rootView.getContext(),data );
             }
         } );
     }

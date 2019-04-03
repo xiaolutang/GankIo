@@ -26,6 +26,10 @@ public abstract class BaseAdapter<D,T extends RecyclerView.ViewHolder> extends R
     protected LayoutInflater mInflater;
     protected OnItemClickListener itemClickListener;
 
+    public void setItemClickListener(OnItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
+
     public BaseAdapter(Context context) {
         this(context,null);
     }
