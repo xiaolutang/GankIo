@@ -11,8 +11,6 @@ import com.example.txl.gankio.utils.ThemeUtils;
 import com.example.txl.gankio.utils.image.utils.ImageLoader;
 import com.example.txl.redesign.api.XmlyApi;
 import com.example.txl.redesign.fragment.video.VideoIntentService;
-import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 
 /**
  * Copyright (c) 2018, 唐小陆 All rights reserved.
