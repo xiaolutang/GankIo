@@ -1,0 +1,6 @@
+ext{
+    minSdkVersion="18"//APP最小支持版本
+    compileSdkVersion="28"//编译时版本
+    targetSdkVersion="26"//目标版本
+    buildToolsVersion="28.0.3"//构建版本
+}

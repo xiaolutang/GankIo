@@ -1,5 +1,8 @@
 package com.example.txl.redesign.utils;
 
+import com.baidu.location.Address;
+import com.baidu.location.BDLocation;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,4 +50,12 @@ public class GlobalCacheUtils {
             case KEY_FU_LI:
         }
     }
+
+    /**
+     * 百度定位的
+     */
+    public static BDLocation location = null;
+    public static Address locationAddress;
+    public static String longitude = "";//经度
+    public static String latitude = "";//纬度
 }

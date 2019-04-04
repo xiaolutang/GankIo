@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.multidex.MultiDex;
 
 import com.example.txl.gankio.cache.AppDataLoader;
 import com.example.txl.gankio.change.mvp.data.User;
@@ -43,6 +44,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //超越65535限制
+        MultiDex.install(this);
         mContext = getApplicationContext();
         _appMainHandler = new Handler(this.getMainLooper());
         mImageLoader = ImageLoader.build( this );
