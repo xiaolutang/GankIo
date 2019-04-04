@@ -39,8 +39,13 @@ import java.util.List;
 
 import com.example.txl.redesign.main.NewStyleMainActivity;
 import com.example.txl.redesign.utils.AppExecutors;
+import com.example.txl.redesign.utils.GlobalCacheUtils;
+import com.example.txl.redesign.utils.PermissionUtils;
+import com.example.txl.redesign.utils.PermissionUtilsKt;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.txl.baidumap.BaiduLocationUtils;
 
 
 public class SplashActivity extends BaseActivity implements SplashContract.View{
@@ -75,14 +80,30 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
         AppExecutors.getInstance().diskIO().execute( new Runnable() {
             @Override
             public void run() {
-                try {
-                    System.loadLibrary("xmopendatacrypto");
-                } catch (Exception var1) {
-                    Toast.makeText( SplashActivity.this,"xmopendatacrypto加载出错",Toast.LENGTH_SHORT ).show();
-                    Log.d( TAG,"xmopendatacrypto加载出错" );
-                }
+                getLocation();
             }
         } );
+    }
+
+    private void getLocation() {
+        new BaiduLocationUtils().start(SplashActivity.this, new BaiduLocationUtils.BaiduLocationListener() {
+            @Override
+            public void getLocationSuccess(BaiduLocationUtils.BaiduLocationModel baiduLocationModel) {
+                if(baiduLocationModel.status == BaiduLocationUtils.SUCCESS){
+                    Log.d(TAG,"getLocationSuccess address "+baiduLocationModel.address);
+                    GlobalCacheUtils.location = baiduLocationModel.getLocation();
+                    GlobalCacheUtils.locationAddress = baiduLocationModel.address;
+                    GlobalCacheUtils.longitude = baiduLocationModel.longitude;
+                    GlobalCacheUtils.latitude = baiduLocationModel.latitude;
+                }
+
+            }
+
+            @Override
+            public void getLocationFailed() {
+                Log.d(TAG,"getLocationFailed ");
+            }
+        });
     }
 
     private void gotoMain() {
@@ -104,6 +125,16 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     }
 
     private void checkPermission(){
+        final RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions
+                .request(new String[]{"a", "b"})
+                .subscribe(granted -> {
+                    if (granted) {
+                        // All requested permissions are granted
+                    } else {
+                        // At least one permission is denied
+                    }
+                });
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
