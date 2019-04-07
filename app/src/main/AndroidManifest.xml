@@ -45,7 +45,8 @@
         <activity android:name="com.example.txl.redesign.fragment.xmlyfm.album.TrackListActivity" />
         <activity android:name=".viewimpl.MainActivity" />
         <activity android:name=".viewimpl.IdelInfoActivity" />
-        <activity android:name="com.example.txl.redesign.splash.SplashActivity">
+        <activity android:name="com.example.txl.redesign.splash.SplashActivity"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

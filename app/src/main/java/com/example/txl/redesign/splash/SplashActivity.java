@@ -2,17 +2,11 @@ package com.example.txl.redesign.splash;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,7 +19,6 @@ import com.example.txl.gankio.base.BaseActivity;
 import com.example.txl.gankio.bean.BeautyGirls;
 import com.example.txl.gankio.presenter.FuLiPresenter;
 import com.example.txl.gankio.utils.NetUtils;
-import com.example.txl.gankio.widget.BannerAdapter;
 
 import org.json.JSONObject;
 
@@ -50,16 +43,12 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     public static boolean canGotoMain = false;
 
-    ViewPager viewPager;
-    LinearLayout linearLayoutPoints;
-
     private List<ImageView> mList=new ArrayList<ImageView>();// 存放要显示在ViewPager对象中的所有Imageview对象
     private List<ImageView> mPointListView = new ArrayList<>(  );
 
     private int prevPosition = 0;
 
     FuLiPresenter fuLiPresenter;
-    BannerAdapter<String> pagerAdapter;
     private SplashContract.Presenter presenter;
 
     private static void accept(Throwable accept) {
@@ -210,74 +199,8 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     }
 
     protected void initView() {
-        viewPager = findViewById( R.id.splash_vp );
-        linearLayoutPoints = findViewById( R.id.liner_points );
+
         fuLiPresenter = new FuLiPresenter( this );
-        pagerAdapter = new BannerAdapter<>(this,viewPager);
-        pagerAdapter.setViewLoaderInterface( new BannerAdapter.ViewLoaderInterface() {
-            @Override
-            public void displayView(Context context, Object path, View imageView) {
-                Glide.with( App.getAppContext() ).load( path ).into( (ImageView) imageView );
-            }
-
-            @Override
-            public View createView(Context context) {
-                ImageView imageView = new ImageView( context );
-                imageView.setScaleType( ImageView.ScaleType.CENTER_CROP );
-                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(  ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT );
-                imageView.setLayoutParams( params );
-                return imageView;
-            }
-        } );
-        viewPager.setAdapter( pagerAdapter );
-        viewPager.addOnPageChangeListener( new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if(position<mList.size()){
-                    mPointListView.get( prevPosition ).setImageResource( R.drawable.point_white );
-                    mPointListView.get( position ).setImageResource( R.drawable.point_gray );
-                    prevPosition = position;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        } );
-        viewPager.setOnTouchListener( new View.OnTouchListener() {
-            float startX;
-            float endX;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        startX=event.getX();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        endX=event.getX();
-                        WindowManager windowManager= (WindowManager) getApplicationContext().getSystemService( Context.WINDOW_SERVICE);
-//获取屏幕的宽度
-                        Point size = new Point();
-                        windowManager.getDefaultDisplay().getSize(size);
-                        int width=size.x;
-//首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
-                        if(prevPosition ==(mList.size()-1)&&startX-endX>=(width/4)){
-                            Log.i(TAG,"进入了触摸");
-                            canGotoMain = true;
-                            gotoMain();
-                            return true;
-                        }
-                }
-
-            return false;
-        }} );
     }
 
     @Override
@@ -318,10 +241,8 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
             } else {
                 pointView.setImageResource(R.drawable.point_white);
             }
-            linearLayoutPoints.addView(pointView);
             mPointListView.add( pointView );
         }
-        pagerAdapter.update( imageUrls );
     }
 
     @Override

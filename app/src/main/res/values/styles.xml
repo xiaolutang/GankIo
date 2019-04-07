@@ -9,5 +9,8 @@
         <!--正常状态下字体颜色和icon颜色-->
         <item name="android:textColorPrimary">@color/white</item>
     </style>
-
+    <style name="AppTheme.Launcher" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/image_taobao</item>
+    </style>
 </resources>
