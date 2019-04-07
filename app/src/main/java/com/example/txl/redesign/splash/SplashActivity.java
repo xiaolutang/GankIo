@@ -4,12 +4,18 @@ package com.example.txl.redesign.splash;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Outline;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +48,10 @@ import io.reactivex.disposables.Disposable;
 public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     public static boolean canGotoMain = false;
+    /**
+     * 倒计时跳转
+     * */
+    private TextView tvJump;
 
     private List<ImageView> mList=new ArrayList<ImageView>();// 存放要显示在ViewPager对象中的所有Imageview对象
     private List<ImageView> mPointListView = new ArrayList<>(  );
@@ -199,7 +209,18 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     }
 
     protected void initView() {
-
+        tvJump = findViewById( R.id.tv_jump );
+        if(Build.VERSION.SDK_INT  >= Build.VERSION_CODES.LOLLIPOP){
+            ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    Log.e( TAG,"getOutline  " +view.getWidth() +"  "+view.getHeight());
+                    outline.setRoundRect( 0,0,view.getWidth(), view.getHeight(),30);
+                }
+            };
+            tvJump.setOutlineProvider( viewOutlineProvider );
+            tvJump.setClipToOutline(true);
+        }
         fuLiPresenter = new FuLiPresenter( this );
     }
 

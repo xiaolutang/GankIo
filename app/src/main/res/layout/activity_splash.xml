@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff703030"
     android:clipChildren="false">
     <!--启动界面-->
     <RelativeLayout
@@ -27,6 +26,19 @@
             android:layout_marginEnd="@dimen/dp_15"
             android:layout_marginBottom="@dimen/dp_30"
             android:gravity="center" />
+        <TextView
+            android:id="@+id/tv_jump"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/dp_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_alpha_light"
+            android:textSize="@dimen/sp_15"
+            android:layout_marginTop="@dimen/dp_64"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:text="3s 跳过"
+            android:gravity="center"
+            android:textColor="@color/white"/>
     </RelativeLayout>
 
 
