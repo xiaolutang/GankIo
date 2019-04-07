@@ -1,16 +1,12 @@
 package com.example.txl.redesign.splash;
 
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -40,12 +36,14 @@ import java.util.List;
 import com.example.txl.redesign.main.NewStyleMainActivity;
 import com.example.txl.redesign.utils.AppExecutors;
 import com.example.txl.redesign.utils.GlobalCacheUtils;
-import com.example.txl.redesign.utils.PermissionUtils;
 import com.example.txl.redesign.utils.PermissionUtilsKt;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.txl.baidumap.BaiduLocationUtils;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 
 public class SplashActivity extends BaseActivity implements SplashContract.View{
@@ -64,6 +62,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     BannerAdapter<String> pagerAdapter;
     private SplashContract.Presenter presenter;
 
+    private static void accept(Throwable accept) {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -72,17 +73,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
             gotoMain();
         }
         presenter = new SplashPresenter(this);
-
-        checkPermission();
-        checkNetState();
         initView();
         checkUpdate();
-        AppExecutors.getInstance().diskIO().execute( new Runnable() {
-            @Override
-            public void run() {
-                getLocation();
-            }
-        } );
+        checkPermission();
     }
 
     private void getLocation() {
@@ -126,24 +119,48 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     private void checkPermission(){
         final RxPermissions rxPermissions = new RxPermissions(this);
+        String[] splashPermissions = PermissionUtilsKt.getPermissionUtils().getSplashPermission();
         rxPermissions
-                .request(new String[]{"a", "b"})
-                .subscribe(granted -> {
-                    if (granted) {
-                        // All requested permissions are granted
-                    } else {
-                        // At least one permission is denied
+                .request(splashPermissions)
+                .subscribe( new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
                     }
-                });
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, "请开通相关权限，否则无法正常使用本应用！", Toast.LENGTH_SHORT).show();
-            }
-            //申请权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-        }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            // All requested permissions are granted
+                            //申请的权限全部允许
+                            Toast.makeText(SplashActivity.this, "允许了权限!", Toast.LENGTH_SHORT).show();
+                            AppExecutors.getInstance().diskIO().execute( () -> getLocation() );
+                        } else {
+                            // At least one permission is denied
+                            Toast.makeText(SplashActivity.this, "未授权权限，部分功能不能使用", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e( TAG,"checkPermission onError" );
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                } );
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            // Permission is not granted
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                Toast.makeText(this, "请开通相关权限，否则无法正常使用本应用！", Toast.LENGTH_SHORT).show();
+//            }
+//            //申请权限
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+//        }
     }
 
     private void checkUpdate() {
@@ -272,7 +289,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     public void prepareDataFinish() {
         // FIXME: 2019/3/20 使用广告的模式进行修改
         Toast.makeText( this,"加载数据完成，可以滑动进入主页！",Toast.LENGTH_SHORT ).show();
-        gotoMain();
+
     }
 
     @Override

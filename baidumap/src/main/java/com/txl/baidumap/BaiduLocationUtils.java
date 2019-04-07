@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 
 
 public class BaiduLocationUtils {
+    private static final String TAG = "BaiduLocationUtils";
     public static final int SUCCESS = 1;
     public static final int FAILED = 0;
     public LocationClient mLocationClient = null;
@@ -74,7 +75,7 @@ public class BaiduLocationUtils {
                 if (listener != null && !flag)
                 {
                     BaiduLocationModel baiduLocationModel= (BaiduLocationModel) msg.obj;
-                    Log.w("LBS","定位成功："+ baiduLocationModel.address.address);
+                    Log.w(TAG,"定位成功："+ baiduLocationModel.address.address);
                     listener.getLocationSuccess(baiduLocationModel);
                     flag = true;
                 }
@@ -83,7 +84,7 @@ public class BaiduLocationUtils {
             {
                 if (listener != null && !flag)
                 {
-                    Log.w("LBS","定位失败");
+                    Log.w(TAG,"定位失败");
                     listener.getLocationFailed();
                     flag = true;
                 }

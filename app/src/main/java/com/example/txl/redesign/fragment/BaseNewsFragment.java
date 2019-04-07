@@ -1,10 +1,13 @@
 package com.example.txl.redesign.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.example.txl.gankio.R;
+import com.example.txl.gankio.viewimpl.WebActivity;
+import com.example.txl.redesign.adpter.BaseAdapter;
 import com.example.txl.redesign.adpter.BaseNewsAdapter;
 import com.example.txl.redesign.data.model.NewsData;
 
@@ -30,6 +33,15 @@ public class BaseNewsFragment extends BaseRefreshFragment<BaseNewsAdapter,NewsCo
     protected void initView(){
         categoryId = getFragmentArguments().getString("category_id");
         super.initView();
+        adapter.setItemClickListener( new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, NewsData newsData) {
+                Intent intent = new Intent( getContext(), WebActivity.class );
+                intent.putExtra( "url",newsData.getUrl() );
+                intent.putExtra( "title",newsData.getDesc() );
+                getContext().startActivity( intent );
+            }
+        } );
     }
 
     @Override
