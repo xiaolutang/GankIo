@@ -3,17 +3,18 @@ package com.example.txl.redesign.fragment.secondfloor;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import com.example.txl.gankio.R;
 import com.example.txl.gankio.viewimpl.WebActivity;
 import com.example.txl.redesign.adpter.BaseAdapter;
-import com.example.txl.redesign.fragment.BaseNewsFragment;
+import com.example.txl.redesign.adpter.SecondFloorAdapter;
+import com.example.txl.redesign.data.XmlyFmData;
+import com.example.txl.redesign.fragment.BaseRefreshFragment;
 import com.example.txl.redesign.fragment.NavigationFragment;
 import com.example.txl.redesign.data.model.NewsData;
 import com.example.txl.redesign.fragment.video.DouYinVideoActivity;
@@ -32,9 +33,9 @@ import java.util.List;
  * date：2019/3/25
  * description：有二楼效果的fragment
  */
-public class SecondFloorNewsFragment extends BaseNewsFragment {
-
-    List<NewsData> fuliDataList;
+public class SecondFloorNewsFragment extends BaseRefreshFragment<SecondFloorAdapter,SecondFloorContract.Presenter> implements SecondFloorContract.View {
+    protected String categoryId;
+    List<XmlyFmData> fuliDataList;
     /**
      * 二楼效果
      * */
@@ -47,14 +48,37 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
     private int recyclerViewDy;
 
     @Override
-    public void refreshFinish(List<NewsData> dataList, boolean hasMore) {
+    public void refreshFinish(List<XmlyFmData> dataList, boolean hasMore) {
+        //天气透不出来
+//        dataList.add( 0,new XmlyFmData( XmlyFmData.TYPE_WEATHER ) );
         adapter.setNewsData( dataList );
         smartRefreshLayout.finishRefresh(true);
         closeLoadingView();
     }
 
     @Override
+    public void refreshError() {
+        smartRefreshLayout.finishRefresh(false);
+    }
+
+    @Override
+    public void loadMoreFinish(List<XmlyFmData> dataList, boolean hasMore) {
+        if(!hasMore){
+            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+        }else {
+            smartRefreshLayout.finishLoadMore();
+        }
+        adapter.addNewsData( dataList );
+    }
+
+    @Override
+    public void loadMoreError() {
+        smartRefreshLayout.finishLoadMore();
+    }
+
+    @Override
     protected void initView() {
+        categoryId = getFragmentArguments().getString("category_id");
         super.initView();
         //二楼效果
         navigationBgAlpha =0;
@@ -119,8 +143,23 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
     }
 
     @Override
+    protected void initData() {
+        presenter.refresh();
+    }
+
+    @Override
     protected SecondFloorPresenter getPresenter() {
         return new SecondFloorPresenter(this,categoryId);
+    }
+
+    @Override
+    protected SecondFloorAdapter getAdapter() {
+        return new SecondFloorAdapter( getContext() );
+    }
+
+    @Override
+    protected RecyclerView.LayoutManager getLayoutManager() {
+        return new LinearLayoutManager( getContext(),LinearLayoutManager.VERTICAL ,false);
     }
 
     /**
@@ -135,6 +174,11 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
             return 0;
         }
         return recyclerViewDy;
+    }
+
+    @Override
+    public void setPresenter(SecondFloorContract.Presenter presenter) {
+
     }
 
     /**
@@ -165,15 +209,15 @@ public class SecondFloorNewsFragment extends BaseNewsFragment {
                 Fragment fragment = getParentFragment();
                 if(fragment instanceof NavigationFragment){
                     NavigationFragment navigationFragment = (NavigationFragment) fragment;
-                    navigationFragment.onSecondFloorRefresh( fuliDataList.get( index ).getUrl() );
+                    navigationFragment.onSecondFloorRefresh( fuliDataList.get( index ).getNewsData().getUrl() );
                 }
             }
         }
     }
 
     @Override
-    public void onFuliDataCallback(List<NewsData> dataList) {
-        super.onFuliDataCallback( dataList );
+    public void onFuliDataCallback(List<XmlyFmData> dataList) {
+
         fuliDataList = dataList;
     }
 }

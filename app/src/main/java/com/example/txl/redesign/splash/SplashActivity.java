@@ -86,7 +86,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
         }
         appSharePreference = new AppSharePreference();
         presenter = new SplashPresenter(this);
-        initView();
         checkUpdate();
         checkPermission();
     }
@@ -152,6 +151,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
                             // At least one permission is denied
                             Toast.makeText(SplashActivity.this, "未授权权限，部分功能不能使用", Toast.LENGTH_SHORT).show();
                         }
+                        initView();
                     }
 
                     @Override
@@ -236,14 +236,13 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
             }catch (Exception e){}
         }
         tvJump = findViewById( R.id.tv_jump );
-        tvJump.setText("3 s");
         timeCount.start();
         if(Build.VERSION.SDK_INT  >= Build.VERSION_CODES.LOLLIPOP){
             ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
                 @Override
                 public void getOutline(View view, Outline outline) {
                     Log.e( TAG,"getOutline  " +view.getWidth() +"  "+view.getHeight());
-                    outline.setRoundRect( 0,0,view.getWidth(), view.getHeight(),45);
+                    outline.setRoundRect( 0,0,view.getWidth(), view.getHeight(),getResources().getDimension( R.dimen.dp_10 ));
                 }
             };
             tvJump.setOutlineProvider( viewOutlineProvider );
@@ -319,7 +318,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
 
         @Override
         public void onTick(long millisUntilFinished) {// 计时过程显示
-            tvJump.setText((3-millisUntilFinished / 1000)+" s");
+            tvJump.setText((millisUntilFinished / 1000)+" s进入主页");
 
         }
     }

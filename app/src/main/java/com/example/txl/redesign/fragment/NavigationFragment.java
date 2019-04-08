@@ -250,7 +250,7 @@ public class NavigationFragment extends BaseFragment {
             case Navigation.CATEGORY_MAIN:
                 MainNavigation mainNavigation = (MainNavigation) navigation;
                 for (String item : mainNavigation.getChildList()) {
-                    BaseNewsFragment baseNewsFragment;
+                    BaseRefreshFragment baseNewsFragment;
                     if(item.equals( "推荐" )){
                         baseNewsFragment = new SecondFloorNewsFragment();
                     }else if(GlobalCacheUtils.KEY_FU_LI.equals( item )){

@@ -89,11 +89,6 @@ public class BaseNewsFragment extends BaseRefreshFragment<BaseNewsAdapter,NewsCo
     }
 
     @Override
-    public void onFuliDataCallback(List<NewsData> dataList) {
-
-    }
-
-    @Override
     public void loadMoreError() {
         smartRefreshLayout.finishLoadMore();
     }
