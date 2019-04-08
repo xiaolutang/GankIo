@@ -9,7 +9,7 @@ import android.support.multidex.MultiDex;
 import com.example.txl.gankio.cache.AppDataLoader;
 import com.example.txl.gankio.change.mvp.data.User;
 import com.example.txl.gankio.utils.ThemeUtils;
-import com.example.txl.gankio.utils.image.utils.ImageLoader;
+import com.example.txl.redesign.utils.imageutils.ImageLoader;
 import com.example.txl.redesign.api.XmlyApi;
 import com.example.txl.redesign.fragment.video.VideoIntentService;
 

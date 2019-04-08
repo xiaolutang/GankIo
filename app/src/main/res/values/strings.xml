@@ -24,5 +24,6 @@
     <string name="main_page">首页</string>
     <string name="fm">FM</string>
     <string name="play_order_sequential">顺序播放</string>
+    <string name="jump_ad">跳过广告</string>
 
 </resources>

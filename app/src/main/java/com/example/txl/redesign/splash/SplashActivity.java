@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +31,18 @@ import com.example.txl.gankio.utils.NetUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import com.example.txl.redesign.main.NewStyleMainActivity;
 import com.example.txl.redesign.utils.AppExecutors;
+import com.example.txl.redesign.utils.AppSharePreference;
+import com.example.txl.redesign.utils.GlideUtils;
 import com.example.txl.redesign.utils.GlobalCacheUtils;
 import com.example.txl.redesign.utils.PermissionUtilsKt;
+import com.example.txl.redesign.utils.imageutils.ImageLoader;
 import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -48,10 +55,16 @@ import io.reactivex.disposables.Disposable;
 public class SplashActivity extends BaseActivity implements SplashContract.View{
 
     public static boolean canGotoMain = false;
+    private final String SPLASH_IMAGE_URL = "splash_image";
+    private final String SPLASH_CACHE = "splash_cache";
+    TimeCount timeCount;
     /**
      * 倒计时跳转
      * */
     private TextView tvJump;
+    private ImageView imageSplash;
+
+    AppSharePreference appSharePreference;
 
     private List<ImageView> mList=new ArrayList<ImageView>();// 存放要显示在ViewPager对象中的所有Imageview对象
     private List<ImageView> mPointListView = new ArrayList<>(  );
@@ -71,6 +84,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
         if(canGotoMain){
             gotoMain();
         }
+        appSharePreference = new AppSharePreference();
         presenter = new SplashPresenter(this);
         initView();
         checkUpdate();
@@ -209,13 +223,27 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
     }
 
     protected void initView() {
+        //倒计时3s进入主页
+        timeCount = new TimeCount(3000,1000);
+        imageSplash = findViewById( R.id.image_splash );
+        Map<String,?> splashMap = appSharePreference.getSharedData(SPLASH_CACHE,this);
+        if(splashMap!= null){
+            try {
+                String url = (String) splashMap.get(SPLASH_IMAGE_URL);
+                if(!TextUtils.isEmpty(url)){
+                    App.getImageLoader().bindBitmap(url,imageSplash,0,0);
+                }
+            }catch (Exception e){}
+        }
         tvJump = findViewById( R.id.tv_jump );
+        tvJump.setText("3 s");
+        timeCount.start();
         if(Build.VERSION.SDK_INT  >= Build.VERSION_CODES.LOLLIPOP){
             ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
                 @Override
                 public void getOutline(View view, Outline outline) {
                     Log.e( TAG,"getOutline  " +view.getWidth() +"  "+view.getHeight());
-                    outline.setRoundRect( 0,0,view.getWidth(), view.getHeight(),30);
+                    outline.setRoundRect( 0,0,view.getWidth(), view.getHeight(),45);
                 }
             };
             tvJump.setOutlineProvider( viewOutlineProvider );
@@ -264,10 +292,35 @@ public class SplashActivity extends BaseActivity implements SplashContract.View{
             }
             mPointListView.add( pointView );
         }
+        new GlideUtils.GlideUtilsBuilder()
+                .setContext(this)
+                .setUrl(imageUrls.get(0))
+                .loadAsDrawable();
+        Map<String, String> splash = new HashMap<>();
+        splash.put(SPLASH_IMAGE_URL,imageUrls.get(0));
+        appSharePreference.saveData(SPLASH_CACHE,splash,this);
+        AppExecutors.getInstance().networkIO().execute(() -> App.getImageLoader().loadBitmap(imageUrls.get(0),0,0));
     }
 
     @Override
     public void setPresenter(SplashContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {// 计时完毕时触发
+           gotoMain();
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {// 计时过程显示
+            tvJump.setText((3-millisUntilFinished / 1000)+" s");
+
+        }
     }
 }

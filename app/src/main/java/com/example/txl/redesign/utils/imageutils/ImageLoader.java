@@ -1,4 +1,4 @@
-package com.example.txl.gankio.utils.image.utils;
+package com.example.txl.redesign.utils.imageutils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

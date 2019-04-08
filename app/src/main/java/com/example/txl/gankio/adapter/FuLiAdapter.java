@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.txl.gankio.R;
 import com.example.txl.gankio.bean.BeautyGirls;
-import com.example.txl.gankio.utils.image.utils.ImageLoader;
+import com.example.txl.redesign.utils.imageutils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
