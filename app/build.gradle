@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion  Integer.parseInt(rootProject.ext.compileSdkVersion)
+    compileSdkVersion Integer.parseInt(rootProject.ext.compileSdkVersion)
     defaultConfig {
         applicationId "com.txl.gankio"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -82,6 +82,7 @@ dependencies {
     implementation project(':baidumap')
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.github.chrisbanes:PhotoView:2.1.4'
 }
 repositories {
     mavenCentral()

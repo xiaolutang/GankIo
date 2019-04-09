@@ -27,5 +27,7 @@
     <dimen name="dp_240">240dp</dimen>
     <dimen name="sp_15">15sp</dimen>
     <dimen name="dp_60">60dp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="dp_25">25dp</dimen>
     <!--顶部tab导航高度-->
 </resources>
