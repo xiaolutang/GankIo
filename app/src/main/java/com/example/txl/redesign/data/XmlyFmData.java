@@ -1,5 +1,6 @@
 package com.example.txl.redesign.data;
 
+import com.example.txl.redesign.data.model.NewsData;
 import com.example.txl.redesign.data.wanandroid.ArticleList;
 import com.example.txl.redesign.data.wanandroid.WanAndroidArticle;
 import com.example.txl.redesign.data.wanandroid.WanAndroidBanner;
@@ -19,6 +20,10 @@ public class XmlyFmData {
     //玩android
     public static final int WAN_ANDROID_TYPE_BANNER = 3;
     public static final int WAN_ANDROID_TYPE_ARTICLE = 4;
+    public static final int GANK_IO_TYPE_ARTICLE = 5;
+    public static final int TYPE_WEATHER = 6;
+
+
 
     private static void testType(int type){
         switch (type){
@@ -27,6 +32,8 @@ public class XmlyFmData {
             case XMLY_TYPE_ALBUN_ITEM:
             case WAN_ANDROID_TYPE_BANNER:
             case WAN_ANDROID_TYPE_ARTICLE:
+            case GANK_IO_TYPE_ARTICLE:
+            case TYPE_WEATHER:
         }
     }
 
@@ -65,6 +72,11 @@ public class XmlyFmData {
      * wan android 文章
      * */
     private WanAndroidArticle androidArticle;
+
+    /**
+     * gank io资讯
+     * */
+    private NewsData newsData;
 
     public int getType(){
         return type;
@@ -112,5 +124,13 @@ public class XmlyFmData {
 
     public void setAndroidArticle(WanAndroidArticle androidArticle) {
         this.androidArticle = androidArticle;
+    }
+
+    public NewsData getNewsData() {
+        return newsData;
+    }
+
+    public void setNewsData(NewsData newsData) {
+        this.newsData = newsData;
     }
 }
